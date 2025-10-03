@@ -3,14 +3,15 @@ pipeline {
 
     environment {
         DOCKER_HUB_USER = "Stackly-ai"
-        DOCKER_HUB_PASS = credentials('admin123')  // Add in Jenkins Credentials
+        DOCKER_HUB_PASS = credentials('admin123')  // DockerHub password stored in Jenkins Credentials
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Mahesh-yarramalla/Stackly_AI.git'
+                    url: 'git@github.com:Mahesh-yarramalla/Stackly_AI.git',
+                    credentialsId: 'a0b15e27-48aa-42a9-becb-9d19bc41210a'   // <-- Use the SSH private key you added in Jenkins Credentials
             }
         }
 
