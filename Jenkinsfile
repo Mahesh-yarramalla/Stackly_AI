@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_USER = "your-dockerhub-username"
-        DOCKER_HUB_PASS = credentials('dockerhub-password')  // Add in Jenkins Credentials
+        DOCKER_HUB_USER = "Stackly-ai"
+        DOCKER_HUB_PASS = credentials('admin123')  // Add in Jenkins Credentials
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/your-username/Stackly_AI.git'
+                    url: 'https://github.com/Mahesh-yarramalla/Stackly_AI.git'
             }
         }
 
