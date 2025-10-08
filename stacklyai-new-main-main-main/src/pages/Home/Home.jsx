@@ -65,7 +65,7 @@ import sec14Img4 from "../../assets/home/sec14/m1.jpg";
 import sec14Img5 from "../../assets/home/sec14/m2.jpg";
 
 import DotFrame from "../../assets/home/DotFrame.png";
-import NewFrame from "../../assets/home/nsec3/image2.png";
+import NewFrame from "../../assets/home/nsec3/Image2.png";
 import NewFrame2 from "../../assets/home/nsec3/image1.png";
 import NewFrame3 from "../../assets/home/nsec3/image3.png";
 import NewFrame4 from "../../assets/home/nsec3/image4.png";
