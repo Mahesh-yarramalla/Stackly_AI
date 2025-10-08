@@ -72,7 +72,7 @@ import NewFrame4 from "../../assets/home/nsec3/image4.png";
 import NewFrame5 from "../../assets/home/nsec3/image5.png";
 import NewFrame6 from "../../assets/home/nsec3/image6.png";
 import Group from "../../assets/home/nsec3/StarGroup.png";
-import vector from "../../assets/home/nsec3/vector.png";
+import vector from "../../assets/home/nsec3/Vector.png";
 import star from "../../assets/home/Big star.png";
 import Star from "../../assets/home/stars.png";
 import Reacts from "../../assets/home/react.png";
@@ -100,64 +100,64 @@ export default function Home() {
   const [ref2, inView2] = useInView({ threshold: 0.1 });
 
 
-const faqs = [
-  {
-    question: "How does Stackly AI work?",
-    answer: "Stackly AI uses advanced algorithms to automate tasks efficiently.",
-    related: [
-      {
-        question: "Is Stackly AI suitable for beginners?",
-        answer: "Yes, Stackly AI has a beginner-friendly interface.",
-      },
-      {
-        question: "What technologies does Stackly use?",
-        answer: "It uses React, Node.js, and AI/ML models under the hood.",
-      },
-    ],
-  },
-  {
-    question: "Is there a free version available?",
-    answer: "Yes, Stackly AI offers a free trial with limited features.",
-    related: [
-      {
-        question: "How long does the free trial last?",
-        answer: "The free trial lasts for 14 days from the signup date.",
-      },
-      {
-        question: "Can I upgrade during the trial?",
-        answer: "Yes, you can upgrade anytime via your account settings.",
-      },
-    ],
-  },
-  {
-    question: "Can Stackly AI integrate with other tools?",
-    answer: "Yes, it supports integration with tools like Zapier and Slack.",
-    related: [
-      {
-        question: "Does Stackly AI support API access?",
-        answer: "Yes, Stackly AI provides API documentation for developers.",
-      },
-      {
-        question: "Can I sync Stackly with my CRM?",
-        answer: "Absolutely, CRM integration is available in the pro plan.",
-      },
-    ],
-  },
-  {
-    question: "Is customer support available?",
-    answer: "Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.",
-    related: [
-      {
-        question: "Is live chat support available?",
-        answer: "Yes, you can chat with support directly through the dashboard.",
-      },
-      {
-        question: "Where can I raise a ticket?",
-        answer: "Go to the 'Help' section and click 'Raise a Ticket'.",
-      },
-    ],
-  },
-];
+  const faqs = [
+    {
+      question: "How does Stackly AI work?",
+      answer: "Stackly AI uses advanced algorithms to automate tasks efficiently.",
+      related: [
+        {
+          question: "Is Stackly AI suitable for beginners?",
+          answer: "Yes, Stackly AI has a beginner-friendly interface.",
+        },
+        {
+          question: "What technologies does Stackly use?",
+          answer: "It uses React, Node.js, and AI/ML models under the hood.",
+        },
+      ],
+    },
+    {
+      question: "Is there a free version available?",
+      answer: "Yes, Stackly AI offers a free trial with limited features.",
+      related: [
+        {
+          question: "How long does the free trial last?",
+          answer: "The free trial lasts for 14 days from the signup date.",
+        },
+        {
+          question: "Can I upgrade during the trial?",
+          answer: "Yes, you can upgrade anytime via your account settings.",
+        },
+      ],
+    },
+    {
+      question: "Can Stackly AI integrate with other tools?",
+      answer: "Yes, it supports integration with tools like Zapier and Slack.",
+      related: [
+        {
+          question: "Does Stackly AI support API access?",
+          answer: "Yes, Stackly AI provides API documentation for developers.",
+        },
+        {
+          question: "Can I sync Stackly with my CRM?",
+          answer: "Absolutely, CRM integration is available in the pro plan.",
+        },
+      ],
+    },
+    {
+      question: "Is customer support available?",
+      answer: "Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.Yes, 24/7 customer support is available via chat and email.",
+      related: [
+        {
+          question: "Is live chat support available?",
+          answer: "Yes, you can chat with support directly through the dashboard.",
+        },
+        {
+          question: "Where can I raise a ticket?",
+          answer: "Go to the 'Help' section and click 'Raise a Ticket'.",
+        },
+      ],
+    },
+  ];
 
 
   const mobileCards = [
@@ -240,7 +240,7 @@ const faqs = [
   };
 
 
-   
+
 
   const nextCard = () => {
     setCurrentCardIndex((prev) => (prev === mobileCards.length - 1 ? 0 : prev + 1));
@@ -275,9 +275,9 @@ const faqs = [
       controls.start("visible");
     }
   }, [controls, inView]);
-const [ref4, inView4] = useInView({ threshold: 0.1 });
+  const [ref4, inView4] = useInView({ threshold: 0.1 });
 
-const animateCounter = (ref, target) => {
+  const animateCounter = (ref, target) => {
     let start = 0;
     const duration = 1000;
     const increment = target / (duration / 16);
@@ -295,16 +295,16 @@ const animateCounter = (ref, target) => {
     requestAnimationFrame(step);
   };
 
-useEffect(() => {
-  if (inView4) {
-    const now = Date.now();
-    if (now - lastTriggered.current > 2000) { // 2-second cooldown
-      animateCounter(counter45Ref, 45);
-      animateCounter(counter100Ref, 100);
-      lastTriggered.current = now;
+  useEffect(() => {
+    if (inView4) {
+      const now = Date.now();
+      if (now - lastTriggered.current > 2000) { // 2-second cooldown
+        animateCounter(counter45Ref, 45);
+        animateCounter(counter100Ref, 100);
+        lastTriggered.current = now;
+      }
     }
-  }
-}, [inView4]);
+  }, [inView4]);
 
 
   return (
@@ -320,8 +320,8 @@ useEffect(() => {
                     max-[440px]:h-[248px] max-[440px]:min-h-0 max-[440px]:py-[60px] max-[440px]:px-[20px] 
                     max-[440px]:gap-[20px]"> */}
 
-        {/* Desktop-only decorative elements (hidden on mobile) */}
-        {/* <img
+      {/* Desktop-only decorative elements (hidden on mobile) */}
+      {/* <img
           src={Star}
           alt=""
           className="absolute top-[70px] right-[80px] w-[39px] h-[30px] max-[440px]:hidden"
@@ -352,8 +352,8 @@ useEffect(() => {
           className="absolute bottom-[40px] right-[71.25px] w-[74px] h-[74px] max-[440px]:hidden"
         /> */}
 
-        {/* Mobile-only decorative elements (hidden on desktop) */}
-        {/* <img
+      {/* Mobile-only decorative elements (hidden on desktop) */}
+      {/* <img
           src={Star}
           alt=""
           className="hidden max-[440px]:block absolute top-[20px] right-[20px] w-[19px] h-[20px]"
@@ -384,15 +384,15 @@ useEffect(() => {
           className="hidden max-[440px]:block absolute bottom-[20px] right-[20px] w-[40px] h-[40px]"
         /> */}
 
-        {/* H1 - Title */}
-        {/* <h1 className="w-full max-w-[220px] text-[24px] font-black leading-[100%] text-center text-[#2a2a2a] mx-auto
+      {/* H1 - Title */}
+      {/* <h1 className="w-full max-w-[220px] text-[24px] font-black leading-[100%] text-center text-[#2a2a2a] mx-auto
                  max-[440px]:max-w-[300px] max-[440px]:text-[20px] max-[440px]:font-[700] 
                  max-[440px]:text-[#000000] font-inter max-[440px]:mt-[20px]">
           STACKLY AI
         </h1> */}
 
-        {/* H2 - Subtitle with icon */}
-        {/* <div className="w-full max-w-[979px] flex flex-col items-center">
+      {/* H2 - Subtitle with icon */}
+      {/* <div className="w-full max-w-[979px] flex flex-col items-center">
           <h2 className="w-full flex items-center justify-center gap-[10px] text-center
                max-[440px]:gap-[8px] max-[440px]:items-center">
             <img
@@ -407,8 +407,8 @@ useEffect(() => {
           </h2>
         </div> */}
 
-        {/* Paragraph */}
-        {/* <p className="w-full max-w-[839px] text-[24px] font-normal leading-[35px] text-center text-[#2A2A2A] mx-auto
+      {/* Paragraph */}
+      {/* <p className="w-full max-w-[839px] text-[24px] font-normal leading-[35px] text-center text-[#2A2A2A] mx-auto
                 max-[440px]:text-[14px] max-[440px]:leading-[140%] max-[440px]:px-[30px]">
           Experience rapid, photo-realistic designs powered by advanced AI—trusted by professionals and homeowners alike.
         </p> */}
@@ -417,144 +417,144 @@ useEffect(() => {
 
 
 
-{/* new figma disgine sec2 */}
-   <section className="w-full h-[857px] rotate-0 opacity-100 bg-[#000000] relative overflow-hidden">
-      {/* DotFrame image */}
-      <img
-        src={DotFrame}
-        alt="Dot Frame"
-        className="w-[800px] h-[163px] opacity-100 rotate-0 absolute top-[62px] left-[-367px]"
-      />
+      {/* new figma disgine sec2 */}
+      <section className="w-full h-[857px] rotate-0 opacity-100 bg-[#000000] relative overflow-hidden">
+        {/* DotFrame image */}
+        <img
+          src={DotFrame}
+          alt="Dot Frame"
+          className="w-[800px] h-[163px] opacity-100 rotate-0 absolute top-[62px] left-[-367px]"
+        />
 
-      {/* Hoverable frames */}
-      <div className="relative w-full h-[800px] overflow-hidden">
-        {/* FIRST IMAGE DIV */}
-        <motion.div
-          ref={ref1}
-          initial={{ y: 100, opacity: 0 }}
-          animate={inView1 ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute top-[95px] left-[319px] w-[325px] h-[381px] overflow-hidden z-10"
-          onMouseEnter={handleMouseEnter1}
-          onMouseLeave={handleMouseLeave1}
-          onClick={handleClick1}
-        >
-          <div className="w-full h-full relative">
-            <img
-              src={images1[currentImage1]}
-              alt={`Frame ${currentImage1 + 1}`}
-              className="w-full h-full object-cover absolute top-0 left-0"
-              style={{ transition: "opacity 0.3s ease-in-out" }}
-            />
-          </div>
-        </motion.div>
-
-        {/* SECOND IMAGE DIV */}
-        <motion.div
-          ref={ref2}
-          initial={{ y: 100, opacity: 0 }}
-          animate={inView2 ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="absolute top-[350px] left-[105px] w-[325px] h-[381px] overflow-hidden z-10"
-          onMouseEnter={handleMouseEnter2}
-          onMouseLeave={handleMouseLeave2}
-          onClick={handleClick2}
-        >
-          <div className="w-full h-full relative">
-            <img
-              src={images2[currentImage2]}
-              alt={`Frame ${currentImage2 + 1}`}
-              className="w-full h-full object-cover absolute top-0 left-0"
-              style={{ transition: "opacity 0.3s ease-in-out" }}
-            />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Text container */}
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={inView1 ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        className="absolute top-[158px] left-[752px] w-[488px] h-[152px] flex flex-col gap-[12px] opacity-100"
-      >
-        <div className="w-[262px] h-[22px]">
-          <p className="text-white font-[400] text-[18px] leading-[100%] poppins-font">
-            STACKLY AI
-          </p>
-        </div>
-        <div className="w-[488px] h-[118px]">
-          <p className="text-white font-[400] text-[52px] leading-[140%] lancelot-text -mt-[14px]">
-            Design Your Dream Space Effortlessly
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Description box */}
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={inView2 ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="w-[616px] h-[176px] absolute top-[440px] right-[40px] flex flex-col gap-[6px]"
-      >
-        <div className="w-full h-[45px]">
-          <p className="text-white text-[32px] font-[400] leading-[140%] poppins-font">
-            Minimal Style
-          </p>
-        </div>
-        <div className="w-[616px] h-[125px]">
-          <p className="text-white text-[18px] font-[400] leading-[140%] lora-text">
-            Step into a space where less truly becomes more. Our AI blends clean lines,
-            soft tones, and thoughtful spacing to create interiors that feel light, breathable,
-            and beautifully uncluttered. <br />
-            Designed to inspire calm, focus, and modern sophistication without lifting a finger.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Icons */}
-      <motion.img
-        initial={{ opacity: 0 }}
-        animate={inView1 ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.8 }}
-        src={Group}
-        alt="Group 28"
-        className="absolute w-[26.99px] h-[26.99px] top-[31px] left-[1300px] rotate-0 border-[1.9px] border-solid border-black"
-      />
-
-      <motion.img
-        initial={{ opacity: 0 }}
-        animate={inView2 ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 1.0 }}
-        src={Group}
-        alt="Group 28"
-        className="absolute w-[55.01px] h-[55.01px] top-[810px] left-[1297px] rotate-0 border-[1.9px] border-black"
-      />
-
-      {/* Explore more button */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={inView2 ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 1.2 }}
-      >
-        <Link to="/sign-in">
-          <div className="absolute w-[280px] h-[50px] top-[685px] left-[1041px] flex items-center px-[6px] group">
-            <div className="w-[217px] h-[34px] flex items-center justify-center">
-              <p className="text-white text-[24px] font-[400] leading-[140%] text-center font-[Lora] transition-all duration-300 group-hover:text-opacity-80">
-                Explore more
-              </p>
-            </div>
-            <div className="w-[50px] h-[50px] ml-[-15px] rotate-[-180deg] rounded-[30px] bg-white/10 relative flex items-center justify-center transition-all duration-300 group-hover:bg-white/20">
+        {/* Hoverable frames */}
+        <div className="relative w-full h-[800px] overflow-hidden">
+          {/* FIRST IMAGE DIV */}
+          <motion.div
+            ref={ref1}
+            initial={{ y: 100, opacity: 0 }}
+            animate={inView1 ? { y: 0, opacity: 1 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute top-[95px] left-[319px] w-[325px] h-[381px] overflow-hidden z-10"
+            onMouseEnter={handleMouseEnter1}
+            onMouseLeave={handleMouseLeave1}
+            onClick={handleClick1}
+          >
+            <div className="w-full h-full relative">
               <img
-                src={vector}
-                alt="icon"
-                className="w-[22.5px] h-[17.5px] rotate-[-180deg] transition-all duration-300 group-hover:opacity-80 group-hover:brightness-0 group-hover:invert"
+                src={images1[currentImage1]}
+                alt={`Frame ${currentImage1 + 1}`}
+                className="w-full h-full object-cover absolute top-0 left-0"
+                style={{ transition: "opacity 0.3s ease-in-out" }}
               />
             </div>
+          </motion.div>
+
+          {/* SECOND IMAGE DIV */}
+          <motion.div
+            ref={ref2}
+            initial={{ y: 100, opacity: 0 }}
+            animate={inView2 ? { y: 0, opacity: 1 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="absolute top-[350px] left-[105px] w-[325px] h-[381px] overflow-hidden z-10"
+            onMouseEnter={handleMouseEnter2}
+            onMouseLeave={handleMouseLeave2}
+            onClick={handleClick2}
+          >
+            <div className="w-full h-full relative">
+              <img
+                src={images2[currentImage2]}
+                alt={`Frame ${currentImage2 + 1}`}
+                className="w-full h-full object-cover absolute top-0 left-0"
+                style={{ transition: "opacity 0.3s ease-in-out" }}
+              />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Text container */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={inView1 ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="absolute top-[158px] left-[752px] w-[488px] h-[152px] flex flex-col gap-[12px] opacity-100"
+        >
+          <div className="w-[262px] h-[22px]">
+            <p className="text-white font-[400] text-[18px] leading-[100%] poppins-font">
+              STACKLY AI
+            </p>
           </div>
-        </Link>
-      </motion.div>
-    </section>
+          <div className="w-[488px] h-[118px]">
+            <p className="text-white font-[400] text-[52px] leading-[140%] lancelot-text -mt-[14px]">
+              Design Your Dream Space Effortlessly
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Description box */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={inView2 ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="w-[616px] h-[176px] absolute top-[440px] right-[40px] flex flex-col gap-[6px]"
+        >
+          <div className="w-full h-[45px]">
+            <p className="text-white text-[32px] font-[400] leading-[140%] poppins-font">
+              Minimal Style
+            </p>
+          </div>
+          <div className="w-[616px] h-[125px]">
+            <p className="text-white text-[18px] font-[400] leading-[140%] lora-text">
+              Step into a space where less truly becomes more. Our AI blends clean lines,
+              soft tones, and thoughtful spacing to create interiors that feel light, breathable,
+              and beautifully uncluttered. <br />
+              Designed to inspire calm, focus, and modern sophistication without lifting a finger.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Icons */}
+        <motion.img
+          initial={{ opacity: 0 }}
+          animate={inView1 ? { opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          src={Group}
+          alt="Group 28"
+          className="absolute w-[26.99px] h-[26.99px] top-[31px] left-[1300px] rotate-0 border-[1.9px] border-solid border-black"
+        />
+
+        <motion.img
+          initial={{ opacity: 0 }}
+          animate={inView2 ? { opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 1.0 }}
+          src={Group}
+          alt="Group 28"
+          className="absolute w-[55.01px] h-[55.01px] top-[810px] left-[1297px] rotate-0 border-[1.9px] border-black"
+        />
+
+        {/* Explore more button */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={inView2 ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 1.2 }}
+        >
+          <Link to="/sign-in">
+            <div className="absolute w-[280px] h-[50px] top-[685px] left-[1041px] flex items-center px-[6px] group">
+              <div className="w-[217px] h-[34px] flex items-center justify-center">
+                <p className="text-white text-[24px] font-[400] leading-[140%] text-center font-[Lora] transition-all duration-300 group-hover:text-opacity-80">
+                  Explore more
+                </p>
+              </div>
+              <div className="w-[50px] h-[50px] ml-[-15px] rotate-[-180deg] rounded-[30px] bg-white/10 relative flex items-center justify-center transition-all duration-300 group-hover:bg-white/20">
+                <img
+                  src={vector}
+                  alt="icon"
+                  className="w-[22.5px] h-[17.5px] rotate-[-180deg] transition-all duration-300 group-hover:opacity-80 group-hover:brightness-0 group-hover:invert"
+                />
+              </div>
+            </div>
+          </Link>
+        </motion.div>
+      </section>
 
 
 
@@ -563,11 +563,11 @@ useEffect(() => {
 
       {/* section 3 */}
       {/*  full section is hidden */}
-     <section 
-  className="hidden w-full min-h-[900px] max-[440px]:min-h-[634px]"
-  
-  ref={sectionRef}
->
+      <section
+        className="hidden w-full min-h-[900px] max-[440px]:min-h-[634px]"
+
+        ref={sectionRef}
+      >
         <div
           className="w-full min-h-[900px] max-[440px]:min-h-[634px] bg-cover bg-center bg-no-repeat bg-blend-overlay pb-0
     max-[440px]:flex max-[440px]:flex-col
@@ -692,7 +692,7 @@ useEffect(() => {
         </div>
       </section>
 
-    
+
 
       {/* Section 4 */}
 
@@ -790,7 +790,7 @@ useEffect(() => {
         </div>
       </section> */}
 
-      
+
 
 
       {/* <GalleryHover
@@ -805,7 +805,7 @@ useEffect(() => {
         sec5Frame8={sec5Frame8}
       /> */}
       {/* section 6 */}
-     {/* <section
+      {/* <section
   className="w-full h-[477px] bg-[#021C1D] px-4 py-16 flex justify-center items-center 
              max-[440px]:w-[440px] 
              max-[440px]:h-[280px] 
@@ -986,63 +986,63 @@ useEffect(() => {
       </section> */}
 
 
-     
+
 
       <StepsHome />
 
       {/* Section 7 */}
 
       <BasicForm />
-      
+
       {/* new figma section6 */}
-  <section className="w-full h-[713px] opacity-100 relative overflow-hidden">
-  <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-  >
-    <source src={BgVideo2} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+      <section className="w-full h-[713px] opacity-100 relative overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        >
+          <source src={BgVideo2} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
         <div
           className="absolute w-[1277px] h-[481px] top-[135px] left-[96px] opacity-100 flex gap-[46px]"
           style={{ transform: "rotate(0deg)" }}
         >
-        
-        {/* left div */}
-        <div
-  className="w-[936px] h-[481px] flex flex-col justify-between opacity-100"
-  style={{ transform: "rotate(0deg)" }}
->
-  {/* Top Section */}
-  <div className="w-[936px] h-[232px] flex flex-col gap-[42px] opacity-100">
-    {/* Heading */}
-    <div className="w-[936px] h-[82px] flex items-center">
-      <h2
-        className="w-[599px] h-[82px] text-[32px] leading-[100%] font-normal text-white"
-        style={{ fontFamily: 'Lora' }}
-      >
-        Elevate your home with artfully crafted, AI-enhanced design.
-      </h2>
-    </div>
 
-    {/* Paragraph */}
-    <p
-      className="w-[830px] h-[108px] text-[18px] leading-[150%] font-normal text-white"
-      style={{ fontFamily: 'Poppins' }}
-    >
-      Experience interior design that speaks for itself. Our tailored AI-powered solutions have
-      consistently delighted clients around the world bringing unique styles, functional layouts,
-      and beautiful results to every space. From modern minimalism to timeless elegance, we deliver
-      designs that truly feel like home.
-    </p>
-  </div>
+          {/* left div */}
+          <div
+            className="w-[936px] h-[481px] flex flex-col justify-between opacity-100"
+            style={{ transform: "rotate(0deg)" }}
+          >
+            {/* Top Section */}
+            <div className="w-[936px] h-[232px] flex flex-col gap-[42px] opacity-100">
+              {/* Heading */}
+              <div className="w-[936px] h-[82px] flex items-center">
+                <h2
+                  className="w-[599px] h-[82px] text-[32px] leading-[100%] font-normal text-white"
+                  style={{ fontFamily: 'Lora' }}
+                >
+                  Elevate your home with artfully crafted, AI-enhanced design.
+                </h2>
+              </div>
 
-  {/* Bottom Section */}
-  <div className="relative w-[424px] h-[199px] rounded-[20px]" style={{ background: "#8A38F514" }}>
+              {/* Paragraph */}
+              <p
+                className="w-[830px] h-[108px] text-[18px] leading-[150%] font-normal text-white"
+                style={{ fontFamily: 'Poppins' }}
+              >
+                Experience interior design that speaks for itself. Our tailored AI-powered solutions have
+                consistently delighted clients around the world bringing unique styles, functional layouts,
+                and beautiful results to every space. From modern minimalism to timeless elegance, we deliver
+                designs that truly feel like home.
+              </p>
+            </div>
+
+            {/* Bottom Section */}
+            <div className="relative w-[424px] h-[199px] rounded-[20px]" style={{ background: "#8A38F514" }}>
               {/* Gradient border overlay */}
               <div
                 className="absolute inset-0 rounded-[20px] pointer-events-none"
@@ -1061,8 +1061,8 @@ useEffect(() => {
               <div
                 className="w-[412px] h-[186px] rounded-[20px] flex flex-col gap-[18px] mt-[7px] ml-[7px] pt-[24px] pr-[16px] pb-[24px] pl-[20px]"
                 style={{
-  backgroundColor: "#2E0854CC" // CC ≈ 80% opacity
-}}
+                  backgroundColor: "#2E0854CC" // CC ≈ 80% opacity
+                }}
               >
                 <h3
                   className="w-[376px] h-[24px] text-white text-[20px] font-medium leading-[120%]"
@@ -1108,7 +1108,7 @@ useEffect(() => {
             </div>
           </div>
 
-         {/* right div */}
+          {/* right div */}
           <div
             ref={ref4}
             className="w-full h-[481px] opacity-100 flex flex-col gap-[105px]"
@@ -1531,7 +1531,7 @@ useEffect(() => {
         </div>
       </section> */}
 
-{/* <section
+      {/* <section
   className="w-full max-w-[1440px] h-[867px] flex flex-col justify-center items-center gap-[18px] px-6 overflow-hidden mx-auto
     max-[440px]:w-[440px] max-[440px]:h-auto max-[440px]:min-h-[521px]
     max-[440px]:pt-[20px] max-[440px]:pr-[20px] max-[440px]:pb-[40px] max-[440px]:pl-[20px] max-[440px]:gap-[18px]"
@@ -1604,7 +1604,7 @@ useEffect(() => {
   </div>
 </section> */}
 
-{/* <section
+      {/* <section
   className="w-full max-w-[1440px] h-[867px] flex flex-col justify-center items-center gap-[18px] px-6 overflow-hidden mx-auto
     max-[440px]:w-full max-[440px]:h-auto max-[440px]:min-h-[521px]
     max-[440px]:pt-[20px] max-[440px]:px-[20px] max-[440px]:pb-[40px] max-[440px]:gap-[18px]"
@@ -1920,10 +1920,10 @@ useEffect(() => {
             </div> */}
 
 
-            {/* MOBILE < */}
+      {/* MOBILE < */}
 
 
-{/*         
+      {/*         
             <div
               className="hidden max-[440px]:flex flex-col items-center w-full px-4 pb-8 max-[440px]:-mt-10"
               style={{
@@ -2025,82 +2025,82 @@ useEffect(() => {
         </div>
       </section> */}
 
-      
-      
+
+
 
       {/* {section faq} */}
 
       {/* {section-15} */}
 
       <FAQ faqs={faqs} />
-<section
-  className="relative w-full max-w-full h-[316px] opacity-100 mx-auto bg-cover bg-center"
-  style={{ backgroundImage: `url(${Bfooter})` }}
->
-<div className="absolute top-[63px] left-1/2 transform -translate-x-1/2 w-[737px] h-[190px] flex flex-col items-center gap-[24px] opacity-100">
+      <section
+        className="relative w-full max-w-full h-[316px] opacity-100 mx-auto bg-cover bg-center"
+        style={{ backgroundImage: `url(${Bfooter})` }}
+      >
+        <div className="absolute top-[63px] left-1/2 transform -translate-x-1/2 w-[737px] h-[190px] flex flex-col items-center gap-[24px] opacity-100">
 
-    {/* Heading Text */}
-    <div
-      className="w-[484px] h-[45px] text-center text-white text-[32px] leading-[140%] font-[500] whitespace-nowrap"
-      style={{ fontFamily: 'Poppins' }}
-    >
-      Sign Up Quickly! Get
-      <span className="bg-gradient-to-r from-[#C22CA2] to-[#8A38F5] font-bold text-transparent bg-clip-text"> 25%</span> Offer
+          {/* Heading Text */}
+          <div
+            className="w-[484px] h-[45px] text-center text-white text-[32px] leading-[140%] font-[500] whitespace-nowrap"
+            style={{ fontFamily: 'Poppins' }}
+          >
+            Sign Up Quickly! Get
+            <span className="bg-gradient-to-r from-[#C22CA2] to-[#8A38F5] font-bold text-transparent bg-clip-text"> 25%</span> Offer
+          </div>
+          {/* Combined Info Row */}
+          <div className="flex items-center justify-center gap-[30px] opacity-100">
+            {/* 30 Free Outputs */}
+            <div className="flex items-center gap-[8px]">
+              <div className="w-[8px] h-[8px] rounded-full bg-[#C22CA2]"></div>
+              <div
+                className="text-white text-[18px] leading-[140%] font-[500]"
+                style={{ fontFamily: 'Inter' }}
+              >
+                30 free outputs
+              </div>
+            </div>
+
+            {/* No Credit Card Required */}
+            <div className="flex items-center gap-[8px]">
+              <div className="w-[8px] h-[8px] rounded-full bg-[#C22CA2]"></div>
+              <div
+                className="text-white text-[18px] leading-[140%] font-[500]"
+                style={{ fontFamily: 'Inter' }}
+              >
+                No credit card required
+              </div>
+            </div>
+          </div>
+
+          {/* Button */}
+
+          <Link to="/sign-in">
+            <div
+              className="w-[207px] h-[44px] flex items-center justify-center gap-[10px] px-[30px] py-[10px] rounded-[30px] border border-white"
+              style={{
+                background:
+                  "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)",
+                opacity: 1,
+              }}
+            >
+              <span
+                className="text-white text-[16px] leading-[100%] font-[500]"
+                style={{ fontFamily: "Inter" }}
+              >
+                Start Free Trial
+              </span>
+              <div className="w-[24px] h-[24px] opacity-100">
+                <img src={Frame} alt="icon" className="w-full h-full" />
+              </div>
+            </div>
+          </Link>
+
+        </div>
+      </section>
+
+
+
+
     </div>
-{/* Combined Info Row */}
-<div className="flex items-center justify-center gap-[30px] opacity-100">
-  {/* 30 Free Outputs */}
-  <div className="flex items-center gap-[8px]">
-    <div className="w-[8px] h-[8px] rounded-full bg-[#C22CA2]"></div>
-    <div
-      className="text-white text-[18px] leading-[140%] font-[500]"
-      style={{ fontFamily: 'Inter' }}
-    >
-      30 free outputs
-    </div>
-  </div>
-
-  {/* No Credit Card Required */}
-  <div className="flex items-center gap-[8px]">
-    <div className="w-[8px] h-[8px] rounded-full bg-[#C22CA2]"></div>
-    <div
-      className="text-white text-[18px] leading-[140%] font-[500]"
-      style={{ fontFamily: 'Inter' }}
-    >
-      No credit card required
-    </div>
-  </div>
-</div>
-
-    {/* Button */}
-  
-   <Link to="/sign-in">
-  <div
-    className="w-[207px] h-[44px] flex items-center justify-center gap-[10px] px-[30px] py-[10px] rounded-[30px] border border-white"
-    style={{
-      background:
-        "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)",
-      opacity: 1,
-    }}
-  >
-    <span
-      className="text-white text-[16px] leading-[100%] font-[500]"
-      style={{ fontFamily: "Inter" }}
-    >
-      Start Free Trial
-    </span>
-    <div className="w-[24px] h-[24px] opacity-100">
-      <img src={Frame} alt="icon" className="w-full h-full" />
-    </div>
-  </div>
-</Link>
-
-  </div>
-</section>
-
-
-
-
-</div>
   );
 }
