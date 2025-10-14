@@ -1,9 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
-import Tick from "../../assets/pricing-pg/tick.png";
-import Tick1 from "../../assets/pricing-pg/tick1.png";
 import Logo from "../../assets/Logo1.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import Confirmation from "../../assets/pricing-pg/Confirmation.png";
+import Star3 from "../../assets/pricing-pg/Star3.png";
+import Download from "../../assets/pricing-pg/download.png";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function AfterPaymentProcessing() {
@@ -39,21 +39,12 @@ export default function AfterPaymentProcessing() {
         .then(() => {
           if (!isMounted) return;
           setStatus("Subscription updated successfully!");
-
-          // ✅ Clear billing info from localStorage on success
-          localStorage.removeItem("billing_email");
-          localStorage.removeItem("billing_name");
-
-          setTimeout(() => navigate("/AfterPayment"), 2000);
+          // setTimeout(() => navigate("/AfterPayment"), 2000);
         })
         .catch((err) => {
           if (!isMounted) return;
           console.error(err);
           setStatus("Payment processing failed: " + err.message);
-
-          // ✅ Clear billing info from localStorage on failure too
-          localStorage.removeItem("billing_email");
-          localStorage.removeItem("billing_name");
         })
         .finally(() => {
           if (isMounted) setLoading(false);
@@ -70,149 +61,124 @@ export default function AfterPaymentProcessing() {
   }, [sessionId, navigate]);
 
   return (
-    <div>
-      <br />
-      <div
-        className="bg-[black] w-full min-h-[900px] flex justify-center items-center bg-center bg-no-repeat bg-cover -mt-[82px] pt-[82px] overflow-hidden"
+    <section className="w-full min-h-screen bg-black flex items-center justify-center px-4 sm:px-8 relative">
+      {/* Custom Animation Style */}
+      <style>
+        {`
+          @keyframes zoomIn {
+            0% {
+              transform: scale(0.5);
+              opacity: 0;
+            }
+            100% {
+              transform: scale(1);
+              opacity: 1;
+            }
+          }
+          .animate-zoom-in {
+            animation: zoomIn 0.8s ease-out forwards;
+          }
+        `}
+      </style>
 
-      >
-        <div className="w-[1280px] min-h-[720px] rounded-[16px] border-[1px] border-solid border-[#FFFFFF33] drop-shadow-[0_0_12px_0] shadow-[#E3EBFB80] bg-blur-[100px] blur-[100px] backdrop-blur-[20px] flex flex-col justify-start items-start px-[50px] py-[30px] mt-2 "
-          style={{
-            background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.2) 15.32%, rgba(194, 44, 162, 0.2) 99.87%)"
-          }}
-        >
-          <div className="w-full min-h-[50px] flex justify-start"></div>
+      {/* Main Container */}
+      <div className="w-full max-w-[829px] h-auto flex flex-col items-center justify-center py-8 sm:py-12 md:py-16 -mt-6">
+        
+        {/* Top Section: Image + Text */}
+        <div className="w-full flex flex-col items-center justify-center">
+          
+          {/* Image with Zoom-In Animation */}
+          <div className="w-[272px] h-[204px] mb-6">
+            <img 
+              src={Confirmation} 
+              alt="Confirmation" 
+              className="w-full h-full object-cover rounded-[8px] animate-zoom-in" 
+            />
+          </div>
 
-          <div className="w-[1160px] h-[636px] flex flex-col justify-start items-start gap-[16px]">
-           <div className="w-full min-h-[76px] flex justify-center  ml-[40px]">
-              <div className="w-[822px] h-[76px] flex justify-start items-center">
-                <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px] ">
-                  {/* Circle with transparent fill and no border */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 border-[1px] border-solid border-[#FFFFFF33] rounded-full"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="none"
-                  >
-                    <circle cx="12" cy="12" r="12" fill="transparent" />
-                    <path
-                      d="M8 12l3 3 5-5"
-                      stroke="#C22CA2"  // tick color
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-
-
-                  <div className="font-semibold text-[16px] leading-[56%] text-white">
-                    Billing Info
-                  </div>
-                </div>
-                <div
-                  className="w-[226px] h-[4px] rounded-[5px]"
-                  style={{
-                    background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)"
-                  }}
-                ></div>
-                <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-                  {/* Circle with Tick SVG */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 border-[1px] border-solid border-[#8A38F5] rounded-full"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="none"
-                  >
-                    <circle cx="12" cy="12" r="12" fill="transparent" />
-                    <path
-                      d="M8 12l3 3 5-5"
-                      stroke="#C22CA2"  // tick color
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-
-                  <div className="w-[156px] ml-[30px] font-semibold text-[16px] leading-[200%] text-[#8A38F5]">
-                    Payment Processing
-                  </div>
-                </div>
-
-
-                 <div
-                  className="w-[226px] h-[4px] rounded-[5px]"
-                  style={{
-                    background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)"
-                  }}
-                ></div>
-
-                <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-                  {/* Circle with Tick SVG */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 border-[1px] border-solid border-[#FFFFFF33] rounded-full"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="none"
-                  >
-                    <circle cx="12" cy="12" r="12" fill="transparent" />
-                    <path
-                      d="M8 12l3 3 5-5"
-                      stroke="#C22CA2"  // tick color
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-                  <div className="font-semibold text-[16px] leading-[56%] text-white">
-                    Success
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full min-h-[500px] flex flex-col justify-center items-center gap-[30px]">
-               <img src={Logo} alt="Logo" className="w-[170px] h-[30px] object-contain" />
-              <div className="w-[610px] text-center text-[20px] text-white">
-                {loading ? "Your transaction is being processed. Please wait." : status}
-              </div>
-
-              {loading && (
-                <div className="relative">
-                  <div
-                    className="animate-spin rounded-full"
-                    style={{
-                      width: '93px',
-                      height: '93px',
-                      border: '8px solid transparent',
-                      borderTop: '8px solid #f3f6f7ff',
-                      borderRadius: '50%',
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                    }}
-                  />
-                  <div
-                    style={{
-                      width: '93px',
-                      height: '93px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(93.68deg, #8A38F5 15.83%, #C22CA2 83.5%)',
-                      opacity: 0.2,
-                    }}
-                  />
-
-                </div>
-              )}
-            </div>
+          {/* Texts */}
+          <div className="w-full flex flex-col items-center justify-center gap-4 mb-8">
+            <p className="text-[#B5B5B5] font-poppins font-normal text-[20px] text-center">
+              {loading ? "Processing..." : "Amazing!"}
+            </p>
+            <p className="text-white font-poppins font-semibold text-[32px] text-center">
+              {loading ? "Payment Processing" : status.includes("success") ? "Congratulations!" : "Payment Status"}
+            </p>
+            <p className="text-white font-poppins font-normal text-[24px] text-center">
+              {loading ? "Your transaction is being processed. Please wait." : status}
+            </p>
           </div>
         </div>
+
+        {/* Loading Spinner */}
+        {loading && (
+          <div className="relative mb-8">
+            <div
+              className="animate-spin rounded-full"
+              style={{
+                width: '60px',
+                height: '60px',
+                border: '6px solid transparent',
+                borderTop: '6px solid #f3f6f7ff',
+                borderRadius: '50%',
+                position: 'absolute',
+                top: '0',
+                left: '0',
+              }}
+            />
+            <div
+              style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '50%',
+                background: 'linear-gradient(93.68deg, #8A38F5 15.83%, #C22CA2 83.5%)',
+                opacity: 0.2,
+              }}
+            />
+          </div>
+        )}
+
+        {/* Billing Info (Shown only after successful payment) */}
+        {!loading && status.includes("success") && (
+          <div className="w-full max-w-[311px] flex flex-col items-center justify-center gap-3 mb-8">
+            <p className="text-[#B5B5B5] font-poppins font-normal text-[18px] text-center">
+              Bill Number: 124422829
+            </p>
+            <p className="text-[#B5B5B5] font-poppins font-normal text-[18px] text-center">
+              Payment Date: 13 October 2025
+            </p>
+            <p className="text-[#B5B5B5] font-poppins font-normal text-[18px] text-center">
+              Amount Paid: $29.00
+            </p>
+          </div>
+        )}
+
+        {/* Buttons (Shown only after successful payment) */}
+        {!loading && status.includes("success") && (
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-[600px]">
+            {/* Explore Now Button */}
+            <Link to="/AfterHome">
+              <button className="w-full sm:w-[283px] h-12 rounded-[30px] border border-[#C22CA299] flex items-center justify-center gap-2 px-7 py-2.5 bg-gradient-to-r from-[#8A38F580] to-[#C22CA280] hover:opacity-90 transition-opacity">
+                <span className="text-white font-poppins text-[16px]">Explore now</span>
+                <img src={Star3} alt="Star" className="w-6 h-6" />
+              </button>
+            </Link>
+
+            {/* Download Invoice Button */}
+            <button className="w-full sm:w-[283px] h-12 rounded-[30px] border border-[#8A38F5] flex items-center justify-center gap-2 px-7 py-2.5 bg-[#8A38F580] hover:opacity-90 transition-opacity">
+              <span className="text-white font-poppins text-[16px]">Download Invoice</span>
+              <img src={Download} alt="Download" className="w-6 h-6" />
+            </button>
+          </div>
+        )}
       </div>
-    </div>
+
+      {/* Support Text */}
+      <div className="absolute bottom-1 w-full px-4 sm:px-0 sm:bottom-2 sm:right-8 sm:w-auto sm:left-auto flex justify-center sm:justify-end">
+        <p className="text-[#B5B5B5] font-poppins font-normal text-[14px] text-center sm:text-right">
+          For Support, Contact support@gmail.com
+        </p>
+      </div>
+    </section>
   );
 }

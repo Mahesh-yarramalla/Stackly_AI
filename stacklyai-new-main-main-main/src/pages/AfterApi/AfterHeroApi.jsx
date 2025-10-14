@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import apiBackground from "../../assets/api/back.png";
 import AfterKeys from "./AfterKeys";
 import AfterApiIntegrate from "./AfterApiIntegrate";
@@ -23,13 +22,8 @@ import Group from "../../assets/afterHome/GroupApi.png";
 import card from "../../assets/afterHome/ApiCard.png";
 import Group2 from "../../assets/afterHome/Group2.png";
 import ApiVector from "../../assets/afterHome/ApiVector.png";
-import { toast } from "react-toastify";
-
 
 export default function AfterHeroApi() {
-  const [loading, setLoading] = useState(false);
-  const location = useLocation();
- 
   const faqs = [
     {
       question: "How do I get started with StacklyAI APIs?",
@@ -76,58 +70,47 @@ export default function AfterHeroApi() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
 
-  try {
-    // ✅ Validation: check if any field in formData is empty
-    const isEmpty = Object.values(formData).some((val) => !val.trim());
-    if (isEmpty) {
-      toast.error("⚠️ Please fill in all the fields before submitting.");
-      setLoading(false);
-      return;
-    }
-
-    const userId = localStorage.getItem("userId"); // ✅ correct key
+    const userId = localStorage.getItem("userId"); // FIXED: use the correct key
     const token = localStorage.getItem("token");
 
     if (!userId || !token) {
-      toast.error("⚠️ Login required to submit the form.");
-      setLoading(false);
+      alert("Login required to submit the form.");
       return;
     }
 
-    const res = await axios.post(
-      "http://localhost:8000/submit-api-access",
-      {
-        user_id: parseInt(userId),
-        ...formData,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/submit-api-access",
+        {
+          user_id: parseInt(userId),
+          ...formData,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // add token if backend requires auth
+          },
+        }
+      );
 
-    toast.success(res.data.message || "✅ Request submitted successfully!");
-    setFormData({
-      full_name: "",
-      email: "",
-      contact_number: "",
-      company_name: "",
-      address: "",
-      message: "",
-    });
-  } catch (err) {
-    console.error("❌ Error submitting form:", err.response?.data || err.message);
-    toast.error(err.response?.data?.detail || "❌ Submission failed. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+      alert(res.data.message);
+      setFormData({
+        full_name: "",
+        email: "",
+        contact_number: "",
+        company_name: "",
+        address: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      alert("Submission failed. Please try again.");
+    }
 
-      useEffect(() => {
+    
+  };
+  useEffect(() => {
   if (!location.hash) return;
 
   const element = document.querySelector(location.hash);
@@ -142,316 +125,284 @@ export default function AfterHeroApi() {
     });
   }
 }, [location]);
-      
+  
   return (
     <div>
       {/* section1 */}
-<div
-  className="relative w-full h-[399px] flex flex-col items-center justify-center bg-cover bg-center -mt-[82px] pt-[82px] overflow-hidden"
-  style={{ backgroundImage: `url(${BG1})`, backgroundColor: "#0f0f0f" }}
->
-
- <div className="flex justify-center w-full">
- <div
-  className="w-[1213.24px] h-[261.51px] flex items-center justify-between gap-[107px]  opacity-100"
-  style={{ transform: "rotate(0deg)" }}
->
-  {/* Left Text Div */}
-<div className="w-[705px] h-[135px] opacity-100 flex items-center">
-  <p className="lora-text font-normal text-[32px] leading-[140%] tracking-[0%] text-white">
-    An <span className="font-semibold bg-gradient-to-b from-[#8A38F5] to-[#C22CA2] text-transparent bg-clip-text">API</span> key is your unique access code to authenticate and use 
-    <span className="font-semibold"> StacklyAI’s </span> rendering engine 
-    from your own app or system.
-  </p>
-</div>
-
-  {/* Right Image Div */}
-  <div className="flex items-center justify-center w-[350px] h-[200px]">
-    <img
-      src={Group}
-      alt="API Illustration"
-      className="w-full h-full object-contain"
-    />
-  </div>
-</div>
-</div>
-</div>
-      {/* section-2  */}
-
-      {/* //<div className="relative w-full h-[848px] flex items-center justify-center bg-black"> */}
       <div
-        className="relative w-full h-[384px] flex items-center justify-center bg-[#011213] bg-cover bg-center"
-        style={{ backgroundImage: `url(${BG2})` }}
+        className="relative w-full lg:w-full max-w-full sm:max-w-[100%] md:max-w-[100%] h-[300px] sm:h-[350px] md:h-[399px] flex flex-col items-center justify-center bg-cover bg-left -mt-[82px] pt-[82px] overflow-hidden"
+        style={{
+          backgroundImage: `url(${BG1})`,
+          backgroundColor: "#0f0f0f",
+          backgroundPosition: "left center", // keeps image fixed to the left
+          backgroundSize: "cover",
+        }}
       >
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center w-full px-4 sm:px-6 md:px-8">
           <div
-            className="w-[1097px] h-[264px] opacity-100 flex gap-[168px] items-center"
+            className="w-full max-w-[1213px] flex items-center justify-between gap-4 sm:gap-6 md:gap-[107px] opacity-100"
             style={{ transform: "rotate(0deg)" }}
           >
-            {/* Left Div */}
-            <div
-              className="w-[358px] h-[87px] opacity-100 flex flex-col justify-center items-start gap-2"
-              style={{ transform: "rotate(0deg)" }}
-            >
-              {/* Top Text Div */}
-              <div className="w-[358px] h-[33px] opacity-100">
-                <p className="font-[Lora] font-medium text-[26px] leading-[100%] text-white">
-                  Your Current <span className="text-[#8A38F5]">API</span> Access
-                </p>
-              </div>
-
-              {/* Bottom Text Div */}
-              <div className="w-[358px] h-[42px] opacity-100">
-                <p className="font-[Poppins] font-normal text-[14px] leading-[130%] text-white">
-                  Stay in control of your integration with clear access details and key usage limits.
-                </p>
-              </div>
+            {/* Left Text Div */}
+            <div className="flex-1 max-w-[60%] sm:max-w-[705px] h-auto flex items-center">
+              <p className="lora-text font-normal text-sm sm:text-lg md:text-[28px] lg:text-[32px] leading-[140%] text-white">
+                An{" "}
+                <span className="font-semibold bg-gradient-to-b from-[#8A38F5] to-[#C22CA2] text-transparent bg-clip-text">
+                  API
+                </span>{" "}
+                key is your unique access code to authenticate and use{" "}
+                <span className="font-semibold">StacklyAI’s</span> rendering engine from
+                your own app or system.
+              </p>
             </div>
 
-            {/* Right Div */}
-            <div
-              className="w-[571px] h-[264px] opacity-100 rounded-[20px] border border-solid border-white/50 bg-cover bg-center"
-              style={{ backgroundImage: `url(${card})`, transform: "rotate(0deg)" }}
-            >
-              <div
-                className="w-[292px] h-[66px] absolute top-[32.49px] left-[25.5px] opacity-100 flex items-center gap-[2px]"
-                style={{ transform: "rotate(0deg)" }}
-              >
-                {/* profile user */}
-                <div className="flex justify-end items-start">
-                  <div
-                    className="w-[40px] h-[40px] opacity-100 rounded-full flex items-center justify-center -mt-8"
-                    style={{
-                      transform: "rotate(0deg)",
-                      background: "linear-gradient(90deg, #8A38F5 0%, #51218F 100%)"
-                    }}
-                  >
 
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6 text-white"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12 2a5 5 0 100 10 5 5 0 000-10zm-7 18a7 7 0 0114 0H5z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                </div>
-
-
-                {/* content div */}
-                <div
-                  className="w-[244px] h-[66px] opacity-100 flex flex-col justify-center rounded-[12px] px-3 gap-[12px]"
-                  style={{ transform: "rotate(0deg)" }}
-                >
-                  {/* Top text */}
-                  <div className="w-[244px] h-[30px]">
-                    <p className="font-[Lora] font-medium text-[28px] leading-[100%] text-white">
-                      Premium
-                    </p>
-                  </div>
-
-                  {/* Bottom text */}
-                  <div className="w-[244px] h-[24px] flex items-center">
-                    <p className="font-[Poppins] text-[16px] font-normal leading-[100%] text-white">
-                      Total assigned keys:{" "}
-                      <span className="font-medium text-[#8A38F5]">6</span> keys
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="w-[130px] h-[135px] absolute top-[98px] left-[413px] opacity-100 flex flex-col items-center gap-[16px]"
-                style={{ transform: "rotate(0deg)" }}
-              >
-                {/* content 1 */}
-                <div className="w-[130px] h-[62px] flex flex-col gap-[6px] opacity-100">
-
-                  {/* Top text */}
-                  <p
-                    className="w-[130px] h-[20px] text-right text-white font-[Lora] font-normal text-[16px] leading-[100%]"
-                  >
-                    API Keys Left
-                  </p>
-
-                  {/* Bottom text */}
-                  <p
-                    className="w-[130px] h-[36px] text-right font-[Poppins] font-normal text-[12px] leading-[100%] text-[#6D6D6D]"
-                  >
-                    Stay updated on your remaining balance.
-                  </p>
-                </div>
-
-                {/* content 2 */}
-                <div className="w-[78px] h-[57px] flex flex-col items-center justify-center gap-[4px] opacity-100">
-                  {/* Top text */}
-                  <p
-                    className="w-[78px] h-[29px] text-center font-poppins font-semibold text-[24px] leading-[100%]"
-                    style={{
-                      background:
-                        "linear-gradient(108.35deg, #8A38F5 35.6%, rgba(255, 255, 255, 0.8) 51.59%, #8A38F5 67.58%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      boxShadow: "0px 0px 2px 0px #FFFFFF1F",
-                    }}
-                  >
-                    14
-                  </p>
-
-                  {/* Bottom text */}
-                  <p className="w-[78px] h-[24px] text-center font-poppins font-normal text-[16px] leading-[100%] text-white">
-                    FOURTEEN
-                  </p>
-                </div>
-              </div>
-              <div className="absolute bottom-3 left-14">
-                <img
-                  src={Group2}
-                  alt="Group2"
-                  className="w-[150px] h-auto object-contain"
-                />
-              </div>
+            {/* Right Image Div */}
+            <div className="flex items-center justify-center w-[150px] sm:w-[250px] md:w-[350px] h-[100px] sm:h-[150px] md:h-[200px]">
+              <img
+                src={Group}
+                alt="API Illustration"
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
         </div>
       </div>
+      {/* section-2  */}
+
+      {/* //<div className="relative w-full h-[848px] flex items-center justify-center bg-black"> */}
+    <div
+      className="relative w-full h-[50vh] min-h-[300px] flex items-center justify-center bg-[#011213] bg-cover bg-center"
+      style={{ backgroundImage: `url(${BG2})` }}
+    >
+      <div className="w-full max-w-[1200px] px-4 flex justify-center">
+        <div
+          className="w-full max-w-[90%] flex flex-col md:flex-row gap-8 md:gap-[10vw] items-center"
+          style={{ transform: "rotate(0deg)" }}
+        >
+          {/* Left Div */}
+          <div className="w-full md:w-[40%] flex flex-col justify-center items-start gap-2">
+            {/* Top Text Div */}
+            <div className="w-full">
+              <p className="font-[Lora] font-medium text-[clamp(18px,5vw,24px)] leading-[100%] text-white">
+                Your Current <span className="text-[#8A38F5]">API</span> Access
+              </p>
+            </div>
+
+            {/* Bottom Text Div */}
+            <div className="w-full">
+              <p className="font-[Poppins] font-normal text-[clamp(12px,3vw,14px)] leading-[130%] text-white">
+                Stay in control of your integration with clear access details and key usage limits.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Div */}
+          <div
+            className="w-full md:w-[60%] min-h-[200px] h-[35vh] md:h-[25vh] opacity-100 rounded-[20px] border border-solid border-white/50 bg-cover bg-center"
+            style={{ backgroundImage: `url(${card})`, transform: "rotate(0deg)" }}
+          >
+            <div
+              className="w-[80%] md:w-[50%] h-[66px] absolute top-[10%] left-[5%] opacity-100 flex items-center gap-[2px]"
+              style={{ transform: "rotate(0deg)" }}
+            >
+              {/* Profile user */}
+              <div className="flex justify-end items-start">
+                <div
+                  className="w-[40px] h-[40px] opacity-100 rounded-full flex items-center justify-center -mt-8"
+                  style={{
+                    transform: "rotate(0deg)",
+                    background: "linear-gradient(90deg, #8A38F5 0%, #51218F 100%)"
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12 2a5 5 0 100 10 5 5 0 000-10zm-7 18a7 7 0 0114 0H5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Content div */}
+              <div
+                className="w-[70%] md:w-[60%] h-[66px] opacity-100 flex flex-col justify-center rounded-[12px] px-3 gap-[12px]"
+                style={{ transform: "rotate(0deg)" }}
+              >
+                {/* Top text */}
+                <div className="w-full h-[30px]">
+                  <p className="font-[Lora] font-medium text-[clamp(20px,5vw,26px)] leading-[100%] text-white">
+                    Premium
+                  </p>
+                </div>
+
+                {/* Bottom text */}
+                <div className="w-full h-[24px] flex items-center">
+                  <p className="font-[Poppins] text-[clamp(12px,3vw,14px)] font-normal leading-[100%] text-white">
+                    Total assigned keys:{" "}
+                    <span className="font-medium text-[#8A38F5]">6</span> keys
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="w-[40%] md:w-[30%] min-w-[100px] h-[135px] absolute top-[30%] md:top-[40%] right-[5%] opacity-100 flex flex-col items-center gap-[16px]"
+              style={{ transform: "rotate(0deg)" }}
+            >
+              {/* Content 1 */}
+              <div className="w-full flex flex-col gap-[6px] opacity-100">
+                {/* Top text */}
+                <p className="w-full text-right text-white font-[Lora] font-normal text-[clamp(12px,3vw,14px)] leading-[100%]">
+                  API Keys Left
+                </p>
+
+                {/* Bottom text */}
+                <p className="w-full text-right font-[Poppins] font-normal text-[clamp(10px,2.5vw,12px)] leading-[100%] text-[#6D6D6D]">
+                  Stay updated on your remaining balance.
+                </p>
+              </div>
+
+              {/* Content 2 */}
+              <div className="w-[80%] min-w-[60px] flex flex-col items-center justify-center gap-[4px] opacity-100">
+                {/* Top text */}
+                <p
+                  className="w-full text-center font-[Poppins] font-semibold text-[clamp(18px,5vw,22px)] leading-[100%]"
+                  style={{
+                    background: "linear-gradient(108.35deg, #8A38F5 35.6%, rgba(255, 255, 255, 0.8) 51.59%, #8A38F5 67.58%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    boxShadow: "0px 0px 2px 0px #FFFFFF1F",
+                  }}
+                >
+                  14
+                </p>
+
+                {/* Bottom text */}
+                <p className="w-full text-center font-[Poppins] font-normal text-[clamp(12px,3vw,14px)] leading-[100%] text-white">
+                  FOURTEEN
+                </p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-3 left-3 md:left-14">
+              <img
+                src={Group2}
+                alt="Group2"
+                className="w-[100px] md:w-[150px] h-auto object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
       <AfterPlan />
-<div id="afteruiplan"><AfterUiPlan /></div>
-      
+      <div id="afteruiplan"><AfterUiPlan /></div>
 
-        <div className="relative bg-black overflow-hidden w-full flex justify-center items-center py-28 px-4 min-h-screen mt-[-40px]">
-      {" "}
      
-      {/* Form section */}
-      <div className="relative z-10 w-[668px] flex flex-col items-center gap-[28px] text-white">
-    <div
-  className="w-[443px] h-[100px] opacity-100 flex flex-col items-center gap-[12px] mb-8"
-  style={{ transform: "rotate(0deg)" }}
->
-  <h2 className="w-f[443px] text-[36px] font-lancelot font-normal text-center whitespace-nowrap">
-    <span className="text-white">Ready to </span>
-    <span className="text-[#8A38F5]">Create Something Great?</span>
-  </h2>
+<div className="relative bg-black overflow-hidden w-full flex justify-center items-center py-20 px-4 sm:py-28 min-h-screen">
+  {/* Form section */}
+  <div className="relative z-10 w-full max-w-3xl flex flex-col items-center gap-7 text-white">
 
-  <p className="w-[403px] text-white text-center font-poppins text-[16px] font-normal">
-    We offer flexible API plans tailored to your needs. Let’s build the right setup—just for you.
-  </p>
+    {/* Heading */}
+    <div className="w-full flex flex-col items-center gap-3 mb-8 text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-lancelot">
+        <span className="text-white">Ready to </span>
+        <span className="text-[#8A38F5]">Create Something Great?</span>
+      </h2>
+      <p className="text-white text-sm sm:text-base md:text-lg font-poppins max-w-[90%] sm:max-w-[400px]">
+        We offer flexible API plans tailored to your needs. Let’s build the right setup—just for you.
+      </p>
+    </div>
+
+    {/* Form */}
+    <form className="w-full flex flex-col gap-4">
+
+      {/* First row: Name & Email */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <label className="block text-sm mb-1 text-white">Full Name*</label>
+          <input
+            type="text"
+            placeholder="John"
+            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+          />
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm mb-1 text-white">Email ID*</label>
+          <input
+            type="email"
+            placeholder="you@example.com"
+            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      {/* Second row: Company & Phone */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <label className="block text-sm mb-1 text-white">Company Name*</label>
+          <input
+            type="text"
+            placeholder="Paul"
+            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+          />
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm mb-1 text-white">Phone Number</label>
+          <input
+            type="tel"
+            placeholder="+91 99999 99999"
+            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      {/* Address */}
+      <div>
+        <label className="block text-sm mb-1 text-white">Address</label>
+        <textarea
+          placeholder="eg: St. Thomas lane.."
+          className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none "
+        />
+      </div>
+
+      {/* Message */}
+      <div>
+        <label className="block text-sm mb-1 text-white">Message</label>
+        <textarea
+          rows={4}
+          placeholder="Type something..."
+          className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+        />
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full mt-2 py-3 rounded-full text-white font-semibold flex items-center justify-center gap-2 bg-[#8A38F520] border-[1px] border-solid border-[#FFFFFF33]"
+      >
+        <span>Let’s Connect</span>
+        <div className="w-6 h-6">
+          <img src={ApiVector} alt="icon" className="w-full h-full object-contain" />
+        </div>
+      </button>
+    </form>
+
+    {/* Footer Note */}
+    <p className="text-white text-center text-sm sm:text-base mt-6 max-w-[90%] sm:max-w-[400px]">
+      *Questions, comments, or suggestions? Simply fill in the form and we'll be in touch shortly.
+    </p>
+  </div>
 </div>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
-  <div className="flex gap-4">
-    <div className="flex-1">
-      <label className="block text-sm mb-1 text-white">Full name*</label>
-      <input
-        type="text"
-        name="full_name"                     // ✅ add name
-        value={formData.full_name}           // ✅ bind value
-        onChange={handleChange}              // ✅ update state
-        placeholder="John"
-        className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
-      />
-    </div>
-    <div className="flex-1">
-      <label className="block text-sm mb-1 text-white">Email ID*</label>
-      <input
-        type="email"
-        name="email"                         // ✅ add name
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="you@example.com"
-        className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
-      />
-    </div>
-  </div>
-
-  <div className="flex gap-4">
-    <div className="flex-1">
-      <label className="block text-sm mb-1 text-white">Company Name*</label>
-      <input
-        type="text"
-        name="company_name"                  // ✅ add name
-        value={formData.company_name}
-        onChange={handleChange}
-        placeholder="Paul"
-        className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
-      />
-    </div>
-    <div className="flex-1">
-      <label className="block text-sm mb-1 text-white">Phone Number</label>
-      <input
-        type="tel"
-        name="contact_number"                // ✅ add name
-        value={formData.contact_number}
-        onChange={handleChange}
-        placeholder="+91 99999 99999"
-        className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
-      />
-    </div>
-  </div>
-
-  <div className="mt-4">
-    <label className="block text-sm mb-1 text-white">Address</label>
-    <textarea
-      name="address"                         // ✅ add name
-      value={formData.address}
-      onChange={handleChange}
-      placeholder="eg: St. thomas lane.."
-      className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none resize-none"
-      style={{ height: "48px" }}
-    />
-  </div>
-
-  <div>
-    <label className="block text-sm mb-1 text-white">Message</label>
-    <textarea
-      name="message"                         // ✅ add name
-      value={formData.message}
-      onChange={handleChange}
-      rows="4"
-      placeholder="Type something..."
-      className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
-    />
-  </div>
-
-  <button
-  type="submit"
-  disabled={loading}
-  className={`w-full mt-2 py-2 rounded-full font-semibold flex items-center justify-center gap-2 transition ${
-    loading ? "bg-gray-500 cursor-not-allowed" : "text-white"
-  }`}
-  style={{
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    borderRadius: "30px",
-    background: loading ? "rgba(138, 56, 245, 0.2)" : "rgba(138, 56, 245, 0.2)",
-  }}
->
-  {loading ? (
-    <>
-      <span>Sending…</span>
-      <div className="w-[20px] h-[20px] border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-    </>
-  ) : (
-    <>
-      <span>Let’s Connect</span>
-      <div className="w-[24px] h-[24px]">
-        <img src={ApiVector} alt="icon" className="w-full h-full object-contain" />
-      </div>
-    </>
-  )}
-</button>
-</form>
-        <p className="text-white text-center text-base font-normal mt-6">
-          *Questions, comments, or suggestions? Simply fill in the form and
-          we'll be in touch shortly.
-        </p>
-      </div>
-</div>
      
     </div>
   );

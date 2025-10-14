@@ -98,6 +98,8 @@ export default function Home() {
   const [currentImage2, setCurrentImage2] = useState(0);
   const [ref1, inView1] = useInView({ threshold: 0.1 });
   const [ref2, inView2] = useInView({ threshold: 0.1 });
+    const [showFull, setShowFull] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
 
 const faqs = [
@@ -298,7 +300,7 @@ const animateCounter = (ref, target) => {
 useEffect(() => {
   if (inView4) {
     const now = Date.now();
-    if (now - lastTriggered.current > 2000) { // 2-second cooldown
+    if (now - lastTriggered.current > 3000) { // 2-second cooldown
       animateCounter(counter45Ref, 45);
       animateCounter(counter100Ref, 100);
       lastTriggered.current = now;
@@ -307,695 +309,345 @@ useEffect(() => {
 }, [inView4]);
 
 
+ // Detect screen width
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const fullText = `Experience interior design that speaks for itself. Our tailored AI-powered solutions have
+  consistently delighted clients around the world bringing unique styles, functional layouts,
+  and beautiful results to every space. From modern minimalism to timeless elegance, we deliver
+  designs that truly feel like home.`;
+
+  const shortText = `Experience interior design that speaks for itself. Our tailored AI-powered solutions have
+  consistently delighted clients around the world...`;
+
+
   return (
     <div>
       {/* banner  */}
 
       <HeroBanner />
 
-      {/* section 2 */}
-
-      {/* <section className="w-full max-w-[1440px] h-[453px] flex flex-col justify-center items-center gap-5 p-[30px] 
-                    bg-gradient-to-l from-[#00B0BA14] to-[#00B0BA00] relative
-                    max-[440px]:h-[248px] max-[440px]:min-h-0 max-[440px]:py-[60px] max-[440px]:px-[20px] 
-                    max-[440px]:gap-[20px]"> */}
-
-        {/* Desktop-only decorative elements (hidden on mobile) */}
-        {/* <img
-          src={Star}
-          alt=""
-          className="absolute top-[70px] right-[80px] w-[39px] h-[30px] max-[440px]:hidden"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="absolute top-[90px] right-[71.25px] w-[19.64px] h-[20.86px] max-[440px]:hidden"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="absolute bottom-[110px] left-[140px] w-[19.64px] h-[20.86px] max-[440px]:hidden"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="absolute bottom-[120px] left-[110.25px] w-[39px] h-[37px] max-[440px]:hidden"
-        />
-        <img
-          src={Reacts}
-          alt=""
-          className="absolute top-[50px] left-[40px] w-[74px] h-[74px] max-[440px]:hidden"
-        />
-        <img
-          src={Reacts}
-          alt=""
-          className="absolute bottom-[40px] right-[71.25px] w-[74px] h-[74px] max-[440px]:hidden"
-        /> */}
-
-        {/* Mobile-only decorative elements (hidden on desktop) */}
-        {/* <img
-          src={Star}
-          alt=""
-          className="hidden max-[440px]:block absolute top-[20px] right-[20px] w-[19px] h-[20px]"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="hidden max-[440px]:block absolute top-[33px] right-[35px] w-[10px] h-[10px]"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="hidden max-[440px]:block absolute bottom-[20px] left-[20px] w-[19px] h-[20px]"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="hidden max-[440px]:block absolute bottom-[18px] left-[35px] w-[10px] h-[10px]"
-        />
-        <img
-          src={Reacts}
-          alt=""
-          className="hidden max-[440px]:block absolute top-[20px] left-[20px] w-[40px] h-[40px]"
-        />
-        <img
-          src={Reacts}
-          alt=""
-          className="hidden max-[440px]:block absolute bottom-[20px] right-[20px] w-[40px] h-[40px]"
-        /> */}
-
-        {/* H1 - Title */}
-        {/* <h1 className="w-full max-w-[220px] text-[24px] font-black leading-[100%] text-center text-[#2a2a2a] mx-auto
-                 max-[440px]:max-w-[300px] max-[440px]:text-[20px] max-[440px]:font-[700] 
-                 max-[440px]:text-[#000000] font-inter max-[440px]:mt-[20px]">
-          STACKLY AI
-        </h1> */}
-
-        {/* H2 - Subtitle with icon */}
-        {/* <div className="w-full max-w-[979px] flex flex-col items-center">
-          <h2 className="w-full flex items-center justify-center gap-[10px] text-center
-               max-[440px]:gap-[8px] max-[440px]:items-center">
-            <img
-              src={Stars}
-              alt="stars"
-              className="w-[47px] h-[46px] max-[440px]:w-[22px] max-[440px]:h-[22px]"
-            />
-            <span className="text-[32px] font-bold leading-[100%] text-[#007B82]
-                  max-[440px]:text-[18px] max-[440px]:leading-[120%]">
-              Smarter. Faster. Built for Excellence
-            </span>
-          </h2>
-        </div> */}
-
-        {/* Paragraph */}
-        {/* <p className="w-full max-w-[839px] text-[24px] font-normal leading-[35px] text-center text-[#2A2A2A] mx-auto
-                max-[440px]:text-[14px] max-[440px]:leading-[140%] max-[440px]:px-[30px]">
-          Experience rapid, photo-realistic designs powered by advanced AI—trusted by professionals and homeowners alike.
-        </p> */}
-
-      {/* </section> */}
-
-
+  
 
 {/* new figma disgine sec2 */}
-   <section className="w-full h-[857px] rotate-0 opacity-100 bg-[#000000] relative overflow-hidden">
+  <section className="w-full h-[857px] rotate-0 opacity-100 bg-[#000000] relative overflow-hidden
+                    max-[1380px]:h-[720px]
+                    max-[1280px]:h-[680px]
+                    max-[1024px]:h-[600px]
+                    max-[768px]:h-[450px]
+                    max-[400px]:h-[350px]">
       {/* DotFrame image */}
-      <img
-        src={DotFrame}
-        alt="Dot Frame"
-        className="w-[800px] h-[163px] opacity-100 rotate-0 absolute top-[62px] left-[-367px]"
-      />
+<img
+  src={DotFrame}
+  alt="Dot Frame"
+  className="w-[800px] h-[163px] absolute top-[62px] left-[-367px]
+             max-[1380px]:w-[650px] max-[1380px]:h-[140px] max-[1380px]:top-[50px] max-[1380px]:left-[-300px]
+             max-[1280px]:w-[650px] max-[1280px]:h-[130px] max-[1280px]:top-[48px] max-[1280px]:left-[-250px]
+             max-[1024px]:w-[410px] max-[1024px]:h-[100px] max-[1024px]:top-[40px] max-[1024px]:left-[-150px]
+             max-[768px]:w-[280px] max-[768px]:h-[80px] max-[768px]:top-[30px] max-[768px]:left-[-100px]
+             max-[640px]:w-[200px] max-[640px]:h-[60px] max-[640px]:top-[20px] max-[640px]:left-[-60px]
+             max-[400px]:w-[150px] max-[400px]:h-[45px] max-[400px]:top-[15px] max-[400px]:left-[-40px]"
+/>
 
-      {/* Hoverable frames */}
-      <div className="relative w-full h-[800px] overflow-hidden">
-        {/* FIRST IMAGE DIV */}
-        <motion.div
-          ref={ref1}
-          initial={{ y: 100, opacity: 0 }}
-          animate={inView1 ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute top-[95px] left-[319px] w-[325px] h-[381px] overflow-hidden z-10"
-          onMouseEnter={handleMouseEnter1}
-          onMouseLeave={handleMouseLeave1}
-          onClick={handleClick1}
-        >
-          <div className="w-full h-full relative">
-            <img
-              src={images1[currentImage1]}
-              alt={`Frame ${currentImage1 + 1}`}
-              className="w-full h-full object-cover absolute top-0 left-0"
-              style={{ transition: "opacity 0.3s ease-in-out" }}
-            />
-          </div>
-        </motion.div>
 
-        {/* SECOND IMAGE DIV */}
-        <motion.div
-          ref={ref2}
-          initial={{ y: 100, opacity: 0 }}
-          animate={inView2 ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="absolute top-[350px] left-[105px] w-[325px] h-[381px] overflow-hidden z-10"
-          onMouseEnter={handleMouseEnter2}
-          onMouseLeave={handleMouseLeave2}
-          onClick={handleClick2}
-        >
-          <div className="w-full h-full relative">
-            <img
-              src={images2[currentImage2]}
-              alt={`Frame ${currentImage2 + 1}`}
-              className="w-full h-full object-cover absolute top-0 left-0"
-              style={{ transition: "opacity 0.3s ease-in-out" }}
-            />
-          </div>
-        </motion.div>
-      </div>
+
+
+    {/* Hoverable frames */}
+<div className="relative w-full h-[800px] overflow-hidden">
+  {/* FIRST IMAGE DIV */}
+<motion.div
+  ref={ref1}
+  initial={{ y: 100, opacity: 0 }}
+  animate={inView1 ? { y: 0, opacity: 1 } : {}}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  className="absolute top-[95px] left-[319px] w-[325px] h-[381px] z-10
+             max-[1380px]:top-[80px] max-[1380px]:left-[250px] max-[1380px]:w-[280px] max-[1380px]:h-[330px]
+             max-[1280px]:top-[75px] max-[1280px]:left-[200px] max-[1280px]:w-[260px] max-[1280px]:h-[310px]
+             max-[1024px]:top-[60px] max-[1024px]:left-[150px] max-[1024px]:w-[220px] max-[1024px]:h-[250px]
+             max-[768px]:top-[50px] max-[768px]:left-[100px] max-[768px]:w-[180px] max-[768px]:h-[200px]
+             max-[640px]:top-[40px] max-[640px]:left-[60px] max-[640px]:w-[130px] max-[640px]:h-[165px]
+             max-[400px]:top-[30px] max-[400px]:left-[40px] max-[400px]:w-[100px] max-[400px]:h-[110px]"
+  onMouseEnter={handleMouseEnter1}
+  onMouseLeave={handleMouseLeave1}
+  onClick={handleClick1}
+>
+  <img
+    src={images1[currentImage1]}
+    alt={`Frame ${currentImage1 + 1}`}
+    className="w-full h-full object-cover absolute top-0 left-0"
+    style={{ transition: "opacity 0.3s ease-in-out" }}
+  />
+</motion.div>
+
+  {/* SECOND IMAGE DIV */}
+<motion.div
+  ref={ref2}
+  initial={{ y: 100, opacity: 0 }}
+  animate={inView2 ? { y: 0, opacity: 1 } : {}}
+  transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+  className="absolute top-[350px] left-[105px] w-[325px] h-[381px] z-10
+             max-[1380px]:top-[300px] max-[1380px]:left-[80px] max-[1380px]:w-[280px] max-[1380px]:h-[330px]
+             max-[1280px]:top-[280px] max-[1280px]:left-[60px] max-[1280px]:w-[260px] max-[1280px]:h-[310px]
+             max-[1024px]:top-[260px] max-[1024px]:left-[40px] max-[1024px]:w-[220px] max-[1024px]:h-[250px]
+             max-[768px]:top-[200px] max-[768px]:left-[57px] max-[768px]:w-[180px] max-[768px]:h-[200px]
+             max-[640px]:top-[160px] max-[640px]:left-[30px] max-[640px]:w-[130px] max-[640px]:h-[165px]
+             max-[400px]:top-[100px] max-[400px]:left-[20px] max-[400px]:w-[100px] max-[400px]:h-[110px]"
+  onMouseEnter={handleMouseEnter2}
+  onMouseLeave={handleMouseLeave2}
+  onClick={handleClick2}
+>
+  <img
+    src={images2[currentImage2]}
+    alt={`Frame ${currentImage2 + 1}`}
+    className="w-full h-full object-cover absolute top-0 left-0"
+    style={{ transition: "opacity 0.3s ease-in-out" }}
+  />
+</motion.div>
+
+</div>
+
 
       {/* Text container */}
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={inView1 ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        className="absolute top-[158px] left-[752px] w-[488px] h-[152px] flex flex-col gap-[12px] opacity-100"
-      >
-        <div className="w-[262px] h-[22px]">
-          <p className="text-white font-[400] text-[18px] leading-[100%] poppins-font">
-            STACKLY AI
-          </p>
-        </div>
-        <div className="w-[488px] h-[118px]">
-          <p className="text-white font-[400] text-[52px] leading-[140%] lancelot-text -mt-[14px]">
-            Design Your Dream Space Effortlessly
-          </p>
-        </div>
-      </motion.div>
+<motion.div
+  initial={{ y: 50, opacity: 0 }}
+  animate={inView1 ? { y: 0, opacity: 1 } : {}}
+  transition={{ duration: 0.8, delay: 0.4 }}
+  className="absolute top-[158px] left-[752px] w-[488px] h-[152px] flex flex-col gap-[12px] opacity-100
+             max-[1380px]:top-[140px] max-[1380px]:left-[600px] max-[1380px]:w-[420px] max-[1380px]:gap-[10px]
+             max-[1280px]:top-[130px] max-[1280px]:left-[550px] max-[1280px]:w-[380px] max-[1280px]:gap-[8px]
+             max-[1024px]:top-[120px] max-[1024px]:left-[450px] max-[1024px]:w-[380px] max-[1024px]:gap-[6px]
+             max-[768px]:top-[100px] max-[768px]:left-[380px] max-[768px]:w-[260px] max-[768px]:gap-[4px]
+             max-[640px]:top-[80px] max-[640px]:left-[195px] max-[640px]:w-[200px] max-[640px]:gap-[2px]
+             max-[400px]:top-[70px] max-[400px]:left-[155px] max-[400px]:w-[160px] max-[400px]:gap-[1px]"
+>
+  <div className="w-[262px] h-[22px] max-[1380px]:w-[220px] max-[1280px]:w-[200px] max-[1024px]:w-[180px] max-[768px]:w-full max-[640px]:w-full max-[400px]:w-full">
+    <p className="text-white font-[400] text-[18px] leading-[100%] poppins-font
+                  max-[1380px]:text-[16px] max-[1280px]:text-[15px] max-[1024px]:text-[14px] max-[768px]:text-[13px] max-[640px]:text-[11px] max-[400px]:text-[9px]">
+      STACKLY AI
+    </p>
+  </div>
+
+  <div className="w-[488px] h-[118px] max-[1380px]:w-[380px] max-[1280px]:w-[340px] max-[1024px]:w-[300px] max-[768px]:w-full max-[640px]:w-full max-[400px]:w-full">
+    <p className="text-white font-[400] text-[52px] leading-[140%] lancelot-text -mt-[14px]
+                  max-[1380px]:text-[44px] max-[1280px]:text-[40px] max-[1024px]:text-[38px] max-[768px]:text-[28px] max-[640px]:text-[20px] max-[400px]:text-[16px]
+                  max-[1380px]:leading-[135%] max-[1280px]:leading-[130%] max-[1024px]:leading-[125%] max-[768px]:leading-[120%] max-[640px]:leading-[110%] max-[400px]:leading-[105%]">
+      Design Your Dream Space Effortlessly
+    </p>
+  </div>
+</motion.div>
+
+
+
+
 
       {/* Description box */}
-      <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={inView2 ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="w-[616px] h-[176px] absolute top-[440px] right-[40px] flex flex-col gap-[6px]"
-      >
-        <div className="w-full h-[45px]">
-          <p className="text-white text-[32px] font-[400] leading-[140%] poppins-font">
-            Minimal Style
-          </p>
-        </div>
-        <div className="w-[616px] h-[125px]">
-          <p className="text-white text-[18px] font-[400] leading-[140%] lora-text">
-            Step into a space where less truly becomes more. Our AI blends clean lines,
-            soft tones, and thoughtful spacing to create interiors that feel light, breathable,
-            and beautifully uncluttered. <br />
-            Designed to inspire calm, focus, and modern sophistication without lifting a finger.
-          </p>
-        </div>
-      </motion.div>
+    <motion.div
+  initial={{ y: 50, opacity: 0 }}
+  animate={inView2 ? { y: 0, opacity: 1 } : {}}
+  transition={{ duration: 0.8, delay: 0.6 }}
+  className="w-[616px] h-[176px] absolute top-[440px] right-[40px] flex flex-col gap-[6px]
+             max-[1380px]:w-[500px] max-[1380px]:top-[380px] max-[1380px]:right-[30px] max-[1380px]:gap-[5px]
+             max-[1280px]:w-[450px] max-[1280px]:top-[360px] max-[1280px]:right-[20px] max-[1280px]:gap-[4px]
+             max-[1024px]:w-[380px] max-[1024px]:top-[310px] max-[1024px]:right-[15px] max-[1024px]:gap-[3px]
+             max-[768px]:w-[300px] max-[768px]:top-[240px] max-[768px]:right-[10px] max-[768px]:gap-[2px]
+             max-[640px]:w-[220px] max-[640px]:top-[210px] max-[640px]:right-[5px] max-[640px]:gap-[2px]
+             max-[400px]:w-[180px] max-[400px]:top-[150px] max-[400px]:right-[0px] max-[400px]:gap-[1px]"
+>
+  <div className="w-full h-[45px] max-[640px]:h-[35px] max-[400px]:h-[30px]">
+    <p className="text-white text-[32px] font-[400] leading-[140%] poppins-font
+                  max-[1380px]:text-[26px] max-[1280px]:text-[24px] max-[1024px]:text-[20px] max-[768px]:text-[18px]
+                  max-[640px]:text-[16px] max-[400px]:text-[14px]">
+      Minimal Style
+    </p>
+  </div>
 
-      {/* Icons */}
-      <motion.img
-        initial={{ opacity: 0 }}
-        animate={inView1 ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.8 }}
-        src={Group}
-        alt="Group 28"
-        className="absolute w-[26.99px] h-[26.99px] top-[31px] left-[1300px] rotate-0 border-[1.9px] border-solid border-black"
-      />
+  <div className="w-[616px] h-[125px] max-[1380px]:w-full max-[640px]:w-full max-[640px]:h-auto max-[400px]:w-full max-[400px]:h-auto">
+  <p className="text-white text-[18px] font-[400] leading-[140%] lora-text
+              max-[1380px]:text-[16px] max-[1280px]:text-[15px] max-[1024px]:text-[14px] max-[768px]:text-[13px]
+              max-[640px]:text-[12px] max-[400px]:text-[10px] 
+              max-[1024px]:leading-[135%] max-[768px]:leading-[130%] max-[640px]:leading-[125%] max-[400px]:leading-[115%]">
+  Step into a space where less truly becomes more. Our AI blends clean lines,
+  soft tones, and thoughtful spacing to create interiors that feel light, breathable,
+  and beautifully uncluttered. <br />
+  Designed to inspire calm, focus, and modern sophistication without lifting a finger.
+</p>
 
-      <motion.img
-        initial={{ opacity: 0 }}
-        animate={inView2 ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 1.0 }}
-        src={Group}
-        alt="Group 28"
-        className="absolute w-[55.01px] h-[55.01px] top-[810px] left-[1297px] rotate-0 border-[1.9px] border-black"
-      />
+  </div>
+</motion.div>
+
+
+
+
+{/* Icon 1 */}
+<motion.img
+  initial={{ opacity: 0 }}
+  animate={inView1 ? { opacity: 1 } : {}}
+  transition={{ duration: 0.8, delay: 0.8 }}
+  src={Group}
+  alt="Group 28"
+  className="absolute w-[26.99px] h-[26.99px] top-[31px] left-[1300px] rotate-0 border-[1.9px] border-solid border-black
+             max-[1380px]:w-[22px] max-[1380px]:h-[22px] max-[1380px]:top-[25px] max-[1380px]:left-[1100px]
+             max-[1280px]:w-[20px] max-[1280px]:h-[20px] max-[1280px]:top-[22px] max-[1280px]:left-[950px]
+             max-[1024px]:w-[18px] max-[1024px]:h-[18px] max-[1024px]:top-[20px] max-[1024px]:left-[800px]
+             max-[768px]:w-[16px] max-[768px]:h-[16px] max-[768px]:top-[15px] max-[768px]:left-[600px]
+             max-[400px]:w-[12px] max-[400px]:h-[12px] max-[400px]:top-[12px] max-[400px]:left-[200px]"
+/>
+
+{/* Icon 2 */}
+<motion.img
+  initial={{ opacity: 0 }}
+  animate={inView2 ? { opacity: 1 } : {}}
+  transition={{ duration: 0.8, delay: 1.0 }}
+  src={Group}
+  alt="Group 28"
+  className="absolute w-[55.01px] h-[55.01px] top-[810px] left-[1297px] rotate-0 border-[1.9px] border-black
+             max-[1380px]:w-[45px] max-[1380px]:h-[45px] max-[1380px]:top-[675px] max-[1380px]:left-[1180px]
+             max-[1280px]:w-[40px] max-[1280px]:h-[40px] max-[1280px]:top-[650px] max-[1280px]:left-[950px]
+             max-[1024px]:w-[35px] max-[1024px]:h-[35px] max-[1024px]:top-[555px] max-[1024px]:left-[900px]
+             max-[768px]:w-[28px] max-[768px]:h-[28px] max-[768px]:top-[420px] max-[768px]:left-[700px]
+             max-[400px]:w-[20px] max-[400px]:h-[20px] max-[400px]:top-[350px] max-[400px]:left-[200px]"
+/>
+
 
       {/* Explore more button */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={inView2 ? { y: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 1.2 }}
-      >
-        <Link to="/sign-in">
-          <div className="absolute w-[280px] h-[50px] top-[685px] left-[1041px] flex items-center px-[6px] group">
-            <div className="w-[217px] h-[34px] flex items-center justify-center">
-              <p className="text-white text-[24px] font-[400] leading-[140%] text-center font-[Lora] transition-all duration-300 group-hover:text-opacity-80">
-                Explore more
-              </p>
-            </div>
-            <div className="w-[50px] h-[50px] ml-[-15px] rotate-[-180deg] rounded-[30px] bg-white/10 relative flex items-center justify-center transition-all duration-300 group-hover:bg-white/20">
-              <img
-                src={vector}
-                alt="icon"
-                className="w-[22.5px] h-[17.5px] rotate-[-180deg] transition-all duration-300 group-hover:opacity-80 group-hover:brightness-0 group-hover:invert"
-              />
-            </div>
-          </div>
-        </Link>
-      </motion.div>
+    <motion.div
+  initial={{ y: 20, opacity: 0 }}
+  animate={inView2 ? { y: 0, opacity: 1 } : {}}
+  transition={{ duration: 0.8, delay: 1.2 }}
+>
+  <Link to="/sign-in">
+    <div className="absolute w-[280px] h-[50px] top-[685px] left-[1041px] flex items-center px-[6px] group
+                    max-[1380px]:w-[240px] max-[1380px]:h-[45px] max-[1380px]:top-[600px] max-[1380px]:left-[850px]
+                    max-[1280px]:w-[220px] max-[1280px]:h-[40px] max-[1280px]:top-[560px] max-[1280px]:left-[750px]
+                    max-[1024px]:w-[200px] max-[1024px]:h-[38px] max-[1024px]:top-[500px] max-[1024px]:left-[590px]
+                    max-[768px]:w-[160px] max-[768px]:h-[32px] max-[768px]:top-[410px] max-[768px]:left-[80%] max-[768px]:-translate-x-1/2
+                    max-[400px]:w-[140px] max-[400px]:h-[28px] max-[400px]:top-[290px] max-[400px]:left-[70%] max-[400px]:-translate-x-1/2">
+      
+      <div className="w-[217px] h-[34px] flex items-center justify-center
+                      max-[1380px]:w-[180px] max-[1380px]:h-[28px]
+                      max-[1280px]:w-[160px] max-[1280px]:h-[26px]
+                      max-[1024px]:w-[140px] max-[1024px]:h-[24px]
+                      max-[768px]:w-[120px] max-[768px]:h-[20px]
+                      max-[400px]:w-[110px] max-[400px]:h-[18px]">
+        <p className="text-white text-[24px] font-[400] leading-[140%] text-center font-[Lora] transition-all duration-300 group-hover:text-opacity-80
+                      max-[1380px]:text-[20px] max-[1280px]:text-[18px] max-[1024px]:text-[16px] max-[768px]:text-[14px]
+                      max-[400px]:text-[12px]">
+          Explore more
+        </p>
+      </div>
+
+      <div className="w-[50px] h-[50px] ml-[-15px] rotate-[-180deg] rounded-[30px] bg-white/10 relative flex items-center justify-center transition-all duration-300 group-hover:bg-white/20
+                      max-[1380px]:w-[42px] max-[1380px]:h-[42px]
+                      max-[1280px]:w-[38px] max-[1280px]:h-[38px]
+                      max-[1024px]:w-[35px] max-[1024px]:h-[35px]
+                      max-[768px]:w-[30px] max-[768px]:h-[30px]
+                      max-[400px]:w-[26px] max-[400px]:h-[26px]">
+        <img
+          src={vector}
+          alt="icon"
+          className="w-[22.5px] h-[17.5px] rotate-[-180deg] transition-all duration-300 group-hover:opacity-80 group-hover:brightness-0 group-hover:invert
+                     max-[1380px]:w-[18px] max-[1380px]:h-[14px]
+                     max-[1280px]:w-[16px] max-[1280px]:h-[12px]
+                     max-[1024px]:w-[14px] max-[1024px]:h-[11px]
+                     max-[768px]:w-[12px] max-[768px]:h-[9px]
+                     max-[400px]:w-[10px] max-[400px]:h-[8px]"/>
+      </div>
+    </div>
+  </Link>
+</motion.div>
+
+
+
+      
     </section>
 
 
+    {/* section3 */}
 
 
-
-
-      {/* section 3 */}
-      {/*  full section is hidden */}
-     <section 
-  className="hidden w-full min-h-[900px] max-[440px]:min-h-[634px]"
-  
-  ref={sectionRef}
->
+    <section className="w-full h-[80px] sm:h-[100px] md:h-[120px] lg:h-[130px] xl:h-[140px] bg-black relative flex justify-center items-center overflow-hidden">
+  {/* Marquee wrapper */}
+  <div className="absolute top-[28px] sm:top-[36px] md:top-[42px] lg:top-[48px] xl:top-[52px] w-full h-[20px] sm:h-[22px] md:h-[24px] lg:h-[26px] xl:h-[28px] overflow-hidden">
+    <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-6 animate-marquee whitespace-nowrap">
+      {[
+        "Visuals to the Next Level",
+        "Stunning Modern Designs",
+        "Creative Interior Ideas",
+        "Elegant Space Designs",
+        "Smart Home Styling",
+        "Visuals to the Next Level",
+        "Stunning Modern Designs",
+        "Creative Interior Ideas",
+      ].map((text, index) => (
         <div
-          className="w-full min-h-[900px] max-[440px]:min-h-[634px] bg-cover bg-center bg-no-repeat bg-blend-overlay pb-0
-    max-[440px]:flex max-[440px]:flex-col
-    max-[440px]:pt-[40px] max-[440px]:pr-[20px]
-    max-[440px]:pb-[40px] max-[440px]:pl-[20px] max-[440px]:gap-[32px]"
-          style={{ backgroundImage: `url(${sec3bg1})` }}
+          key={index}
+          className="
+            flex items-center gap-1 sm:gap-2 md:gap-3 
+            w-[120px] sm:w-[150px] md:w-[180px] lg:w-[200px] xl:w-[220px] 
+            h-[20px] sm:h-[22px] md:h-[24px] lg:h-[26px] xl:h-[28px]
+          "
         >
-          <div className="home-bg-img relative w-full h-[1200px] max-[440px]:min-h-[634px] max-[440px]:h-auto overflow-hidden ">
-            {/* Background images */}
-            <img
-              src={sec3Pattern2}
-              alt=""
-              className="absolute w-[60px] h-[60px] top-[554px] left-[1080px] mix-blend-overlay max-[440px]:hidden"
-            />
-            <img
-              src={sec3Pattern4}
-              alt=""
-              className="absolute w-[44px] h-[44px] top-[747px] left-[260px] max-[440px]:hidden"
-            />
-            <img
-              src={sec3Pattern4}
-              alt=""
-              className="absolute w-[44px] h-[44px] top-[932px] left-[70%] max-[440px]:hidden"
-            />
+          {/* Icon */}
+          <div className="flex-shrink-0 w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] md:w-[20px] md:h-[20px] lg:w-[22px] lg:h-[22px] xl:w-[24px] xl:h-[24px] flex items-center justify-center">
+            <img src={star} alt="icon" className="w-full h-full object-contain" />
+          </div>
 
-            {/* ✅ Fixed Heading Section - Desktop unchanged, mobile fixed */}
-            <div className="flex flex-col items-center justify-center h-[200px] relative
-                      max-[440px]:flex max-[440px]:flex-col max-[440px]:items-center max-[440px]:w-full max-[440px]:h-auto max-[440px]:gap-[20px] max-[440px]:mb-[20px]">
-              <h1
-                className="text-[40px] font-bold text-white text-center mb-[90px] relative top-[-80px] 
-          max-[440px]:top-0 max-[440px]:text-[20px] max-[440px]:font-medium max-[440px]:leading-[120%] 
-          max-[440px]:w-full max-[440px]:px-4 font-inter">
-                Ultimate <span className="text-[#00D1DD]">AI Design Tool</span> for Interiors & Exteriors
-              </h1>
-
-              <p
-                className="text-[22px] font-medium text-white text-center relative mb-[40px] top-[-160px] 
-          max-[440px]:top-[-100px] max-[440px]:text-[16px] max-[440px]:font-normal max-[440px]:leading-[120%]
-          max-[440px]:w-full max-[440px]:px-4 font-inter"
-              >
-                Transform Any Space Effortlessly
-              </p>
-            </div>
-
-            {/* Design sections - Desktop unchanged */}
-            <div
-              className="w-full relative min-h-[1050px] max-[440px]:w-full max-[440px]:min-h-fit flex flex-col items-center gap-10 py-10 
-        max-[440px]:pt-[40px] max-[440px]:pb-[20px]"
+          {/* Text box */}
+          <div
+            className={`flex items-center 
+              w-[90px] sm:w-[120px] md:w-[150px] lg:w-[170px] xl:w-[190px] 
+              h-[18px] sm:h-[20px] md:h-[22px] lg:h-[24px] xl:h-[25px]
+              ${index === 1 || index === 6 ? "border border-white border-[0.5px]" : ""}
+            `}
+          >
+            <span
+              className="font-poppins font-normal 
+                text-[11px] sm:text-[13px] md:text-[15px] lg:text-[16px] xl:text-[17px] 
+                leading-[140%] text-white truncate"
             >
-              {/* Left */}
-              <div
-                className={`flex items-center justify-center gap-0  absolute left-5 mt-[-200px] 
-          max-[440px]:static max-[440px]:flex-row max-[440px]:w-full max-[440px]:px-4
-          max-[440px]:justify-center max-[440px]:gap-4 max-[440px]:mt-[-180px]
-          transition-all duration-1000 ease-out ${animations?.leftVisible
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-[100%] opacity-0"
-                  }`}
-              >
-                <p
-                  className="rounded-full text-[22px]  font-semibold text-black bg-white p-5 whitespace-nowrap 
-            max-[440px]:text-[12px] max-[440px]:font-normal max-[440px]:p-2 max-[440px]:rounded-[33.4px]
-            max-[440px]:w-auto max-[440px]:h-[28px] flex items-center justify-center"
-                >
-                  AI-Powered Interior Designs
-                </p>
-                <img
-                  className="w-full max-w-[400px] max-h-[400px] rounded-[50%] border-8 border-solid border-white
-            max-[440px]:w-[145px] max-[440px]:h-[145px] max-[440px]:rounded-[108.75px] max-[440px]:border-[2.9px]"
-                  src={sec3Design1}
-                  alt="Interior design"
-                />
-              </div>
-
-              {/* Center */}
-              <div
-                className={`flex items-center justify-center gap-0 absolute right-12 top-[80px] 
-          max-[440px]:static max-[440px]:flex-row max-[440px]:w-full max-[440px]:px-4
-          max-[440px]:justify-center max-[440px]:gap-4 max-[440px]:mt-4
-          transition-all duration-1000 ease-out ${animations?.centerVisible
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-[100%] opacity-0"
-                  }`}
-              >
-                <img
-                  className="w-full max-w-[400px] max-h-[400px] rounded-[50%] border-8 border-solid border-white 
-            max-[440px]:w-[145px] max-[440px]:h-[145px] max-[440px]:rounded-[108.75px] max-[440px]:border-[2.9px]"
-                  src={sec3Design2}
-                  alt="Exterior design"
-                />
-                <p className="rounded-full text-[22px]  font-semibold text-black bg-white p-5 whitespace-nowrap 
-            max-[440px]:text-[12px] max-[440px]:font-normal max-[440px]:p-2 max-[440px]:rounded-[33.4px]
-            max-[440px]:w-auto max-[440px]:h-[28px] flex items-center justify-center">
-                  Stunning Exterior Makeovers
-                </p>
-              </div>
-
-              {/* Right */}
-              <div
-                className={`flex items-center justify-center gap-0 absolute left-5 top-[350px] 
-          max-[440px]:static max-[440px]:flex-row max-[440px]:w-full max-[440px]:px-4
-          max-[440px]:justify-center max-[440px]:gap-4 max-[440px]:mt-4
-          transition-all duration-1000 ease-out ${animations?.rightVisible
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-[100%] opacity-0"
-                  }`}
-              >
-                <p className="rounded-full text-[22px] font-semibold text-black bg-white p-5 whitespace-nowrap 
-            max-[440px]:text-[12px] max-[440px]:font-normal max-[440px]:p-2 max-[440px]:rounded-[33.4px]
-            max-[440px]:w-auto max-[440px]:h-[28px] flex items-center justify-center">
-                  Outdoor Spaces Reimagined
-                </p>
-                <img
-                  className="w-full max-w-[400px] max-h-[400px] rounded-[50%] border-8 border-solid border-white
-            max-[440px]:w-[145px] max-[440px]:h-[145px] max-[440px]:rounded-[108.75px] max-[440px]:border-[2.9px]"
-                  src={sec3Design3}
-                  alt="Outdoor design"
-                />
-              </div>
-            </div>
+              {text}
+            </span>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
 
-    
-
-      {/* Section 4 */}
-
-      {/* <section className="relative w-full h-auto flex justify-center items-center p-[50px] bg-gradient-to-l from-[#00B0BA14] to-[#00B0BA00] 
-  max-[500px]:p-5 max-[440px]:min-h-[537px]">
-
-        <img
-          src={Star}
-          alt=""
-          className="absolute top-[90px] left-[50px] max-[440px]:top-[30px] max-[440px]:left-[20px] max-[440px]:w-[22px] max-[440px]:h-[25px]"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="absolute top-[130px] left-[90px] w-[30px] max-[440px]:top-[50px] max-[440px]:left-[35px] max-[440px]:w-[13px] max-[440px]:h-[15px]"
-        />
-
-        <img
-          src={Star}
-          alt=""
-          className="absolute bottom-[100px] right-[90px] max-[440px]:hidden"
-        />
-        <img
-          src={Star}
-          alt=""
-          className="absolute bottom-[80px] right-[75px] w-[30px] max-[440px]:hidden"
-        />
-
-        <div className="max-w-[1279px] w-full h-auto bg-white flex flex-col justify-center items-center gap-10 px-5 py-10 rounded-[15px] bg-gradient-to-l from-[#00B0BA14] to-[#00B0BA00] 
-    max-[440px]:w-full max-[440px]:min-h-[537px] 
-    max-[440px]:px-[20px] max-[440px]:pt-[10px] max-[440px]:pb-[40px] max-[440px]:gap-[32px]">
-
-          <p className="w-full max-w-[951px] text-[18px] font-[400] leading-[100%] text-center text-[#2a2a2a] 
-      max-[440px]:text-[16px] max-[440px]:font-semibold font-inter">
-            First-of-Its-Kind Features
-          </p>
-
-          <h2 className="w-full max-w-[951px] text-[32px] font-bold leading-[100%] text-center text-black 
-      max-[440px]:text-[18px] max-[440px]:font-[500] font-inter">
-            The <span className="text-[#009A98]">All You Need</span> AI Home Design Tool
-          </h2>
-
-          <div className="w-full max-w-[1219px] flex justify-between items-stretch flex-wrap
-      max-[1200px]:justify-center max-[1200px]:gap-10
-      max-[900px]:gap-8 max-[440px]:gap-x-[12px] max-[440px]:gap-y-[24px]">
-
-            {[sec4Icon1, sec4Icon2, sec4Icon3, sec4Icon4].map((icon, i) => (
-              <div key={i} className="w-[250px] flex flex-col items-center gap-5 text-center
-          max-[1200px]:w-[220px] max-[900px]:w-[200px] max-[440px]:w-[calc(50%-6px)] max-[440px]:gap-[12px] ">
-
-                <div className="w-[60px] h-[60px] border border-white shadow-md rounded-full flex items-center justify-center
-            max-[440px]:w-[40px] max-[440px]:h-[40px] max-[440px]:bg-[#007B821A]">
-                  <img src={icon} alt={`icon${i}`} className="w-[40px] h-[40px] max-[440px]:w-[20px] max-[440px]:h-[20px]" />
-                </div>
-
-                <h3 className="text-[18px] font-bold text-[#2a2a2a] font-inter max-[440px]:text-[14px] min-h-[48px] flex items-center justify-center">
-                  {[
-                    'Interior & Exterior Image Generation',
-                    'Unlimited AI Ideas',
-                    'High-Resolution Images',
-                    'Fast Image Generation'
-                  ][i]}
-                </h3>
-
-                <p className="text-[16px] font-medium font-inter max-[440px]:text-[12px] max-[440px]:leading-[120%] min-h-[66px] flex items-center justify-center">
-                  {[
-                    'Get design ideas for every part of your home—both indoors and outdoors.',
-                    'Generate endless creative ideas to transform any space with ease.',
-                    'Download crystal-clear, AI-generated images that capture every detail.',
-                    'Create stunning, AI-powered images in just seconds.'
-                  ][i]}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="w-full flex justify-center">
-            <Link to="/sign-in" className="w-full max-w-[846px] flex justify-center">
-              <div
-                className="w-[572px] h-[54px] flex justify-center items-center gap-[8px] px-[10px] py-[1px]
-        rounded-[8px] border cursor-pointer hover:bg-[#4bb0b5]
-        max-[440px]:w-full max-[440px]:h-[45px] max-[440px]:rounded-[8px] max-[440px]:border max-[440px]:border-[#00B0BACC]"
-                style={{
-                  backgroundImage: `linear-gradient(to right, #007c82 0%, rgb(4, 68, 75), rgb(3, 89, 94) 100%)`,
-                }}
-              >
-                <p className="flex items-center justify-center gap-[8px] text-xl font-bold text-white
-        max-[440px]:text-[14px] font-inter">
-                  <img src={Magic} alt="" className="w-[30px] h-[30px] max-[440px]:w-[28px] max-[440px]:h-[28px]" />
-                  Generate Design
-                </p>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section> */}
-
-      
-
-
-      {/* <GalleryHover
-        sec5BlockImg={sec5BlockImg}
-        sec5Frame1={sec5Frame1}
-        sec5Frame2={sec5Frame2}
-        sec5Frame3={sec5Frame3}
-        sec5Frame4={sec5Frame4}
-        sec5Frame5={sec5Frame5}
-        sec5Frame6={sec5Frame6}
-        sec5Frame7={sec5Frame7}
-        sec5Frame8={sec5Frame8}
-      /> */}
-      {/* section 6 */}
-     {/* <section
-  className="w-full h-[477px] bg-[#021C1D] px-4 py-16 flex justify-center items-center 
-             max-[440px]:w-[440px] 
-             max-[440px]:h-[280px] 
-             max-[440px]:px-[20px] 
-             max-[440px]:py-[40px] 
-             max-[440px]:gap-[40px] 
-             max-[440px]:opacity-100"
->
-
-        <div
-          className="w-full max-w-6xl flex flex-col items-center
-             max-[440px]:w-full max-[440px]:px-4 
-             max-[440px]:gap-[16px]"
-        >
-         
-          <h2
-  className="text-center text-white text-[40px] md:text-3xl leading-[140%] font-semibold mb-16
-           
-             max-[440px]:text-[18px] 
-             max-[440px]:leading-[140%] 
-             max-[440px]:font-medium 
-             max-[440px]:mb-4 
-             max-[440px]:w-[400px] 
-             max-[440px]:h-[25px] 
-             max-[440px]:opacity-100"
-  style={{ fontFamily: "Inter" }}
->
-  Our Design Range, Trusted Worldwide
-</h2>
-
-
-          
-  <div
-  className="w-[900px] h-[100px] grid grid-cols-1 md:grid-cols-3 items-center gap-2
-             max-[440px]:flex max-[440px]:flex-row 
-             max-[440px]:w-[400px] 
-             max-[440px]:h-[51px] 
-             max-[440px]:gap-[18px] 
-             max-[440px]:justify-center 
-             max-[440px]:items-center 
-             max-[440px]:text-center 
-             max-[440px]:mx-auto"
->
-
-
-           
-            <div
-              className="flex justify-center md:justify-start -space-x-4
-      max-[440px]:w-[118px] max-[440px]:h-[40px]"
-            >
-              {[img1, img2, img3, img4].map((src, idx) => (
-                <img
-                  key={idx}
-                  src={src}
-                  alt={`Design ${idx + 1}`}
-                  className="w-[88px] h-[88px] rounded-full border-2 border-white object-cover
-          max-[440px]:w-[41.63px] max-[440px]:h-[41.63px]
-          max-[440px]:rounded-[37.47px] max-[440px]:p-[4.16px]"
-                />
-              ))}
-            </div>
-
-           
-            <div
-              className="text-center
-      max-[440px]:flex max-[440px]:flex-col max-[440px]:justify-center max-[440px]:items-center
-      max-[440px]:w-[94px] max-[440px]:h-[45px]"
-            >
-              <p
-                className="text-3xl font-bold text-[42px] mb-[10px] 
-    bg-gradient-to-r from-[#007B82] to-[#FFFFFF] bg-clip-text text-transparent
-    max-[440px]:w-[94px] max-[440px]:h-[25px]
-    max-[440px]:text-[18px] max-[440px]:font-medium
-    max-[440px]:leading-[140%] max-[440px]:text-center 
-    max-[440px]:mb-[4px]"
-              >
-                45+
-              </p>
-
-              <p
-                className="text-[white] font-medium text-[28px]
-    max-[440px]:w-[94px] max-[440px]:h-[20px]
-    max-[440px]:text-[14px] max-[440px]:font-normal
-    max-[440px]:leading-[140%] max-[440px]:text-center"
-              >
-                Design Styles
-              </p>
-
-            </div>
-
-           
-            <div
-              className="text-center mr-[30px] text-[white] text-[18px] leading-[140%]
-      max-[440px]:w-[158px] max-[440px]:h-[51px]
-      max-[440px]:text-[12px] max-[440px]:font-normal
-      max-[440px]:leading-[140%] max-[440px]:text-center font-inter
-      max-[440px]:flex max-[440px]:items-center"
-            >
-              We blend AI intelligence with diverse design trends to deliver spaces you'll love
-            </div>
-          </div>
-
-
-        
-   <div
-  className="w-[900px] h-[100px] grid grid-cols-1 ml-[90px] mt-[15px] md:grid-cols-3 items-center gap-6
-             max-[440px]:flex max-[440px]:flex-row 
-             max-[440px]:w-[400px] 
-             max-[440px]:h-[68px] 
-             max-[440px]:ml-[30px]
-             max-[440px]:gap-[18px] 
-             max-[440px]:opacity-100
-             max-[440px]:justify-center max-[440px]:items-center max-[440px]:text-center"
->
+  {/* Marquee animation */}
+  <style>
+    {`
+      @keyframes marquee {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-marquee {
+        display: flex;
+        width: max-content;
+        animation: marquee 20s linear infinite;
+      }
+    `}
+  </style>
+</section>
 
 
 
-          
-            <div
-              className="text-[white] text-[18px] mr-[20px] leading-[140%] text-center
-    max-[440px]:w-[147px] max-[440px]:h-[68px]
-    max-[440px]:text-[12px] max-[440px]:font-normal
-    max-[440px]:leading-[140%] max-[440px]:tracking-[0]
-    max-[440px]:text-center font-inter"
-            >
-              <p>
-                Join a growing community of users transforming their spaces with
-                AI-powered design
-              </p>
-            </div>
 
-
-            <div
-              className="flex justify-center -space-x-4
-    max-[440px]:w-[118px] max-[440px]:h-[40px]
-    max-[440px]:flex-row"
-            >
-              {[img5, user6, user7, user8].map((src, idx) => (
-                <img
-                  key={idx}
-                  src={src}
-                  alt={`User ${idx + 1}`}
-                  className="w-[88px] h-[88px] rounded-full border-2 border-white object-cover
-      max-[440px]:w-[40.56px] max-[440px]:h-[40.56px]
-      max-[440px]:rounded-[36.5px] max-[440px]:p-[4.06px]
-      max-[440px]:mr-[4.06px]"
-                />
-              ))}
-
-            </div>
-
-           
-            <div className="text-center mr-[40px] 
-  max-[440px]:flex max-[440px]:flex-col 
-  max-[440px]:w-[89px] max-[440px]:h-auto">
-
-              <p
-                className=" font-bold text-[42px] bg-gradient-to-r from-[#007B82] to-[#FFFFFF] bg-clip-text text-transparent 
-    max-[440px]:w-[89px] max-[440px]:h-[25px] 
-    max-[440px]:text-[18px] max-[440px]:font-medium 
-    max-[440px]:leading-[140%] max-[440px]:text-center flex items-center justify-center"
-              >
-                100+
-              </p>
-
-              <p
-                className="text-[white] font-medium text-center text-[28px] 
-    max-[440px]:w-[89px] max-[440px]:h-[20px] 
-    max-[440px]:text-[14px] max-[440px]:font-normal 
-    max-[440px]:leading-[140%] max-[440px]:text-center flex items-center justify-center"
-              >
-                Happy Users
-              </p>
-
-            </div>
-          </div>
-        </div>
-      </section> */}
-
-
-     
-
+{/* section4 */}
       <StepsHome />
 
-      {/* Section 7 */}
+      {/* Section 5*/}
 
       <BasicForm />
       
-      {/* new figma section6 */}
-  <section className="w-full h-[713px] opacity-100 relative overflow-hidden">
+
+      {/* Section6 */}
+<section className="w-full h-auto min-h-[600px] sm:min-h-[700px] md:min-h-[713px] lg:min-h-[650px] relative overflow-hidden">
+
   <video
     autoPlay
     loop
@@ -1007,1097 +659,265 @@ useEffect(() => {
     Your browser does not support the video tag.
   </video>
 
-        <div
-          className="absolute w-[1277px] h-[481px] top-[135px] left-[96px] opacity-100 flex gap-[46px]"
-          style={{ transform: "rotate(0deg)" }}
-        >
-        
-        {/* left div */}
-        <div
-  className="w-[936px] h-[481px] flex flex-col justify-between opacity-100"
-  style={{ transform: "rotate(0deg)" }}
+  <div className="relative w-full max-w-[1277px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:pt-16 flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-12 justify-between items-start">
+    {/* Left Div */}
+    <div className="w-full md:w-2/3 flex flex-col justify-between gap-8 sm:gap-10 md:gap-12">
+      {/* Top Section */}
+     <div className="w-full flex flex-col gap-6 sm:gap-8 md:gap-10">
+  {/* Heading */}
+  <div className="w-full flex items-center justify-start sm:justify-start max-[639px]:justify-center">
+    <h2
+      className="w-full max-w-[599px] text-xl sm:text-3xl md:text-[32px] leading-tight font-normal text-white text-left max-[639px]:text-center max-[639px]:text-base"
+      style={{ fontFamily: 'Lora' }}
+    >
+      Elevate your home with artfully crafted, AI-enhanced design.
+    </h2>
+  </div>
+
+  {/* Paragraph */}
+ <p
+  className={`w-full max-w-[830px] text-sm sm:text-lg md:text-[18px] leading-relaxed font-normal text-white text-left max-[639px]:text-center max-[639px]:text-[14px]`}
+  style={{ fontFamily: "Poppins" }}
 >
-  {/* Top Section */}
-  <div className="w-[936px] h-[232px] flex flex-col gap-[42px] opacity-100">
-    {/* Heading */}
-    <div className="w-[936px] h-[82px] flex items-center">
-      <h2
-        className="w-[599px] h-[82px] text-[32px] leading-[100%] font-normal text-white"
-        style={{ fontFamily: 'Lora' }}
-      >
-        Elevate your home with artfully crafted, AI-enhanced design.
-      </h2>
+  {showFull || window.innerWidth >= 640
+    ? "Experience interior design that speaks for itself. Our tailored AI-powered solutions have consistently delighted clients around the world bringing unique styles, functional layouts, and beautiful results to every space. From modern minimalism to timeless elegance, we deliver designs that truly feel like home."
+    : (
+      <>
+        Experience interior design that speaks for itself. Our tailored AI-powered solutions have consistently delighted clients around the world...
+        <button
+          onClick={() => setShowFull(!showFull)}
+          className="text-purple-500 font-medium ml-1 underline"
+        >
+          See More
+        </button>
+      </>
+    )
+  }
+</p>
+
+{/* If expanded, show "See Less" inline at end */}
+{showFull && window.innerWidth < 640 && (
+  <span
+    className="text-purple-500 font-medium ml-1 cursor-pointer underline"
+    onClick={() => setShowFull(false)}
+  >
+    See Less
+  </span>
+)}
+
+</div>
+
+
+      {/* Bottom Section */}
+     <div
+  className="relative w-full max-w-[424px] rounded-[20px] max-[777px]:mx-auto"
+  style={{ background: "#8A38F514" }}
+>
+
+        {/* Gradient border overlay */}
+        <div
+          className="absolute inset-0 rounded-[20px] pointer-events-none"
+          style={{
+            border: "1px solid transparent",
+            background: "linear-gradient(283.03deg, #8A38F5 -4.05%, #000000 106.3%) border-box",
+            WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+            padding: "1px",
+            borderRadius: "20px"
+          }}
+        />
+
+        {/* Content container */}
+        <div
+          className="w-full max-w-[412px] rounded-[20px] flex flex-col gap-4 sm:gap-5 mt-1.5 ml-1.5 pt-4 sm:pt-5 md:pt-6 pr-3 sm:pr-4 pb-4 sm:pb-5 pl-4 sm:pl-5"
+          style={{ backgroundColor: "#2E0854CC" }}
+        >
+          <h3
+            className="w-full max-w-[376px] text-lg sm:text-xl md:text-[20px] font-medium leading-tight text-white"
+            style={{ fontFamily: 'Inter' }}
+          >
+            Discover Smarter Design Possibilities
+          </h3>
+          <p
+            className="w-full max-w-[376px] text-sm sm:text-base md:text-[14px] font-normal leading-tight text-white"
+            style={{ fontFamily: 'Inter' }}
+          >
+            Explore how our AI transforms your spaces fast, stylish, and effortless
+          </p>
+
+          <div className="w-full max-w-[245px] flex items-center justify-start">
+            <Link to="/sign-in">
+              <div
+                className="w-full max-w-[222px] flex items-center gap-2 sm:gap-3 border border-solid rounded-[30px] px-4 sm:px-6 py-2 sm:py-3"
+                style={{
+                  background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)"
+                }}
+              >
+                <div
+                  className="w-full max-w-[128px] text-sm sm:text-base md:text-[16px] font-medium leading-tight text-white"
+                  style={{ fontFamily: 'Inter' }}
+                >
+                  Explore Features
+                </div>
+                <div className="w-5 h-5 sm:w-6 sm:h-6 p-0.5 box-border">
+                  <img
+                    src={Frame}
+                    alt="icon"
+                    className="w-full h-full"
+                    style={{
+                      filter: "brightness(0) saturate(100%) invert(92%) sepia(56%) saturate(763%) hue-rotate(239deg) brightness(97%) contrast(102%)",
+                    }}
+                  />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
 
-    {/* Paragraph */}
-    <p
-      className="w-[830px] h-[108px] text-[18px] leading-[150%] font-normal text-white"
-      style={{ fontFamily: 'Poppins' }}
-    >
-      Experience interior design that speaks for itself. Our tailored AI-powered solutions have
-      consistently delighted clients around the world bringing unique styles, functional layouts,
-      and beautiful results to every space. From modern minimalism to timeless elegance, we deliver
-      designs that truly feel like home.
-    </p>
-  </div>
-
-  {/* Bottom Section */}
-  <div className="relative w-[424px] h-[199px] rounded-[20px]" style={{ background: "#8A38F514" }}>
-              {/* Gradient border overlay */}
-              <div
-                className="absolute inset-0 rounded-[20px] pointer-events-none"
-                style={{
-                  border: "1px solid transparent",
-                  background: "linear-gradient(283.03deg, #8A38F5 -4.05%, #000000 106.3%) border-box",
-                  WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
-                  WebkitMaskComposite: "xor",
-                  maskComposite: "exclude",
-                  padding: "1px",
-                  borderRadius: "20px"
-                }}
-              />
-
-              {/* Your existing content container */}
-              <div
-                className="w-[412px] h-[186px] rounded-[20px] flex flex-col gap-[18px] mt-[7px] ml-[7px] pt-[24px] pr-[16px] pb-[24px] pl-[20px]"
-                style={{
-  backgroundColor: "#2E0854CC" // CC ≈ 80% opacity
-}}
-              >
-                <h3
-                  className="w-[376px] h-[24px] text-white text-[20px] font-medium leading-[120%]"
-                  style={{ fontFamily: 'Inter' }}
-                >
-                  Discover Smarter Design Possibilities
-                </h3>
-                <p
-                  className="w-[376px] h-[34px] text-white text-[14px] font-normal leading-[120%]"
-                  style={{ fontFamily: 'Inter' }}
-                >
-                  Explore how our AI transforms your spaces fast, stylish, and effortless
-                </p>
-
-                <div className="w-[245px] h-[44px] flex items-center justify-start">
-                  <Link to="/sign-in">
-                    <div
-                      className="w-[222px] h-[44px] flex items-center gap-[10px] border border-solid rounded-[30px] px-[30px] py-[10px]"
-                      style={{
-                        background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)"
-                      }}
-                    >
-                      <div
-                        className="w-[128px] h-[19px] text-[16px] font-medium leading-[100%] text-white"
-                        style={{ fontFamily: 'Inter' }}
-                      >
-                        Explore Features
-                      </div>
-                      <div className="w-[24px] h-[24px] p-[2.25px] box-border">
-                        <img
-                          src={Frame}
-                          alt="icon"
-                          className="w-[19.5px] h-[19.5px]"
-                          style={{
-                            filter: "brightness(0) saturate(100%) invert(92%) sepia(56%) saturate(763%) hue-rotate(239deg) brightness(97%) contrast(102%)",
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-         {/* right div */}
-          <div
-            ref={ref4}
-            className="w-full h-[481px] opacity-100 flex flex-col gap-[105px]"
-            style={{ transform: "rotate(0deg)" }}
-          >
-            <div
-              className="w-full h-[481px] opacity-100 flex flex-col gap-[105px]"
-              style={{ transform: "rotate(0deg)" }}
-            >
-              {/* 45+ div */}
-              <div className="w-[280px] h-[181px] border border-white opacity-100">
-                <div className="w-[224px] h-[149px] relative left-[15px] opacity-100 flex flex-col items-center justify-between">
-                  {/* Top Text */}
-                  <div className="w-[224px] h-[115px] flex items-center justify-center">
-                    <p
-                      className="text-[82px] font-medium leading-[140%] text-center"
-                      style={{
-                        fontFamily: 'Poppins',
-                        background: "linear-gradient(104.83deg, #8A38F5 28.54%, #C22CA2 84.84%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent"
-                      }}
-                    >
-                      <span ref={counter45Ref}>0+</span>
-                    </p>
-                  </div>
-                  {/* Bottom Text */}
-                  <div className="w-[224px] h-[34px] flex items-center justify-center">
-                    <p
-                      className="text-[24px] font-normal leading-[140%] text-white text-center"
-                      style={{ fontFamily: 'Poppins' }}
-                    >
-                      Design Styles
-                    </p>
-                  </div>
-                </div>
-                <div className="w-[269px] h-[52px] border border-white opacity-100">
-                  <img src={Line} alt="Sideline" className="w-full h-full object-contain" />
-                </div>
-              </div>
-              {/* 100+ div */}
-              <div className="w-[295px] h-[175px] border border-white opacity-100">
-                <div className="w-[239px] h-[149px] relative opacity-100 flex flex-col items-center justify-between">
-
-                  {/* Top Text */}
-                  <div className="w-[239px] h-[115px] flex items-center justify-center">
-                    <p
-                      className="text-[82px] font-medium leading-[140%] text-center"
-                      style={{
-                        fontFamily: 'Poppins',
-                        background: "linear-gradient(104.83deg, #8A38F5 28.54%, #C22CA2 84.84%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent"
-                      }}
-                    >
-                      <span ref={counter100Ref}>0+</span>
-                    </p>
-                  </div>
-
-                  {/* Bottom Text */}
-                  <div className="w-[239px] h-[34px] flex items-center justify-center">
-                    <p
-                      className="text-[24px] font-normal leading-[140%] text-white text-center"
-                      style={{ fontFamily: 'Poppins' }}
-                    >
-                      Happy Users
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-[269px] h-[52px] border border-white opacity-100">
-                  <img src={Line} alt="Sideline" className="w-full h-full object-contain" />
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-
-
-
-        </div>
-
-
-      </section>
-
-
-      {/* <section className="w-full min-h-[792px] py-16 px-6 flex flex-col items-center bg-white text-gray-800
-  max-[440px]:w-full max-[440px]:min-h-0 max-[440px]:py-[40px] max-[440px]:px-[20px] max-[440px]:gap-[10px]">
-      
-        <div className="text-center mb-12 max-[440px]:hidden">
-          <h2 className="text-[32px] font-semibold mb-[10px] leading-[140%]">
-            StacklyAI is for Homeowners and Professionals
-          </h2>
-          <p className="text-[20px] font-semibold leading-[140%] text-[black]">
-            Transform in <span className="text-[#007b82]">Seconds</span>, Not <span className="text-[#007b82]">Days</span>
-          </p>
-        </div>
-
-      
-        <div className="text-center mb-1 hidden max-[440px]:flex max-[440px]:flex-col max-[440px]:w-[400px] max-[440px]:min-h-[95px] max-[440px]:gap-[20px] max-[440px]:mx-auto">
-          <h2 className="max-[440px]:w-[400px] max-[440px]:h-[56px] max-[440px]:font-semibold max-[440px]:text-[20px] max-[440px]:leading-[140%] max-[440px]:tracking-[0] max-[440px]:text-center font-inter">
-            StacklyAI is for <span className="text-[#007b82]">Homeowners</span> and <span className="text-[#007b82]">Professionals</span>
-          </h2>
-          <p className="max-[440px]:w-[400px] max-[440px]:h-[19px] max-[440px]:font-normal max-[440px]:text-[16px] max-[440px]:leading-[100%] max-[440px]:tracking-[0] max-[440px]:text-center text-[black] font-inter">
-            Transform in <span className="text-[#007b82]">Seconds</span>, Not Days
-          </p>
-        </div>
-
-       
-        <div className="flex justify-center gap-12 w-full max-w-6xl
-    max-[440px]:flex max-[440px]:flex-row max-[440px]:w-[400px] max-[440px]:min-h-[307px] 
-    max-[440px]:px-[8px] max-[440px]:gap-[24px]">
-
-         
-          <div className="flex flex-col items-center text-center w-full max-w-[522px] max-[440px]:hidden">
-            <h3 className="text-[24px] font-semibold mb-8 w-full text-left leading-[140%] font-inter">
-              <span className="text-[#007B82]">01</span> For Personal Use
-            </h3>
-            <img
-              src={sec13Img2}
-              alt="Personal Use"
-              className="w-full h-[371px] rounded-lg shadow-md mb-6 object-cover"
-            />
-            <p className="font-normal text-[18px] leading-[140%] max-w-[522px] w-full font-inter">
-              Explore your unique style and create endless realistic designs for
-              both your home's interior and exterior spaces.
-            </p>
-          </div>
-
-          <div className="flex-col items-center text-center hidden max-[440px]:flex max-[440px]:w-[180px] max-[440px]:h-[307px] max-[440px]:gap-[16px]">
-            <h3 className="text-[38px] font-semibold leading-[140%] text-center mb-0
-        max-[440px]:text-[14px] max-[440px]:w-[180px] max-[440px]:h-[27px]
-        max-[440px]:leading-[140%] max-[440px]:tracking-[0]
-        max-[440px]:font-semibold max-[440px]:mx-auto max-[440px]:whitespace-nowrap font-inter">
-              <span className="text-[#007B82]">01</span> For Personal Use
-            </h3>
-            <img
-              src={sec13Img2}
-              alt="Personal Use"
-              className="rounded-lg shadow-md w-full object-cover
-        max-[440px]:w-[180px] max-[440px]:h-[180px] max-[440px]:rounded-[7.41px] max-[440px]:mx-auto"
-            />
-            <p className="font-normal text-[19px] leading-[200%] max-w-sm text-center
-        max-[440px]:w-[180px] max-[440px]:h-[68px] max-[440px]:text-[12px]
-        max-[440px]:leading-[140%] max-[440px]:tracking-[0] max-[440px]:mx-auto font-inter">
-              Explore your unique style and create endless realistic designs for
-              both your home's interior and exterior spaces.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center text-center w-full max-w-[522px] max-[440px]:hidden">
-            <h3 className="text-[24px] font-semibold mb-8 w-full text-left leading-[140%] font-inter">
-              <span className="text-[#007B82]">02</span> For Professional Use
-            </h3>
-            <img
-              src={sec13Img1}
-              alt="Professional Use"
-              className="w-full h-[371px] rounded-lg shadow-md mb-6 object-cover"
-            />
-            <p className="font-normal text-[18px] leading-[140%] max-w-[522px] w-full font-inter">
-              Impress clients instantly by showcasing stunning design
-              transformations while saving time on every project.
-            </p>
-          </div>
-
-          <div className="flex-col items-center text-center hidden max-[440px]:flex max-[440px]:w-[180px] max-[440px]:h-[307px] max-[440px]:gap-[16px]">
-            <h3 className="text-[38px] font-semibold leading-[140%] text-center mb-0
-        max-[440px]:text-[14px] max-[440px]:w-[180px] max-[440px]:h-[27px]
-        max-[440px]:leading-[140%] max-[440px]:tracking-[0]
-        max-[440px]:font-semibold max-[440px]:mx-auto max-[440px]:whitespace-nowrap font-inter">
-              <span className="text-[#007B82]">02</span> For Professional Use
-            </h3>
-            <img
-              src={sec13Img1}
-              alt="Professional Use"
-              className="rounded-lg shadow-md w-full object-cover
-        max-[440px]:w-[180px] max-[440px]:h-[180px] max-[440px]:rounded-[7.41px] max-[440px]:mx-auto"
-            />
-            <p className="font-normal text-[19px] leading-[200%] max-w-sm text-center
-        max-[440px]:w-[180px] max-[440px]:h-[68px] max-[440px]:text-[12px]
-        max-[440px]:leading-[140%] max-[440px]:tracking-[0] max-[440px]:mx-auto font-inter">
-              Impress clients instantly by showcasing stunning design
-              transformations while saving time on every project.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      
-      <section className="relative w-full min-h-[612px] flex justify-center items-center px-6 py-16
-  bg-center bg-cover bg-no-repeat 
-  max-sm:min-h-[330px] max-sm:px-5 max-sm:py-10"
-        style={{ backgroundImage: "url('/home/sec8/Bg.png')" }}>
-
-       
-        <div className="absolute inset-0 bg-[#000000cc] z-0"></div>
-
-       
-        <div
-          className="relative z-10 w-full max-w-[836px] h-[264px] flex flex-col justify-center items-center gap-6 px-[30px] py-10 rounded-[20px] max-sm:hidden"
+   {/* Right Div */}
+<div
+  ref={ref4}
+  className="w-full md:w-1/3 flex flex-col md:flex-col max-[639px]:flex-row max-[639px]:justify-center max-[639px]:gap-4 gap-6 sm:gap-8 md:gap-[105px] items-center md:items-end"
+>
+  {/* 45+ Div */}
+  <div className="w-full max-w-[240px] sm:max-w-[260px] md:max-w-[280px] h-[181px] border border-white max-[639px]:max-w-[140px] max-[639px]:h-[140px]">
+    <div className="w-full max-w-[200px] sm:max-w-[220px] md:max-w-[224px] mx-auto h-[149px] flex flex-col items-center justify-between max-[639px]:h-[110px]">
+      {/* Top Text */}
+      <div className="w-full h-[115px] flex items-center justify-center max-[639px]:h-[80px]">
+        <p
+          className="text-5xl sm:text-6xl md:text-[82px] font-medium leading-[140%] text-center max-[639px]:text-3xl"
           style={{
-            background: 'rgba(255, 255, 255, 0.12)',
-            backdropFilter: 'blur(2px)',
-            border: '1px solid transparent',
-            borderRadius: '20px',
-            position: 'relative',
-            overflow: 'hidden'
+            fontFamily: 'Poppins',
+            background: "linear-gradient(104.83deg, #8A38F5 28.54%, #C22CA2 84.84%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent"
           }}
         >
-       
-          <div
-            className="absolute inset-0 rounded-[20px] pointer-events-none"
-            style={{
-              background: 'linear-gradient(276.41deg, #FFFFFF -0.87%, #999999 97.94%)',
-              padding: '2px',
-              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude'
-            }}
-          ></div>
-
-          <h1 className="text-[32px] font-semibold leading-[140%] text-center text-white font-inter max-md:text-[28px]">
-            Sign Up Quickly! Get <span className="text-[#00d1dd]">25%</span> Offer
-          </h1>
-
-          <div className="flex justify-between items-center w-full max-w-[405px] gap-4 max-md:flex-col max-md:gap-3">
-            <p className="text-[#FFFFFF] text-[18px] font-medium leading-[140%] max-md:text-[16px]"><span className="w-[8px] h-[8px] rounded-full bg-[#00B0BA] mr-3 inline-block"></span>30 free outputs</p>
-            <p className="text-[#FFFFFF] text-[18px] font-medium leading-[140%] max-md:text-[16px]"><span className="w-[8px] h-[8px] rounded-full bg-[#00B0BA] mr-3 inline-block"></span>No credit card required</p>
-          </div>
-
-          <Link to="/sign-up" className="w-full max-w-[406px]">
-            <div
-              className="w-full h-[54px] flex justify-center items-center rounded-xl text-[18px] font-semibold text-[#FFFFFF] max-md:h-[48px] max-md:text-[16px]"
-              style={{
-                backgroundImage: "linear-gradient(to right, #007c82 0%, rgb(4, 68, 75), rgb(3, 89, 94) 100%)",
-              }}
-            >
-              <span className="mr-[6px]">Start Free Trial</span>
-              <img
-                src={Frame}
-                alt="upload"
-                className="w-[24px] h-[24px] object-contain"
-              />
-            </div>
-          </Link>
-        </div>
-
-        <div className="relative z-10 w-full max-w-[371px] min-h-[250px] bg-[#00000099] backdrop-blur-[2px] flex flex-col justify-center items-center gap-3 rounded-[12px] p-6 sm:hidden
-  "style={{
-            background: 'rgba(255, 255, 255, 0.12)',
-            backdropFilter: 'blur(2px)',
-            border: '1px solid transparent',
-            borderRadius: '20px',
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
-          <h1 className="text-[18px] font-semibold leading-[140%] text-center text-white font-inter">
-            Sign Up Quickly! Get <span className="text-[#00d1dd]">25%</span> Offer
-          </h1>
-          <ul className="flex flex-col gap-3 w-full items-center">
-            <li className="text-white text-[13px] font-[500] leading-[140%] flex items-center before:content-[''] before:inline-block before:w-[6px] before:h-[6px] before:bg-[#007B82] before:rounded-full before:mr-2">
-              30 free outputs
-            </li>
-            <li className="text-white text-[13px] font-[500] leading-[140%] flex items-center before:content-[''] before:inline-block before:w-[6px] before:h-[6px] before:bg-[#007B82] before:rounded-full before:mr-2">
-              No credit card required
-            </li>
-          </ul>
-          <Link to="/sign-up" className="w-full max-w-[258px]">
-            <div className="w-full h-[45px] flex justify-center items-center rounded-[8px] border border-white text-[16px] font-[700] text-white px-5"
-              style={{
-                background: "linear-gradient(to right, #00B0BA 0%, #000000 50%, #007B82 100%)"
-              }}>
-              Signup
-            </div>
-          </Link>
-        </div>
-      </section> */}
-
-      {/* Section 9 */}
-
-      {/* <section
-        className="max-w-[100vw] flex flex-col justify-center items-center gap-[50px] p-5 py-32
-             max-[440px]:flex-col max-[440px]:w-[440px] max-[440px]:h-auto 
-             max-[440px]:pt-[40px] max-[440px]:pr-[20px] max-[440px]:pb-[40px] max-[440px]:pl-[20px]
-             max-[440px]:gap-[45px]"
-      >
-        <h1
-          className="max-w-[1320px] w-full min-w-[134px] md:text-5xl text-3xl font-semibold leading-[140%] mb-[80px] text-center text-black
-               max-[440px]:w-[392px] max-[440px]:h-[56px] max-[440px]:text-[20px] max-[440px]:leading-[140%] 
-               max-[440px]:font-[600] max-[440px]:text-center max-[440px]:mx-auto"
-        >
-          Plan Your Future{" "}
-          <span className="text-[#007B82]">Interiors, Exteriors, </span> and{" "}
-          <span>Outdoor Spaces </span>with{" "}
-          <span className="text-[rgb(5,128,128)]">Stackly</span>
-        </h1>
-
-        <img
-          className="max-w-[1115px] h-auto w-full 
-               max-[440px]:w-[380.3px] max-[440px]:h-[323px]"
-          src={sec9Frame}
-          alt="section 9 frame image"
-        />
-      </section> */}
-
-
-      {/* Section 10 */}
-
-      {/* <section className="max-w-[100vw] min-h-[926px] flex flex-col justify-center items-center gap-[30px]">
-        <h1 className="max-w-[1320px] min-h-[67px] w-full text-[48px] font-semibold leading-[140%] text-center text-black">
-          Compare Design, Find Your{" "}
-          <span className="text-[#007B82]">Perfect style</span>
-        </h1>
-        <p className="max-w-[736px] w-full min-h-[72px] text-lg font-semibold leading-[200%] text-center text-[#B0B0B0]">
-          Explore and compare multiple interior, exterior, and outdoor designs
-          to discover the one that matches your unique taste.
+          <span ref={counter45Ref}>0+</span>
         </p>
-        <div className="flex justify-center items-center max-[1000px]:flex-wrap gap-2.5 p-5">
-          <div className="max-w-[577px]  flex flex-col justify-center items-center gap-6 bg-[white] shadow-[0_0_4px_0_#00000040] px-[18px] py-[30px] rounded-[10px]">
-            <img
-              className="max-w-[541px]  w-full"
-              src={sec10Img1}
-              alt="image1"
-            />
-            <p className="max-w-[541px] min-h-[72px] w-full text-center text-[17px] font-semibold leading-[140%] text-black">
-              <span className="text-[#007B82]">
-                "Your style is sleek and sophisticated.{" "}
-              </span>
-              This brown-themed office design blends modern functionality with
-              warm, earthy tones—perfect for a productive and stylish
-              workspace."
-            </p>
-          </div>
-
-          <div className="max-w-[577px]  flex flex-col justify-center items-center gap-6 bg-[white] shadow-[0_0_4px_0_#00000040] px-[18px] py-[30px] rounded-[10px]">
-            <img
-              className="max-w-[541px]  w-full"
-              src={sec10Img2}
-              alt="image2"
-            />
-            <p className="max-w-[541px] min-h-[72px] w-full text-center text-[17px] font-semibold leading-[140%] text-black">
-              <span className="text-[#007B82]">
-                "Embrace comfort with a touch of elegance.
-              </span>{" "}
-              This brown-themed lounge offers a cozy yet professional
-              atmosphere, balancing work and relaxation effortlessly."
-            </p>
-          </div>
-        </div>
-      </section> */}
-      {/* <section
-        className="w-[1440px] h-[1000px] flex flex-col justify-center items-center gap-[18px] px-6
-    max-[440px]:w-[440px] max-[440px]:h-[auto] max-[440px]:min-h-[521px]
-    max-[440px]:pt-[20px] max-[440px]:pr-[20px] max-[440px]:pb-[40px] max-[440px]:pl-[20px] max-[440px]:gap-[18px] overflow-hidden"
-      >
-        <h1
-          className="max-w-[1320px] min-h-[67px] mt-[-30px] w-full text-[32px] font-semibold leading-[140%] text-center text-black
-      max-[440px]:w-[344px] max-[440px]:h-[56px] max-[440px]:text-[25px]
-      max-[440px]:font-[600] max-[440px]:leading-[140%] max-[440px]:text-center max-[440px]:mx-auto"
-        >
-          Compare Design, Find Your{" "}
-          <span className="text-[#007B82]">Perfect style</span>
-        </h1>
-
+      </div>
+      {/* Bottom Text */}
+      <div className="w-full h-[34px] flex items-center justify-center max-[639px]:h-[24px]">
         <p
-          className="max-w-[1280px] w-full min-h-[72px] text-[20px] font-medium leading-[150%] text-center
-      max-[440px]:w-[400px] max-[440px]:h-auto max-[440px]:text-[14px]
-      max-[440px]:leading-[140%] max-[440px]:font-[400] max-[440px]:text-center max-[440px]:mx-auto"
+          className="text-lg sm:text-xl md:text-[24px] font-normal leading-[140%] text-white text-center max-[639px]:text-sm"
+          style={{ fontFamily: 'Poppins' }}
         >
-          Explore and compare multiple interior, exterior, and outdoor designs
-          to discover the one that matches your unique taste.
+          Design Styles
         </p>
-
-        <div
-          className="flex justify-center items-center gap-5 p-5 flex-wrap
-      max-[440px]:flex-nowrap max-[440px]:w-[400px] max-[440px]:gap-[10px] max-[440px]:overflow-x-auto max-[440px]:overflow-y-hidden max-[440px]:scrollbar-none"
-        >
-          {[
-            {
-              img: sec10Img1,
-              text: `"Your style is sleek and sophisticated. This brown-themed office design blends modern functionality with warm, earthy tones—perfect for a productive and stylish workspace."`,
-            },
-            {
-              img: sec10Img2,
-              text: `"Embrace comfort with a touch of elegance. This brown-themed lounge offers a cozy yet professional atmosphere, balancing work and relaxation effortlessly."`,
-            },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="group max-w-[577px] w-full bg-white shadow-[0_0_4px_0_#00000040] rounded-[10px] overflow-hidden transition-all duration-500
-          max-[440px]:w-[190px] max-[440px]:h-[300px] max-[440px]:flex max-[440px]:flex-col
-          max-[440px]:rounded-[5.7px] max-[440px]:border max-[440px]:border-[0.57px]
-          max-[440px]:px-[10px] max-[440px]:py-[10px] max-[440px]:gap-[10px] shrink-0"
-            >
-              // Image 
-              <div className="overflow-hidden">
-                <img
-                  src={item.img}
-                  alt={`image${index}`}
-                  className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-              //Text
-              <div
-                className="max-h-0 opacity-0 group-hover:max-h-[400px] group-hover:opacity-100 
-            transition-all duration-500 ease-in-out p-5 
-            max-[440px]:max-h-full max-[440px]:opacity-100 max-[440px]:p-0"
-              >
-                <p className="text-center text-[18px] font-semibold leading-[140%] text-black max-[440px]:text-[12px] max-[440px]:px-[2px]">
-                  <span className="text-[#007B82]">
-                    {item.text.split(".")[0]}.
-                  </span>
-                  {item.text.slice(item.text.indexOf(".") + 1)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section> */}
-
-{/* <section
-  className="w-full max-w-[1440px] h-[867px] flex flex-col justify-center items-center gap-[18px] px-6 overflow-hidden mx-auto
-    max-[440px]:w-[440px] max-[440px]:h-auto max-[440px]:min-h-[521px]
-    max-[440px]:pt-[20px] max-[440px]:pr-[20px] max-[440px]:pb-[40px] max-[440px]:pl-[20px] max-[440px]:gap-[18px]"
->
- 
-  <div className="flex flex-col items-center gap-[18px] w-full">
-    <h1
-      className="max-w-[1320px] w-full text-[32px] font-semibold leading-[140%] text-center text-black
-        max-[440px]:w-[344px] max-[440px]:text-[25px]
-        max-[440px]:font-[600] max-[440px]:leading-[140%] max-[440px]:text-center mx-auto"
-    >
-      Compare Design, Find Your{" "}
-      <span className="text-[#007B82]">Perfect style</span>
-    </h1>
-
-    <p
-      className="max-w-[1280px] w-full text-[20px] font-medium leading-[150%] text-center text-[#333]
-        max-[440px]:w-[400px] max-[440px]:text-[14px]
-        max-[440px]:leading-[140%] max-[440px]:font-[400] max-[440px]:text-center mx-auto"
-    >
-      Explore and compare multiple interior, exterior, and outdoor designs
-      to discover the one that matches your unique taste.
-    </p>
-  </div>
-
-  <div
-    className="flex justify-center items-center gap-5 p-5 flex-wrap w-full
-      max-[440px]:flex-nowrap max-[440px]:w-[400px] max-[440px]:gap-[10px] max-[440px]:overflow-x-auto max-[440px]:scrollbar-none"
-  >
-    {[
-      {
-        img: sec10Img1,
-        text: `"Your style is sleek and sophisticated. This brown-themed office design blends modern functionality with warm, earthy tones—perfect for a productive and stylish workspace."`,
-      },
-      {
-        img: sec10Img2,
-        text: `"Embrace comfort with a touch of elegance. This brown-themed lounge offers a cozy yet professional atmosphere, balancing work and relaxation effortlessly."`,
-      },
-    ].map((item, index) => (
-      <div
-        key={index}
-        className="group max-w-[577px] w-full bg-white shadow-[0_0_4px_0_#00000040] rounded-[10px] overflow-hidden transition-all duration-500
-          max-[440px]:w-[190px] max-[440px]:h-[300px] max-[440px]:flex max-[440px]:flex-col
-          max-[440px]:rounded-[5.7px] max-[440px]:border max-[440px]:border-[0.57px]
-          max-[440px]:px-[10px] max-[440px]:py-[10px] max-[440px]:gap-[10px] shrink-0"
-      >
-       
-        <div className="overflow-hidden h-[calc(100%-100px)]">
-          <img
-            src={item.img}
-            alt={`image${index}`}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-
-       
-        <div
-          className="h-[100px] p-5 transition-all duration-500 ease-in-out transform translate-y-0
-            max-[440px]:p-0 max-[440px]:h-auto"
-        >
-          <p className="text-center text-[18px] font-semibold leading-[140%] text-black max-[440px]:text-[12px] max-[440px]:px-[2px]">
-            <span className="text-[#007B82]">
-              {item.text.split(".")[0]}.
-            </span>
-            {item.text.slice(item.text.indexOf(".") + 1)}
-          </p>
-        </div>
       </div>
-    ))}
-  </div>
-</section> */}
-
-{/* <section
-  className="w-full max-w-[1440px] h-[867px] flex flex-col justify-center items-center gap-[18px] px-6 overflow-hidden mx-auto
-    max-[440px]:w-full max-[440px]:h-auto max-[440px]:min-h-[521px]
-    max-[440px]:pt-[20px] max-[440px]:px-[20px] max-[440px]:pb-[40px] max-[440px]:gap-[18px]"
->
-  //Heading & Subheading 
-  <div className="flex flex-col items-center gap-[18px] w-full">
-    <h1 className="max-w-[1320px] w-full text-[32px] font-semibold leading-[140%] text-center text-black
-      max-[440px]:w-[344px] max-[440px]:text-[25px]
-      max-[440px]:font-[600] max-[440px]:leading-[140%] max-[440px]:text-center mx-auto">
-      Compare Design, Find Your <span className="text-[#007B82]">Perfect style</span>
-    </h1>
-
-    <p className="max-w-[1280px] w-full text-[20px] font-medium leading-[150%] text-center text-[#333]
-      max-[440px]:w-[400px] max-[440px]:text-[14px]
-      max-[440px]:leading-[140%] max-[440px]:font-[400] max-[440px]:text-center mx-auto">
-      Explore and compare multiple interior, exterior, and outdoor designs
-      to discover the one that matches your unique taste.
-    </p>
+    </div>
+    <div className="w-full max-w-[230px] sm:max-w-[250px] md:max-w-[269px] h-[52px] border border-white max-[639px]:h-[36px]">
+      <img src={Line} alt="Sideline" className="w-full h-full object-contain" />
+    </div>
   </div>
 
-  //Card List
-  <div
-    className="flex justify-center items-center gap-5 p-5 w-full flex-wrap
-      max-[440px]:flex-nowrap max-[440px]:gap-[10px] max-[440px]:w-full max-[440px]:overflow-hidden"
-  >
-    {[{
-      img: sec10Img1,
-      text: `"Your style is sleek and sophisticated. This brown-themed office design blends modern functionality with warm, earthy tones—perfect for a productive and stylish workspace."`,
-    }, {
-      img: sec10Img2,
-      text: `"Embrace comfort with a touch of elegance. This brown-themed lounge offers a cozy yet professional atmosphere, balancing work and relaxation effortlessly."`,
-    }].map((item, index) => (
-      <div
-        key={index}
-        className="group max-w-[577px] w-full bg-white shadow-[0_0_4px_0_#00000040] rounded-[10px] overflow-hidden transition-all duration-500
-          max-[440px]:w-[50%] max-[440px]:h-[300px] max-[440px]:flex max-[440px]:flex-col
-          max-[440px]:rounded-[5.7px] max-[440px]:border max-[440px]:border-[0.57px]
-          max-[440px]:px-[6px] max-[440px]:py-[10px] max-[440px]:gap-[10px] shrink-0"
-      >
-       // Image 
-        <div className="overflow-hidden h-[calc(100%-100px)] max-[440px]:h-[150px]">
-          <img
-            src={item.img}
-            alt={`image${index}`}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-
-        // Text 
-        <div className="h-[100px] p-5 transition-all duration-500 ease-in-out transform translate-y-0
-          max-[440px]:p-[6px] max-[440px]:h-auto">
-          <p className="text-center text-[18px] font-semibold leading-[140%] text-black max-[440px]:text-[12px] max-[440px]:px-[2px]">
-            <span className="text-[#007B82]">{item.text.split(".")[0]}.</span>
-            {item.text.slice(item.text.indexOf(".") + 1)}
-          </p>
-        </div>
+  {/* 100+ Div */}
+  <div className="w-full max-w-[240px] sm:max-w-[260px] md:max-w-[280px] h-[175px] border border-white max-[639px]:max-w-[140px] max-[639px]:h-[130px]">
+    <div className="w-full max-w-[200px] sm:max-w-[220px] md:max-w-[224px] mx-auto h-[149px] flex flex-col items-center justify-between max-[639px]:h-[105px]">
+      {/* Top Text */}
+      <div className="w-full h-[115px] flex items-center justify-center max-[639px]:h-[75px]">
+        <p
+          className="text-5xl sm:text-6xl md:text-[82px] font-medium leading-[140%] text-center max-[639px]:text-3xl"
+          style={{
+            fontFamily: 'Poppins',
+            background: "linear-gradient(104.83deg, #8A38F5 28.54%, #C22CA2 84.84%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent"
+          }}
+        >
+          <span ref={counter100Ref}>0+</span>
+        </p>
       </div>
-    ))}
+      {/* Bottom Text */}
+      <div className="w-full h-[34px] flex items-center justify-center max-[639px]:h-[24px]">
+        <p
+          className="text-lg sm:text-xl md:text-[24px] font-normal leading-[140%] text-white text-center max-[639px]:text-sm"
+          style={{ fontFamily: 'Poppins' }}
+        >
+          Happy Users
+        </p>
+      </div>
+    </div>
+    <div className="w-full max-w-[230px] sm:max-w-[250px] md:max-w-[269px] h-[52px] border border-white max-[639px]:h-[36px]">
+      <img src={Line} alt="Sideline" className="w-full h-full object-contain" />
+    </div>
+  </div>
+</div>
+
   </div>
 </section>
- */}
 
 
-      {/* <div className="flex justify-center items-center max-[1000px]:flex-wrap gap-2.5 p-5">
-          <div className="max-w-[577px]  flex flex-col justify-center items-center gap-6 bg-[white] shadow-[0_0_4px_0_#00000040] px-[18px] py-[30px] rounded-[10px]">
-            <img
-              className="max-w-[541px]  w-full"
-              src={sec10Img1}
-              alt="image1"
-            />
-            <p className="max-w-[541px] min-h-[72px] w-full text-center text-[17px] font-semibold leading-[140%] text-black">
-              <span className="text-[#007B82]">
-                "Your style is sleek and sophisticated.{" "}
-              </span>
-              This brown-themed office design blends modern functionality with
-              warm, earthy tones—perfect for a productive and stylish
-              workspace."
-            </p>
-          </div>
-
-          <div className="max-w-[577px]  flex flex-col justify-center items-center gap-6 bg-[white] shadow-[0_0_4px_0_#00000040] px-[18px] py-[30px] rounded-[10px]">
-            <img
-              className="max-w-[541px]  w-full"
-              src={sec10Img2}
-              alt="image2"
-            />
-            <p className="max-w-[541px] min-h-[72px] w-full text-center text-[17px] font-semibold leading-[140%] text-black">
-              <span className="text-[#007B82]">
-                "Embrace comfort with a touch of elegance.
-              </span>{" "}
-              This brown-themed lounge offers a cozy yet professional
-              atmosphere, balancing work and relaxation effortlessly."
-            </p>
-          </div>
-        </div> */}
-      {/* <section
-        className="w-full min-h-[200px] py-10 px-4 bg-[#007B8212] flex flex-col md:flex-row justify-center items-center flex-wrap gap-6
-             max-[440px]:flex-col max-[440px]:w-[440px] max-[440px]:h-auto max-[440px]:py-[20px] max-[440px]:px-[20px] max-[440px]:gap-[20px]"
-      >
-        <h2
-          className="text-black text-center md:text-left text-2xl md:text-3xl font-medium max-w-[900px]
-               max-[440px]:w-[400px] max-[440px]:h-[20px] max-[440px]:text-[14px]
-               max-[440px]:leading-[140%] max-[440px]:font-[500] max-[440px]:text-center"
-        >
-          Get started with 10 free outputs – No credit card needed!
-        </h2>
-
-        <Link
-          to="/Sign-in"
-          className="max-w-[406px] min-h-[60px] rounded-[5px] text-white font-bold px-16 py-5 rounded-md 
-               flex justify-center items-center 
-             max-[440px]:w-[170px] max-[440px]:h-[45px] max-[440px]:rounded-[4px] 
-             max-[440px]:py-0 max-[440px]:px-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, #007c82 0%, rgb(4, 68, 75), rgb(3, 89, 94) 100%)",
-          }}
-        >
-          <span
-            className="max-[440px]:w-[116px] max-[440px]:h-[20px] max-[440px]:text-[16px] 
-               max-[440px]:font-[700] max-[440px]:leading-[19.7px] max-[440px]:text-center"
-          >
-            Start Free Trial
-          </span>
-        </Link>
-      </section> */}
-
-      {/* {section:11} */}
-
-      {/* <ImageSlider /> */}
-
-      {/* Section: Community Showcase */}
-
-      {/* {section-12} */}
-
-
-      {/* {section-13} */}
-      {/* <section className="w-full py-16 px-4 flex flex-col justify-center items-center mt-20 max-[440px]:hidden">
-        <h2 className="text-[48px] md:text-5xl font-semibold text-center text-gray-800 leading-[140%]">
-          Discover Our <span className="text-[#007B82]">Advanced AI Interior Tools</span> and Redesign
-        </h2>
-        <h2 className="text-[48px] md:text-5xl font-semibold text-center text-black mt-3">
-          Your Space Instantly
-        </h2>
-      </section> */}
-
-
-      {/* {section-14} */}
-
-      {/* <DraggableImageSection /> */}
-
-      {/* {section-15} */}
-
-
-
-      {/* {section-16} */}
-
-      {/* <section
-        className="relative w-full bg-cover bg-center bg-no-repeat
-    max-[440px]:w-[440px] 
-    max-[440px]:h-[573px] 
-    max-[440px]:object-cover"
-        style={{ backgroundImage: "url('./src/assets/home/sec14/bg1.jpg')" }}
-      >
-        <div
-          className="py-20 px-6 bg-[#00000096]
-      max-[440px]:w-[440px] 
-      max-[440px]:h-[573px]"
-        >
-          <div className="flex flex-col items-center text-center text-white relative max-[440px]:top-[-24px]">
-            <h2
-              className="text-[32px] md:text-5xl leading-[140%] text-center font-bold mb-4 
-          max-[440px]:flex 
-          max-[440px]:flex-row 
-          max-[440px]:items-center 
-          max-[440px]:justify-center 
-          max-[440px]:gap-[14px] 
-          max-[440px]:w-[400px] 
-          max-[440px]:h-[22px] 
-          max-[440px]:text-[16px] 
-          max-[440px]:leading-[140%] 
-          max-[440px]:font-semibold 
-          max-[440px]:tracking-[0px] 
-          max-[440px]:font-['Inter']"
-            >
-              <span
-                className="text-6xl font-bold 
-            max-[440px]:text-[16px] 
-            max-[440px]:w-[14px] 
-            max-[440px]:h-[10.94px] 
-            max-[440px]:relative 
-            max-[440px]:top-[1.31px]"
-              >
-                “
-              </span>
-
-              <span className="max-[440px]:w-[149px] max-[440px]:h-[22px] max-[440px]:text-center">
-                Meet Our Members
-              </span>
-
-              <span
-                className="text-6xl font-bold 
-            max-[440px]:text-[16px] 
-            max-[440px]:w-[14px] 
-            max-[440px]:h-[14px] 
-            max-[440px]:inline-block 
-            max-[440px]:transform 
-            max-[440px]:-rotate-180"
-              >
-                ”
-              </span>
-            </h2>
-
-           
-            <div className="hidden md:flex items-center gap-4 mb-8">
-              <div className="w-[60px] h-[60px] rounded-full flex justify-center items-center bg-[#FFFFFF1F] p-3 shadow-lg">
-                <img src={sec14Img2} alt="logo" className="w-full h-full object-contain" />
-              </div>
-              <p className="text-[24px] text-gray-300 font-medium font-['Inter'] leading-[140%]">
-                You're in good company with{" "}
-                <span className="text-cyan-400 font-semibold">Stackly AI</span>, trusted by people in all 195 countries.
-              </p>
-            </div>
-
-         
-            <div className="md:hidden mb-16">
-              <p
-                className="text-[14px] leading-[140%] font-medium text-center text-gray-300 mt-1 w-[400px] mx-auto"
-              >
-                You're in good company with{" "}
-                <span className="text-cyan-400 font-semibold">Stackly AI</span>,<br />
-                trusted by people in all 195 countries.
-              </p>
-              <div
-                className="bg-[#FFFFFF1F] rounded-full p-8 mt-3 shadow-lg flex items-center justify-center
-            max-[440px]:w-[52px]
-            max-[440px]:h-[52px]
-            max-[440px]:rounded-[47.27px]
-            max-[440px]:p-0 mx-auto"
-              >
-                <img
-                  src={sec14Img2}
-                  alt="Center Icon"
-                  className="w-12 h-12
-              max-[440px]:w-[29.91px]
-              max-[440px]:h-[27.18px]"
-                />
-              </div>
-            </div>
-
-
-            <div className="w-[100vw] flex justify-center items-center flex-wrap gap-10 max-[440px]:hidden">
-
-             
-              <div className="max-w-[413px] min-h-[242px] bg-white rounded-[12px] p-10 flex flex-col items-center">
-
-                <div className="min-w-[413px] h-full flex justify-around items-center">
-                  <div className="max-w-[206px] min-h-[64px] flex flex-col items-start gap-1">
-                    <h3 className="text-black text-[18px] font-bold leading-[140%]">
-                      Guru Ragav Auditor
-                    </h3>
-                    <p className="text-[#b0b0b0] font-[400] text-[16px] leading-[140%]">
-                      Auditor
-                    </p>
-                  </div>
-                  <img src={sec14Img3} alt="Member 1" className="w-20 h-20 rounded-full object-cover" />
-                </div>
-
-                <p className="text-[#2A2A2A] font-[400] text-[16px] leading-[140%] mt-10">
-                  “I use Stackly AI to help my clients visualize how their backyard could look like if they hire me for the job. It works flawlessly!”
-                </p>
-              </div>
-
-              <div className="max-w-[413px] min-h-[286px] bg-white rounded-[12px] p-10 flex flex-col items-center">
-
-                <div className="min-w-[413px] h-full flex justify-around items-center">
-                  <div className="max-w-[206px] min-h-[64px] flex flex-col items-start gap-1">
-                    <h3 className="text-black text-[18px] font-bold leading-[140%]">
-                      Cristian Rama
-                    </h3>
-                    <p className="text-[#b0b0b0] font-[400] text-[16px] leading-[140%]">
-                      Architect
-                    </p>
-                  </div>
-                  <img src={sec14Img4} alt="Member 2" className="w-20 h-20 rounded-full object-cover" />
-                </div>
-
-                <p className="text-[#2A2A2A] font-[400] text-[16px] leading-[140%] mt-10">
-                  “I needed to replace my living room furniture so I generated a few design ideas with Stackly AI. I picked my favorite, sent it to the furniture maker and now I have it in real life. Awesome technology!”
-                </p>
-              </div>
-
-           
-              <div className="max-w-[413px] min-h-[286px] bg-white rounded-[12px] p-10 flex flex-col items-center">
-
-                <div className="min-w-[413px] h-full flex justify-around items-center">
-                  <div className="max-w-[206px] min-h-[64px] flex flex-col items-start gap-1">
-                    <h3 className="text-black text-[18px] font-bold leading-[140%]">
-                      Ram Krishnan
-                    </h3>
-                    <p className="text-[#b0b0b0] font-[400] text-[16px] leading-[140%]">
-                      Architect
-                    </p>
-                  </div>
-                  <img src={sec14Img5} alt="Member 3" className="w-20 h-20 rounded-full object-cover" />
-                </div>
-
-                <p className="text-[#2A2A2A] font-[400] text-[16px] leading-[140%] mt-10">
-                  “I run a real estate agency and a lot of my clients send me pictures with their empty properties. I use Stackly AI to furnish them automatically. It has become an indispensable tool for us.”
-                </p>
-              </div>
-
-            </div> */}
-
-
-            {/* MOBILE < */}
-
-
-{/*         
-            <div
-              className="hidden max-[440px]:flex flex-col items-center w-full px-4 pb-8 max-[440px]:-mt-10"
-              style={{
-                overflowX: 'hidden',
-                touchAction: 'pan-y',
-                userSelect: 'none',
-              }}
-            >
-
-              <div className="relative overflow-hidden w-[349px] mx-auto">
-             
-                <div
-                  className="flex transition-transform duration-300 ease-in-out"
-                  style={{ transform: `translateX(-${currentCardIndex * 100}%)` }}
-                >
-                  {mobileCards.map((card) => (
-                    <div
-                      key={card.id}
-                      className="min-w-[349px] h-[210px] bg-white rounded-[8px] p-4 flex flex-col gap-[20px]"
-                    >
-                      <div className="w-full flex justify-between items-center">
-                        <div className="flex flex-col gap-[8px] items-start">
-                          <h3 className="text-black h-[22px] font-['Inter'] font-[500] text-[16px] leading-[140%] tracking-[0]">
-                            {card.name}
-                          </h3>
-
-                          <p className="text-[#b0b0b0] h-[20px] font-['Inter'] font-[400] text-[14px] leading-[140%] tracking-[0]">
-                            {card.role}
-                          </p>
-                        </div>
-                        <img
-                          src={card.image}
-                          alt={card.name}
-                          className="w-[48px] h-[48px] rounded-full object-cover"
-                        />
-
-                      </div>
-                      <p className="text-[#2A2A2A] w-[317px] h-[60px] font-['Inter'] font-[400] text-[14px] leading-[140%] tracking-[0]">
-                        "{card.quote}"
-                      </p>
-
-                    </div>
-                  ))}
-                </div>
-
-               
-                <div className="flex items-center justify-center gap-4 mt-6 w-full">
-                 
-                  <button
-                    onClick={prevCard}
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                    aria-label="Previous testimonial"
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M15 18L9 12L15 6"
-                        stroke="#2A2A2A"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-
-                 
-                  <div className="flex gap-2">
-                    {mobileCards.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentCardIndex(index)}
-                        className={`w-[12px] h-[12px] rounded-full transition-colors ${index === currentCardIndex ? 'bg-gray-300' : 'bg-gray-800'
-                          }`}
-                        aria-label={`Go to testimonial ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-
-                 
-                  <button
-                    onClick={nextCard}
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                    aria-label="Next testimonial"
-                  >
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M9 18L15 12L9 6"
-                        stroke="#2A2A2A"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section> */}
-
-      
-      
-
-      {/* {section faq} */}
-
-      {/* {section-15} */}
-
+  
+{/* SECTION 7 */}
       <FAQ faqs={faqs} />
+
+      {/* SECTION 8 */}
+
 <section
-  className="relative w-full max-w-full h-[316px] opacity-100 mx-auto bg-cover bg-center"
+  className="relative w-full h-[316px] md:h-[300px] sm:h-[260px] xs:h-[240px] 
+             max-[640px]:h-[210px] max-[480px]:h-[200px] bg-cover bg-center"
   style={{ backgroundImage: `url(${Bfooter})` }}
 >
-<div className="absolute top-[63px] left-1/2 transform -translate-x-1/2 w-[737px] h-[190px] flex flex-col items-center gap-[24px] opacity-100">
+
+  <div
+  className="absolute top-[20%] sm:top-[22%] md:top-[22%] xs:top-[20%] 
+             max-[640px]:top-1/2 transform -translate-x-1/2 max-[640px]:-translate-y-1/2
+             left-1/2 w-[90%] max-w-[737px] flex flex-col items-center gap-2 xs:gap-3 sm:gap-4 md:gap-6 lg:gap-[24px]"
+>
+
 
     {/* Heading Text */}
     <div
-      className="w-[484px] h-[45px] text-center text-white text-[32px] leading-[140%] font-[500] whitespace-nowrap"
+      className="text-center text-white text-[16px] xs:text-[18px] sm:text-[20px] md:text-[24px] lg:text-[32px] font-[500] leading-[130%] xs:leading-[135%] sm:leading-[140%] md:leading-[140%]"
       style={{ fontFamily: 'Poppins' }}
     >
       Sign Up Quickly! Get
       <span className="bg-gradient-to-r from-[#C22CA2] to-[#8A38F5] font-bold text-transparent bg-clip-text"> 25%</span> Offer
     </div>
-{/* Combined Info Row */}
-<div className="flex items-center justify-center gap-[30px] opacity-100">
+
+    {/* Combined Info Row */}
+ <div className="flex flex-row items-center justify-center gap-6">
   {/* 30 Free Outputs */}
-  <div className="flex items-center gap-[8px]">
-    <div className="w-[8px] h-[8px] rounded-full bg-[#C22CA2]"></div>
-    <div
-      className="text-white text-[18px] leading-[140%] font-[500]"
-      style={{ fontFamily: 'Inter' }}
-    >
+  <div className="flex items-center gap-1 xs:gap-2 sm:gap-[4px]">
+    <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-[6px] sm:h-[6px] rounded-full bg-[#C22CA2]"></div>
+    <div className="text-white text-[12px] xs:text-[14px] sm:text-[16px] font-[500]" style={{ fontFamily: 'Inter' }}>
       30 free outputs
     </div>
   </div>
 
   {/* No Credit Card Required */}
-  <div className="flex items-center gap-[8px]">
-    <div className="w-[8px] h-[8px] rounded-full bg-[#C22CA2]"></div>
-    <div
-      className="text-white text-[18px] leading-[140%] font-[500]"
-      style={{ fontFamily: 'Inter' }}
-    >
+  <div className="flex items-center gap-1 xs:gap-2 sm:gap-[4px]">
+    <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-[6px] sm:h-[6px] rounded-full bg-[#C22CA2]"></div>
+    <div className="text-white text-[12px] xs:text-[14px] sm:text-[16px] font-[500]" style={{ fontFamily: 'Inter' }}>
       No credit card required
     </div>
   </div>
 </div>
 
+
     {/* Button */}
-  
-   <Link to="/sign-in">
-  <div
-    className="w-[207px] h-[44px] flex items-center justify-center gap-[10px] px-[30px] py-[10px] rounded-[30px] border border-white"
-    style={{
-      background:
-        "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)",
-      opacity: 1,
-    }}
-  >
-    <span
-      className="text-white text-[16px] leading-[100%] font-[500]"
-      style={{ fontFamily: "Inter" }}
-    >
-      Start Free Trial
-    </span>
-    <div className="w-[24px] h-[24px] opacity-100">
-      <img src={Frame} alt="icon" className="w-full h-full" />
-    </div>
-  </div>
-</Link>
+    <Link to="/sign-in">
+      <div
+        className="flex items-center justify-center gap-1 xs:gap-2 sm:gap-[8px] px-4 xs:px-5 sm:px-6 py-1 xs:py-2 sm:py-3 rounded-[30px] border border-white"
+        style={{
+          background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)",
+        }}
+      >
+        <span className="text-white text-[12px] xs:text-[14px] sm:text-[16px] font-[500]" style={{ fontFamily: "Inter" }}>
+          Start Free Trial
+        </span>
+        <div className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6">
+          <img src={Frame} alt="icon" className="w-full h-full" />
+        </div>
+      </div>
+    </Link>
 
   </div>
 </section>
-
 
 
 

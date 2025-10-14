@@ -16,11 +16,12 @@ export default function Header() {
   const [activePlan, setActivePlan] = useState("Basic");
   const [showSideBar, setShowSideBar] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-
+const [profileUpdated, setProfileUpdated] = useState(false);
   const [screenSize, setScreenSize] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 1200,
     isMobile: typeof window !== "undefined" ? window.innerWidth < 640 : false,
   });
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,41 +35,46 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (userInfo.userId) {
-        const token = localStorage.getItem("token");
-        try {
-          const profileResponse = await axios.get("http://localhost:8000/profile", {
-            params: { userid: userInfo.userId },
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const profilePicUrl = profileResponse.data.profile_pic
-            ? profileResponse.data.profile_pic.startsWith("/media/profile_pics")
-              ? `http://localhost:8000${profileResponse.data.profile_pic}`
-              : profileResponse.data.profile_pic
-            : profile;
-          setProfilePic(profilePicUrl);
+useEffect(() => {
+  if (!userInfo?.userId) return;
 
-          const subscriptionResponse = await axios.get("http://localhost:8000/subscription", {
-            params: { userid: userInfo.userId },
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setActivePlan(subscriptionResponse.data.current_plan || "Basic");
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setProfilePic(profile);
-          setActivePlan("Basic");
-        }
-      }
-    };
-    fetchUserData();
-  }, [userInfo.userId]);
+  const fetchUserData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const profileResponse = await axios.get("http://localhost:8000/profile", {
+        params: { userid: userInfo.userId },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const profilePicUrl = profileResponse.data.profile_pic
+        ? `http://localhost:8000${profileResponse.data.profile_pic}?t=${Date.now()}`
+        : profile;
+
+      setProfilePic(profilePicUrl);
+
+      const subscriptionResponse = await axios.get("http://localhost:8000/subscription", {
+        params: { userid: userInfo.userId },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setActivePlan(subscriptionResponse.data.current_plan || "Basic");
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+      setProfilePic(profile);
+      setActivePlan("Basic");
+    }
+  };
+
+  fetchUserData();
+}, [userInfo]);
 
   const hiddenPages = [
     "/sign-up", "/sign-in", "/otp", "/forgetpg", "/signupotp",
     "/resetpassword", "/resetpopup", "/signuppopup", "/heroforgetpg",
-    "/afterconformationpage", "/afterconformationpage1"
+    "/afterconformationpage", "/afterconformationpage1" , "/afterbilling" ,
+    "/afterpaymentprocessing" , "/afterpayment"
   ];
   const isHiddenPage = hiddenPages.includes(location.pathname.toLowerCase());
   if (isHiddenPage) return null;

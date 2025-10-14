@@ -161,7 +161,7 @@ export default function HeroProfile() {
       // Force page refresh after a short delay to allow toast notification
       setTimeout(() => {
         window.location.reload();
-      }, 1000); // 1.5 seconds delay to show toast
+      }, 1000);
 
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -222,14 +222,12 @@ export default function HeroProfile() {
       setUserData(prev => ({ 
         ...prev, 
         new_password: '', 
-
         confirm_password: '' 
       }));
 
-      // Force page refresh after a short delay to allow toast notification
       setTimeout(() => {
         window.location.reload();
-      }, 1500); // 1.5 seconds delay to show toast
+      }, 1500);
 
     } catch (error) {
       console.error('Error changing password:', error);
@@ -249,10 +247,9 @@ export default function HeroProfile() {
       setShowForgotPasswordModal(false);
       setForgotEmail("");
 
-      // Force page refresh after a short delay to allow toast notification
       setTimeout(() => {
         window.location.reload();
-      }, 1500); // 1.5 seconds delay to show toast
+      }, 1500);
 
     } catch (err) {
       toast.error(err.response?.data?.detail || "Failed to send reset link");
@@ -264,7 +261,7 @@ export default function HeroProfile() {
   // -------------------------
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full h-32 flex justify-center items-center text-white">
         <div>Loading profile data...</div>
       </div>
     );
@@ -274,39 +271,79 @@ export default function HeroProfile() {
   // RETURN
   // -------------------------
   return (
-    <div>
-      <section className="absolute top-[321px] left-[251px] w-[1094px] h-[488px] rounded-[8px] border-[1px] border-solid border-[#FFFFFF1F] bg-[#FFFFFF0A] p-[32px] flex flex-col justify-between opacity-100">
+    <div className="w-full">
+      {/* Main Content Container */}
+      <section className="
+        /* Mobile - FIXED: Static positioning below mobile menu, no overlapping */
+        w-full min-h-0 mt-[190px] p-4 mb-0 mt-0
+        /* Tablet: Absolute positioning */
+        sm:absolute sm:top-[70px] sm:left-[240px] sm:w-[calc(100vw-260px)] sm:h-[calc(100vh-155px)] sm:mx-0 sm:my-0 sm:p-4 sm:mt-0 sm:max-w-[800px] sm:min-h-0 sm:overflow-y-auto
+        /* Desktop: Original positioning */
+        lg:absolute lg:top-[20px]  lg:left-[251px] lg:w-[calc(100vw-280px)] lg:h-[490px] lg:p-[24px] lg:max-w-none lg:min-h-0 lg:overflow-visible
+        rounded-[8px] border-[1px] border-solid border-[#FFFFFF1F] bg-[#FFFFFF0A] 
+        flex flex-col justify-start opacity-100
+      ">
+        
         {/* Header div */}
-        <div className="w-full h-[38px] flex justify-between items-center opacity-100 rotate-0 px-2">
-          <div
-            className="w-[173px] h-[38px] rounded-[4px] border-b border-white/40 bg-[#0000004D] 
-                       flex items-center justify-center px-[12px] py-[4px] opacity-100 "
-          >
-            <div
-              className="text-white text-[20px] font-medium"
-              style={{ lineHeight: '30px', fontFamily: 'Poppins, sans-serif' }}
+        <div className="w-full flex justify-between items-center px-2 mb-4 flex-shrink-0">
+          <div className="
+            /* Mobile: Smaller header */
+            w-fit h-[32px] px-3 py-1
+            /* Tablet: Medium header */
+            sm:w-[140px] sm:h-[35px] sm:px-[12px] sm:py-[4px]
+            /* Desktop: Original size */
+            lg:w-[173px] lg:h-[38px] lg:px-[12px] lg:py-[4px]
+            rounded-[4px] border-b border-white/40 bg-[#0000004D] 
+            flex items-center justify-center opacity-100
+          ">
+            <div className="
+              text-white font-medium
+              text-[14px] sm:text-[18px] lg:text-[20px]
+              " style={{ lineHeight: '30px', fontFamily: 'Poppins, sans-serif' }}
             >
               My Profile
             </div>
           </div>
 
-          {/* Edit Icon - Only show if not already editing */}
+          {/* Edit Icon*/}
           {!isEditing && (
             <div
-              className="w-[32px] h-[32px] rounded-full border-[0.5px] border-solid border-[#8A38F533] bg-[#7A1FF133] shadow-[0_0_6px_0_#FFFFFF66] backdrop-blur-[4px] flex items-center justify-center cursor-pointer"
+              className="
+                w-[28px] h-[28px] sm:w-[30px] sm:h-[30px] lg:w-[32px] lg:h-[32px]
+                rounded-full border-[0.5px] border-solid border-[#8A38F533] bg-[#7A1FF133] 
+                shadow-[0_0_6px_0_#FFFFFF66] backdrop-blur-[4px] flex items-center justify-center cursor-pointer
+              "
               onClick={() => setIsEditing(true)}
             >
-              <Edit size={16} className="text-white" />
+              <Edit size={14} className="text-white sm:w-4 sm:h-4 lg:w-4 lg:h-4" />
             </div>
           )}
         </div>
 
-        {/* Bottom Content */}
-        <div className="flex gap-[32px] items-start flex-1 mt-4">
-          {/* Left Profile Image Section */}
-          <div className="w-[220px] flex flex-col items-center gap-[20px] -ml-4">
+        {/* Content Container */}
+        <div className="
+          flex flex-col gap-4 flex-1 overflow-visible
+          /* Tablet & Desktop: Row layout */
+          sm:flex-row sm:gap-6 sm:items-start
+          lg:gap-[32px]
+        ">
+          {/* Profile Image Section  */}
+          <div className="
+            w-full flex flex-col items-center gap-3
+            /* Tablet & Desktop: Side column */
+            sm:w-[100px] sm:gap-[16px]
+            lg:w-[220px] lg:gap-[20px] lg:-ml-4
+          ">
             <div className="relative">
-              <div className="w-[124px] h-[124px] rounded-full overflow-hidden border-[2px] border-solid border-[#8A38F5]">
+              <div className="
+                /* Mobile: Medium image for better visibility */
+                w-[80px] h-[80px] border-[#9747FFB2] bg-white
+                /* Tablet: Medium image */
+                sm:w-[100px] sm:h-[100px] sm:border-[#8A38F5] sm:bg-transparent
+                /* Desktop: Large image */
+                lg:w-[124px] lg:h-[124px]
+                rounded-full overflow-hidden border-[2px] border-solid
+              ">
                 <img 
                   src={userData.previewImage} 
                   className="w-full h-full object-cover" 
@@ -314,20 +351,23 @@ export default function HeroProfile() {
                 />
               </div>
               {isEditing && (
-                <label className="absolute bottom-0 right-0 w-[32px] h-[32px] rounded-full bg-[#8A38F5] flex items-center justify-center cursor-pointer">
-                  <Camera size={16} className="text-white" />
+                <label className="
+                  absolute bottom-0 right-0 rounded-full bg-[#8A38F5] flex items-center justify-center cursor-pointer
+                  w-[24px] h-[24px] sm:w-[28px] sm:h-[28px] lg:w-[32px] lg:h-[32px]
+                ">
+                  <Camera size={12} className="text-white sm:w-3 sm:h-3 lg:w-4 lg:h-4" />
                   <input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden" 
-                    onChange={handleFileChange} 
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
                   />
                 </label>
               )}
             </div>
 
-            <label
-              className={`flex items-center gap-2 text-[14px] text-[#8A38F5] cursor-pointer -mt-2 -ml-3 ${
+            <label className={`
+              flex items-center gap-2 text-[13px] sm:text-[14px] text-[#8A38F5] cursor-pointer ${
                 !isEditing ? "pointer-events-none opacity-50" : ""
               }`}
             >
@@ -345,7 +385,7 @@ export default function HeroProfile() {
                   d="M15.232 5.232l3.536 3.536M16.5 3.5a2.121 2.121 0 013 3L7 19H4v-3l12.5-12.5z"
                 />
               </svg>
-              Change image
+              Change photo
               <input 
                 type="file" 
                 accept="image/*" 
@@ -356,103 +396,198 @@ export default function HeroProfile() {
             </label>
           </div>
 
-          {/* Right Form Content */}
-          <div className="flex-1 flex flex-col gap-[24px]">
-            {/* First Name & Last Name */}
-            <div className="flex gap-[27px]">
-              <div className="flex-1">
-                <label className="block text-[16px] text-[#A0A0A0] mb-[8px]">First Name</label>
+          {/* Profile Info Section  */}
+          <div className="
+            w-full flex flex-col gap-4
+            /* Tablet & Desktop: Remaining width - FIXED for 1024px */
+            sm:w-[calc(100%-0px)] sm:gap-6
+            lg:w-[calc(100%-252px)] lg:max-w-[700px] lg:gap-[24px]
+          ">
+            {/* Name Fields  */}
+            <div className="
+              w-full flex flex-col gap-4
+              /* Tablet & Desktop: Row layout */
+              sm:flex-row sm:gap-4
+              lg:gap-6
+            ">
+              <div className="
+                w-full sm:w-1/2 flex flex-col gap-2
+              ">
+                <label className="text-white font-medium text-[14px] sm:text-[14px] lg:text-[18px]">
+                  First Name
+                </label>
                 <input
                   type="text"
                   name="first_name"
                   value={userData.first_name}
                   onChange={handleChange}
-                  readOnly={!isEditing}
-                  className={`w-[321px] h-[48px] rounded-[12px] bg-[#FFFFFF0D] border-[1px] border-solid border-[#FFFFFF33] px-[16px] text-white focus:border-[#8A38F5] focus:outline-none ${
-                    !isEditing ? "opacity-60 cursor-not-allowed" : ""
-                  }`}
+                  disabled={!isEditing}
+                  className="
+                    /* Mobile: Full width responsive */
+                    w-full h-[40px] rounded-[8px] 
+                    /* Tablet: Increased width */
+                    sm:w-200px sm:h-[44px] sm:text-[10px] sm:rounded-[10px] sm:max-w-[300px]
+                    /* Desktop: Responsive width - FIXED for 1024px */
+                    lg:w-full lg:text-[16px] lg:max-w-[321px] lg:h-[48px] lg:rounded-[12px]
+                    bg-[#FFFFFF1F] text-white placeholder:text-white/50
+                    border-[1px] border-solid border-[#FFFFFF66] focus:border-[#8A38F5] focus:ring-0 focus:outline-none
+                    p-3 gap-[10px] opacity-100
+                  "
+                  placeholder="Enter your first name"
                 />
               </div>
-              <div className="flex-1">
-                <label className="block text-[16px] text-[#A0A0A0] mb-[8px]">Last Name</label>
+
+              <div className="
+                w-full sm:w-1/2 flex flex-col gap-2
+              ">
+                <label className="text-white font-medium text-[14px] sm:text-[14px] lg:text-[18px]">
+                  Last Name
+                </label>
                 <input
                   type="text"
                   name="last_name"
                   value={userData.last_name}
                   onChange={handleChange}
-                  readOnly={!isEditing}
-                  className={`w-[321px] h-[48px] rounded-[12px] bg-[#FFFFFF0D] border-[1px] border-solid border-[#FFFFFF33] px-[16px] text-white focus:border-[#8A38F5] focus:outline-none ${
-                    !isEditing ? "opacity-60 cursor-not-allowed" : ""
-                  }`}
+                  disabled={!isEditing}
+                  className="
+                    /* Mobile: Full width responsive */
+                    w-full h-[40px] rounded-[8px]
+                    /* Tablet: Increased width */
+                    sm:w-full sm:h-[44px] sm:text-[10px] sm:rounded-[10px] sm:max-w-[300px]
+                    /* Desktop: Responsive width - FIXED for 1024px */
+                    lg:w-full lg:text-[16px] lg:max-w-[321px] lg:h-[48px] lg:rounded-[12px]
+                    bg-[#FFFFFF1F] text-white placeholder:text-white/50
+                    border-[1px] border-solid border-[#FFFFFF66] focus:border-[#8A38F5] focus:ring-0 focus:outline-none
+                    p-3 gap-[10px] opacity-100
+                  "
+                  placeholder="Enter your last name"
                 />
               </div>
             </div>
 
-            {/* Email & Phone */}
-            <div className="flex gap-[27px]">
-              <div className="flex-1">
-                <label className="block text-[16px] text-[#A0A0A0] mb-[8px]">Email</label>
+            {/* Email and Phone Fields  */}
+            <div className="
+              w-full flex flex-col gap-4
+              /* Tablet & Desktop: Row layout */
+              sm:flex-row sm:gap-4
+              lg:gap-6
+            ">
+              <div className="
+                w-full sm:w-1/2 flex flex-col gap-2
+              ">
+                <label className="text-white font-medium text-[14px] sm:text-[14px] lg:text-[18px]">
+                  Email Address
+                </label>
                 <input
                   type="email"
                   name="email"
                   value={userData.email}
                   onChange={handleChange}
-                  readOnly={!isEditing}
-                  className={`w-[321px] h-[48px] rounded-[12px] bg-[#FFFFFF0D] border-[1px] border-solid border-[#FFFFFF33] px-[16px] text-white focus:border-[#8A38F5] focus:outline-none ${
-                    !isEditing ? "opacity-60 cursor-not-allowed" : ""
-                  }`}
+                  disabled={!isEditing}
+                  className="
+                    /* Mobile: Full width responsive */
+                    w-full h-[40px] rounded-[8px] text-[14px]
+                    /* Tablet: Increased width */
+                    sm:w-full sm:h-[44px] sm:rounded-[10px] sm:text-[9px] sm:max-w-[280px]
+                    /* Desktop: Responsive width - FIXED for 1024px with smaller font */
+                    lg:w-full lg:text-[16px] lg:max-w-[321px] lg:h-[48px] lg:rounded-[12px] lg:text-[12px]
+                    bg-[#FFFFFF1F] text-white placeholder:text-white/50
+                    border-[1px] border-solid border-[#FFFFFF66] focus:border-[#8A38F5] focus:ring-0 focus:outline-none
+                    p-3 gap-[10px] opacity-100
+                  "
+                  placeholder="Enter your email address"
                 />
               </div>
-              <div className="flex-1">
-                <label className="block text-[16px] text-[#A0A0A0] mb-[8px]">Phone Number</label>
+
+              <div className="
+                w-full sm:w-1/2 flex flex-col gap-2
+              ">
+                <label className="text-white font-medium text-[14px] sm:text-[14px] lg:text-[18px]">
+                  Phone Number
+                </label>
                 <input
-                  type="tel"
+                  type="text"
                   name="phone_number"
                   value={userData.phone_number}
                   onChange={handleChange}
-                  readOnly={!isEditing}
-                  className={`w-[321px] h-[48px] rounded-[12px] bg-[#FFFFFF0D] border-[1px] border-solid border-[#FFFFFF33] px-[16px] text-white focus:border-[#8A38F5] focus:outline-none ${
-                    !isEditing ? "opacity-60 cursor-not-allowed" : ""
-                  }`}
+                  disabled={!isEditing}
+                  className="
+                    /* Mobile: Full width responsive */
+                    w-full h-[40px] rounded-[8px]
+                    /* Tablet: Increased width */
+                    sm:w-full sm:h-[44px] sm:text-[10px] sm:rounded-[10px] sm:max-w-[280px]
+                    /* Desktop: Responsive width - FIXED for 1024px */
+                    lg:w-full lg:max-w-[321px] lg:h-[48px] lg:rounded-[12px]
+                    bg-[#FFFFFF1F] lg:text-[16px] text-white placeholder:text-white/50
+                    border-[1px] border-solid border-[#FFFFFF66] focus:border-[#8A38F5] focus:ring-0 focus:outline-none
+                    p-3 gap-[10px] opacity-100
+                  "
+                  placeholder="Enter your phone number"
                 />
               </div>
             </div>
 
-            {/* Password & Change Button */}
-            <div className="flex gap-[27px]">
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-[8px] w-[738px]">
-                  <label className="text-[16px] text-[#A0A0A0]">Password</label>
-                  <button
-                    className="w-[139px] h-[26px] rounded-[12px] bg-[#8A38F5] border-[1px] border-solid border-[#9747FF80] text-white text-[12px]"
-                    onClick={() => setShowChangePasswordModal(true)}
-                  >
-                    Change Password
-                  </button>
-                </div>
+            {/* Password Section  */}
+            <div className="w-full">
+              <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:mb-2">
+                <label className="text-white font-medium text-[14px] sm:text-[14px] lg:text-[18px]">
+                  Password
+                </label>
+                <button
+                  className="
+                    rounded-[8px] bg-[#9747FF33] border-[1px] border-solid border-[#9747FF80] text-white
+                    /* Mobile: Fixed width on right side - UPDATED */
+                    w-[139px] h-[26px] text-[12px] p-[4px] gap-[10px] opacity-100 self-end
+                    /* Tablet: Medium size */
+                    sm:w-[120px] sm:h-[28px] sm:text-[10px] sm:p-0 sm:self-auto
+                    /* Desktop: Large size - FIXED for 1036px */
+                    lg:w-[139px] lg:h-[26px] lg:text-[12px] lg:p-0
+                    /* 1036px specific: Add more right margin */
+                    xl:mr-[20px]
+                    hover:bg-[#7A1FF1]
+                  "
+                  onClick={() => setShowChangePasswordModal(true)}
+                >
+                  Change Password
+                </button>
+              </div>
 
-                <div className="relative w-[738px]">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    className="w-full h-[48px] rounded-[12px] bg-[#FFFFFF0D] border-[1px] border-solid border-[#FFFFFF33] px-[16px] pr-[48px] text-white focus:border-[#8A38F5] focus:outline-none"
-                    value="••••••••"
-                    readOnly
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-[12px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="
+                    /* Mobile: Full width responsive */
+                    w-full h-[40px] rounded-[8px]
+                    /* Tablet: Full width medium height */
+                    sm:w-full sm:h-[44px] sm:rounded-[10px]
+                    /* Desktop: Responsive width - FIXED for 1024px */
+                    lg:w-full lg:max-w-[682px] lg:text-[16px] lg:h-[48px] lg:rounded-[12px]
+                    bg-[#FFFFFF1F] text-white placeholder:text-white/50
+                    border-[1px] border-solid border-[#FFFFFF66] focus:border-[#8A38F5] focus:ring-0 focus:outline-none
+                    p-3 pr-12 gap-[10px] opacity-100
+                  "
+                  value="••••••••"
+                  readOnly
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="
+                    absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors z-10
+                    /* Mobile & Tablet: Moved right by 20px */
+                    right-[20px]
+                    /* Desktop: Moved right by 20px */
+                    lg:right-[40px]
+                  "
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
 
-            {/* Save / Cancel Buttons */}
+            {/* Save / Cancel Buttons - Now positioned for all screen sizes */}
             {isEditing && (
-              <div className="flex justify-end gap-2 mt-4">
+              <div className="flex justify-end gap-2 mt-4 mr-[20px] lg:mr-[50px] xl:mr-[20px]">
                 <button
                   className="px-4 py-2 rounded bg-gray-600 text-white"
                   onClick={handleDiscard}
@@ -471,111 +606,160 @@ export default function HeroProfile() {
             )}
           </div>
         </div>
-      </section>
 
-      {/* ---------------- Change Password Modal ---------------- */}
-      {showChangePasswordModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-[#1A1A1A] p-6 rounded-xl w-[400px] flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-white text-[18px] font-semibold">Change Password</h2>
-              <button onClick={() => setShowChangePasswordModal(false)} className="text-gray-400 hover:text-white">
-                <X size={20} />
-              </button>
-            </div>
+        {/* Modals - Change Password & Forgot Password */}
+        {showChangePasswordModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+            <div className="
+              w-full max-w-md p-6 rounded-[8px] bg-[#1E1E2E] border border-[#FFFFFF1F] 
+              shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex flex-col gap-4
+            ">
+              <div className="flex justify-between items-center">
+                <h3 className="
+                  text-white font-semibold text-[18px] sm:text-[20px] lg:text-[22px]
+                ">
+                  Change Password
+                </h3>
+                <button
+                  onClick={() => setShowChangePasswordModal(false)}
+                  className="
+                    w-[32px] h-[32px] flex items-center justify-center rounded-full
+                    bg-[#8A38F5] text-white
+                    hover:bg-[#8A38F5CC] transition-all
+                  "
+                >
+                  <X size={16} />
+                </button>
+              </div>
 
-            <div className="relative">
-              <input
-                type={showNewPassword ? "text" : "password"}
-                name="new_password"
-                placeholder="New Password"
-                value={userData.new_password}
-                onChange={handleChange}
-                className="w-full h-[40px] rounded-[8px] bg-[#FFFFFF0D] border border-[#FFFFFF33] px-3 text-white focus:outline-none focus:border-[#8A38F5]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-[12px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-              >
-                {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-white font-medium text-[14px] sm:text-[16px] lg:text-[18px]">
+                    New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      name="new_password"
+                      value={userData.new_password}
+                      onChange={handleChange}
+                      className="
+                        w-full h-[40px] rounded-[4px] bg-[#FFFFFF0D] text-white placeholder:text-white/50
+                        border border-transparent focus:border-[#8A38F5] focus:ring-0
+                        px-3 pr-10
+                      "
+                      placeholder="Enter new password"
+                    />
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
+                      {showNewPassword ? (
+                        <EyeOff size={16} className="text-white" onClick={() => setShowNewPassword(false)} />
+                      ) : (
+                        <Eye size={16} className="text-white" onClick={() => setShowNewPassword(true)} />
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirm_password"
-                placeholder="Confirm New Password"
-                value={userData.confirm_password}
-                onChange={handleChange}
-                className="w-full h-[40px] rounded-[8px] bg-[#FFFFFF0D] border border-[#FFFFFF33] px-3 text-white focus:outline-none focus:border-[#8A38F5]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-[12px] top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-              >
-                {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-white font-medium text-[14px] sm:text-[16px] lg:text-[18px]">
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirm_password"
+                      value={userData.confirm_password}
+                      onChange={handleChange}
+                      className="
+                        w-full h-[40px] rounded-[4px] bg-[#FFFFFF0D] text-white placeholder:text-white/50
+                        border border-transparent focus:border-[#8A38F5] focus:ring-0
+                        px-3 pr-10
+                      "
+                      placeholder="Confirm new password"
+                    />
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
+                      {showConfirmPassword ? (
+                        <EyeOff size={16} className="text-white" onClick={() => setShowConfirmPassword(false)} />
+                      ) : (
+                        <Eye size={16} className="text-white" onClick={() => setShowConfirmPassword(true)} />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <div className="flex justify-end gap-2 mt-2">
               <button
-                className="px-3 py-1 rounded bg-gray-600 text-white"
-                onClick={() => setShowChangePasswordModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-3 py-1 rounded bg-[#8A38F5] text-white"
                 onClick={handlePasswordSubmit}
+                className="
+                  w-full h-[40px] rounded-[4px] bg-[#8A38F5] text-white font-medium
+                  flex items-center justify-center gap-2
+                  hover:bg-[#8A38F5CC] transition-all
+                "
               >
-                Save
+                Save New Password
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* ---------------- Forgot Password Modal ---------------- */}
-      {showForgotPasswordModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-[#1A1A1A] p-6 rounded-xl w-[400px] flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-white text-[18px] font-semibold">Forgot Password</h2>
-              <button onClick={() => setShowForgotPasswordModal(false)} className="text-gray-400 hover:text-white">
-                <X size={20} />
-              </button>
-            </div>
+        {showForgotPasswordModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+            <div className="
+              w-full max-w-md p-6 rounded-[8px] bg-[#1E1E2E] border border-[#FFFFFF1F] 
+              shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex flex-col gap-4
+            ">
+              <div className="flex justify-between items-center">
+                <h3 className="
+                  text-white font-semibold text-[18px] sm:text-[20px] lg:text-[22px]
+                ">
+                  Reset Password
+                </h3>
+                <button
+                  onClick={() => setShowForgotPasswordModal(false)}
+                  className="
+                    w-[32px] h-[32px] flex items-center justify-center rounded-full
+                    bg-[#8A38F5] text-white
+                    hover:bg-[#8A38F5CC] transition-all
+                  "
+                >
+                  <X size={16} />
+                </button>
+              </div>
 
-            <div>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={forgotEmail}
-                onChange={(e) => setForgotEmail(e.target.value)}
-                className="w-full h-[40px] rounded-[8px] bg-[#FFFFFF0D] border border-[#FFFFFF33] px-3 text-white focus:outline-none focus:border-[#8A38F5]"
-              />
-            </div>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-white font-medium text-[14px] sm:text-[16px] lg:text-[18px]">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="forgot_email"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    className="
+                      w-full h-[40px] rounded-[4px] bg-[#FFFFFF0D] text-white placeholder:text-white/50
+                      border border-transparent focus:border-[#8A38F5] focus:ring-0
+                      px-3
+                    "
+                    placeholder="Enter your email address"
+                  />
+                </div>
+              </div>
 
-            <div className="flex justify-end gap-2 mt-2">
               <button
-                className="px-3 py-1 rounded bg-gray-600 text-white"
-                onClick={() => setShowForgotPasswordModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-3 py-1 rounded bg-[#8A38F5] text-white"
                 onClick={handleForgotPassword}
+                className="
+                  w-full h-[40px] rounded-[4px] bg-[#8A38F5] text-white font-medium
+                  flex items-center justify-center gap-2
+                  hover:bg-[#8A38F5CC] transition-all
+                "
               >
                 Send Reset Link
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </section>
     </div>
   );
 }

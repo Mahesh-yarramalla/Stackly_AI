@@ -160,215 +160,142 @@ export default function PricingFaq() {
     categoryRanges[faqCategory].end - categoryRanges[faqCategory].start;
 
   return (
-    <section className="w-full h-auto min-h-[746px] bg-black relative overflow-x-hidden ">
-      {/* Full-width background image */}
-
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[-50px] z-0 w-[1561px] h-[401px] flex justify-center items-center pointer-events-none select-none">
-        <h1
-          className="leading-none font-[700] text-white"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontSize: "273.02px",
-            color: "#FFFFFF14",
-          }}
-        >
-          FAQS
-        </h1>
-      </div>
-
-      {/* Content */}
-      <div className="relative w-full h-full max-w-screen-xl mx-auto py-16 px-4 sm:px-6 flex flex-col items-center">
-        {/* Heading */}
-        <div className="text-center mb-10 w-full mt-10">
-          <h2 className="text-[32px] font-black text-[#FFFFFF] leading-tight">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-3 text-[#FFFFFF] max-w-[941px] mx-auto text-[18px] font-normal leading-relaxed">
-            Have questions? We've got answers! Explore our FAQs to learn more
-            about how Stackly AI works, its features, and how it can help you
-            streamline your tasks effortlessly.
-          </p>
-        </div>
-
-        {/* Category Buttons */}
-        <div className="w-full flex justify-center mt-1">
-          <div className="flex gap-4 flex-wrap max-w-[700px]">
-            {/* Button 1 */}
-            <div
-              className="
-            w-[215px] 
-            h-[39px] 
-            rounded-[30px] 
-            border 
-            border-[#C22CA299] 
-            px-[30px] 
-            py-[10px] 
-            text-white 
-            font-medium 
-            text-[16px] 
-            flex 
-            items-center 
-            justify-center 
-            transition-all 
-            duration-300 
-            hover:opacity-90
-          "
-              style={faqCategory === 0 ? activeStyle : inactiveStyle}
-              onClick={() => setFaqCategory(0)}
-            >
-              <button
-                className="w-full h-full px-2 text-[16px] font-medium rounded-[30px] flex items-center justify-center whitespace-nowrap"
-                
-              >
-                Get to Know Stackly
-              </button>
-            </div>
-
-            {/* Button 2 */}
-            <div
-              className="
-            w-[215px] 
-            h-[39px] 
-            rounded-[30px] 
-            border 
-            border-[#C22CA299] 
-            px-[30px] 
-            py-[10px] 
-            text-white 
-            font-medium 
-            text-[16px] 
-            flex 
-            items-center 
-            justify-center 
-            transition-all 
-            duration-300 
-            hover:opacity-90
-          "
-              style={faqCategory === 1 ? activeStyle : inactiveStyle}
-              onClick={() => setFaqCategory(1)}
-            >
-              <button
-                className="w-full h-full px-2 text-[16px] font-medium rounded-[30px] flex items-center justify-center whitespace-nowrap"
-                
-              >
-                Plans & Pricing
-              </button>
-            </div>
-
-            {/* Button 3 */}
-            <div
-              className="
-            w-[215px] 
-            h-[39px] 
-            rounded-[30px] 
-            border 
-            border-[#C22CA299] 
-            px-[30px] 
-            py-[10px] 
-            text-white 
-            font-medium 
-            text-[16px] 
-            flex 
-            items-center 
-            justify-center 
-            transition-all 
-            duration-300 
-            hover:opacity-90
-          "
-              style={faqCategory === 2 ? activeStyle : inactiveStyle}
-               onClick={() => setFaqCategory(2)}
-            >
-              <button
-                className="w-full h-full px-2 text-[16px] font-medium rounded-[30px] flex items-center justify-center whitespace-nowrap"
-               
-              >
-                API Integration
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* FAQ Items */}
-        <div className="w-full flex flex-col gap-[28px] mt-10 px-6 md:px-12">
-          {getFaqSlice().map((faq, index) => (
-            <div
-              key={index}
-              onClick={() => toggleFAQ(index)}
-              className="cursor-pointer"
-            >
-              {/* Question row */}
-              <div className="w-full flex items-center justify-between">
-                <div className="flex-1 text-white text-[18px] font-normal leading-[100%] font-[Inter] pr-4">
-                  {faq.question}
-                </div>
-                <div
-                  className="w-[34px] h-[34px] flex-shrink-0"
-                  style={{
-                    animation: "spin 6s linear infinite",
-                  }}
-                >
-                  <img
-                    src={star} // replace with your icon
-                    alt="icon"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-
-              {/* Answer */}
-              {activeIndex === index && (
-                <div className="text-white text-[16px] ml-[90px] mt-[10px] leading-[140%] poppins-font w-[1000px]">
-                  {faq.answer}
-                </div>
-              )}
-
-              {/* Gradient divider */}
-              <div
-                className="w-full h-[0px] border-t border-solid mt-[16px]"
-                style={{
-                  borderImage:
-                    "linear-gradient(90deg, #000000 0%, #C22CA2 30%, #8A38F5 70%, #000000 100%) 1",
-                  borderWidth: "1px",
-                }}
-              ></div>
-            </div>
-          ))}
-        </div>
-
-        {/* View All Button */}
-        {/* View All Button */}
-        {currentCategoryCount > 4 && (
-  <div className="mt-6 mb-[-3px] flex justify-center">
-    <button
-      onClick={handleViewAll}
-      className="
-  px-6 py-2 rounded-lg font-semibold text-[14px] text-white
-  bg-[#1F0D3B] 
-  shadow-md hover:bg-gradient-to-r hover:from-[#8A38F5] hover:to-[#C22CA2]
-  hover:scale-105 transition-all duration-300
-  relative
-  before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-gradient-to-r before:from-[#8A38F5] before:to-[#C22CA2] before:pointer-events-none
-"
+<section className="w-full h-auto min-h-[746px] bg-black relative overflow-x-hidden">
+  {/* Full-width background text (FAQS) */}
+  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -mt-[30px] z-0 w-[1200px] md:w-[1400px] lg:w-[1561px] h-[200px] md:h-[300px] lg:h-[401px] flex justify-center items-center pointer-events-none select-none">
+    <h1
+      className="leading-none font-bold text-white text-[80px] sm:text-[140px] md:text-[200px] lg:text-[273px]"
       style={{
-        borderImageSlice: 1,
-        borderImageSource: 'linear-gradient(90deg, #8A38F5, #C22CA2)',
+        fontFamily: "Poppins, sans-serif",
+        color: "#FFFFFF14",
       }}
     >
-      {visibleCount >= currentCategoryCount ? "Show Less" : "View All"}
-    </button>
+      FAQS
+    </h1>
   </div>
-)}
 
+  {/* Content */}
+  <div className="relative w-full h-full max-w-screen-xl mx-auto py-12 px-4 sm:px-6 flex flex-col items-center">
+    {/* Heading */}
+    <div className="text-center mb-10 w-full mt-10">
+      <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-black text-white leading-tight">
+        Frequently Asked Questions
+      </h2>
+      <p className="mt-3 text-white max-w-[941px] mx-auto text-[14px] sm:text-[16px] md:text-[18px] font-normal leading-relaxed">
+        Have questions? We've got answers! Explore our FAQs to learn more about
+        how Stackly AI works, its features, and how it can help you streamline
+        your tasks effortlessly.
+      </p>
+    </div>
+
+    {/* Category Buttons */}
+    <div className="w-full flex justify-center mt-1">
+      <div className="flex gap-3 flex-wrap justify-center max-w-[700px]">
+        {/* Reusable Button */}
+        {["Get to Know Stackly", "Plans & Pricing", "API Integration"].map(
+          (label, idx) => (
+            <div
+              key={idx}
+              className="
+                w-auto min-w-[160px] px-4 h-[36px]
+                sm:w-[200px] sm:h-[39px] sm:px-[30px]
+                rounded-[30px] border border-[#C22CA299]
+                text-white font-medium text-[14px] sm:text-[16px]
+                flex items-center justify-center
+                transition-all duration-300 hover:opacity-90
+              "
+              style={faqCategory === idx ? activeStyle : inactiveStyle}
+              onClick={() => setFaqCategory(idx)}
+            >
+              <button className="w-full h-full flex items-center justify-center whitespace-nowrap">
+                {label}
+              </button>
+            </div>
+          )
+        )}
       </div>
-      <style>
-        {`
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`}
-      </style>
-    </section>
+    </div>
+
+    {/* FAQ Items */}
+    <div className="w-full flex flex-col gap-6 mt-10 px-2 sm:px-6 md:px-12">
+      {getFaqSlice().map((faq, index) => (
+        <div key={index} onClick={() => toggleFAQ(index)} className="cursor-pointer">
+          {/* Question row */}
+          <div className="w-full flex items-center justify-between">
+            <div className="flex-1 text-white text-[14px] sm:text-[16px] md:text-[18px] font-normal leading-snug font-['Inter'] pr-4">
+              {faq.question}
+            </div>
+            <div
+              className="w-[24px] h-[24px] sm:w-[28px] sm:h-[28px] md:w-[34px] md:h-[34px] flex-shrink-0"
+              style={{
+                animation: "spin 6s linear infinite",
+              }}
+            >
+              <img
+                src={star}
+                alt="icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+
+          {/* Answer */}
+          {activeIndex === index && (
+            <div className="text-white text-[13px] sm:text-[14px] md:text-[16px] ml-[20px] sm:ml-[40px] md:ml-[90px] mt-2 leading-[140%] font-['Poppins'] max-w-full md:max-w-[1000px]">
+              {faq.answer}
+            </div>
+          )}
+
+          {/* Gradient divider */}
+          <div
+            className="w-full h-[0px] border-t border-solid mt-4"
+            style={{
+              borderImage:
+                "linear-gradient(90deg, #000000 0%, #C22CA2 30%, #8A38F5 70%, #000000 100%) 1",
+              borderWidth: "1px",
+            }}
+          ></div>
+        </div>
+      ))}
+    </div>
+
+    {/* View All Button */}
+    {currentCategoryCount > 4 && (
+      <div className="mt-6 mb-2 flex justify-center">
+        <button
+          onClick={handleViewAll}
+          className="
+            px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg font-semibold
+            text-[13px] sm:text-[14px] text-white
+            bg-[#1F0D3B] shadow-md
+            hover:bg-gradient-to-r hover:from-[#8A38F5] hover:to-[#C22CA2]
+            hover:scale-105 transition-all duration-300 relative
+            before:absolute before:inset-0 before:rounded-lg before:border-2
+            before:border-gradient-to-r before:from-[#8A38F5] before:to-[#C22CA2]
+            before:pointer-events-none
+          "
+          style={{
+            borderImageSlice: 1,
+            borderImageSource: "linear-gradient(90deg, #8A38F5, #C22CA2)",
+          }}
+        >
+          {visibleCount >= currentCategoryCount ? "Show Less" : "View All"}
+        </button>
+      </div>
+    )}
+  </div>
+
+  {/* Animation */}
+  <style>
+    {`
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    `}
+  </style>
+</section>
+
   );
 }

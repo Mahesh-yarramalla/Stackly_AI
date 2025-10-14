@@ -1,750 +1,10 @@
-// import { React, useState } from "react";
-// import SideArrow from "../../assets/pricing-pg/sideArrow.png";
-// import Tick from "../../assets/pricing-pg/tick.png";
-// import Tick1 from "../../assets/pricing-pg/tick1.png";
-// import Paper from "../../assets/pricing-pg/paper.png";
-// import { Link } from "react-router-dom";
-// import axios from "axios";
-
-// export default function AfterBilling() {
-
-//   const [plan, setPlan] = useState("silver");
-//   const [duration, setDuration] = useState("monthly");
-//   const navigate = useNavigate();
-
-//   const handleContinue = async () => {
-//     const user_id = localStorage.getItem("user_id"); // must be stored earlier
-//     if (!user_id) {
-//       alert("User ID not found");
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.post("http://localhost:8000/create-checkout-url/", {
-//         user_id: user_id,
-//         plan: plan,
-//         duration: duration,
-//         full_name: "test",        // replace with actual input values
-//         email: "test@email.com",  // ...
-//         address: "somewhere",
-//         phone: "1234567890",
-//         city: "YourCity",
-//         state: "YourState",
-//         zip_code: "000000",
-//         country: "India",
-//         coupon: "COUPON2025"
-//       });
-
-//       const checkoutUrl = response.data.checkout_url;
-//       window.location.href = checkoutUrl; // Go to Stripe payment
-//     } catch (err) {
-//       console.error("Error creating checkout:", err);
-//       alert("Something went wrong. Try again.");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <div
-//         className="bg-[gray] w-full min-h-[800px] flex justify-center items-center bg-center bg-no-repeat bg-cover
-//       "
-//         style={{ backgroundImage: 'url("/PricingPg/billing.jpg")' }}
-//       >
-//         <div className="w-[1280px] min-h-[720px] rounded-[16px] border-[1px] border-solid border-[#E8EBF1] drop-shadow-[0_0_12px_0] shadow-[#E3EBFB80] bg-blur-[100px] blur-[100px] backdrop-blur-[20px] flex flex-col justify-start items-start px-[50px] py-[30px]">
-//           <div className="w-full min-h-[50px] flex justify-start">
-//             <Link to="/AfterUiPlans">
-//               <div className="w-[70px] flex justify-center items-center">
-//                 <img
-//                   src={SideArrow}
-//                   alt="Arrow"
-//                   className="w-[24px] h-[24px]"
-//                 />
-//                 <div className="font-medium text-[20px] leading-[156%] text-[#2A2A2A]">
-//                   Back
-//                 </div>
-//               </div>
-//             </Link>
-//           </div>
-
-//           <div className="w-[1160px] h-[636px] flex flex-col justify-start items-start gap-[16px]">
-//             <div className="w-full min-h-[76px] flex justify-center items-center">
-//               <div className="w-[822px] h-[76px] flex justify-start items-center">
-//                 <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-//                   <img src={Tick} alt="tick" className="w-[40px] h-[40px] " />
-//                   <div className="font-semibold text-[16px] leading-[56%] text-[#007B82]">
-//                     Billing Info
-//                   </div>
-//                 </div>
-
-//                 <div className="w-[226px] h-[4px] rounded-[5px] bg-[#007B8233] "></div>
-
-//                 <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-//                   <img src={Tick1} alt="tick" className="w-[40px] h-[40px] " />
-//                   <div className=" w-[156px] ml-[30px] font-semibold text-[16px] leading-[200%] text-[#B0B0B0]">
-//                     Payment Method
-//                   </div>
-//                 </div>
-
-//                 <div className="w-[226px] h-[4px] rounded-[5px] bg-[#007B8233] "></div>
-
-//                 <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-//                   <img src={Tick1} alt="tick" className="w-[40px] h-[40px] " />
-//                   <div className="font-semibold text-[16px] leading-[56%] text-[#B0B0B0]">
-//                     Success
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-
-//             <div className="w-[1160px] h-[544px] flex justify-between items-start gap-[18px]">
-//               <div className="w-[716px] h-[544px] flex justify-start items-start flex-col gap-[30px]">
-//                 <div className="w-[716px] h-[37px] font-semibold text-[24px] leading-[156%] text-[#007B82] ">
-//                   Billing Information
-//                 </div>
-
-//                 <div className="w-[716px] h-[477px] flex flex-col justify-start items-start gap-[12px]">
-//                   <div className="w-[716px] h-[42px] flex justify-between items-center gap-[16px]">
-//                     <div className="w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] bg-[white] flex justify-between items-center px-[16px] py-[10px]">
-//                       <div className="font-[400] text-[14px] leading-[140%] text-[#007B82] flex justify-between items-center ">
-//                         Basic
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82]  w-[308px]"
-//                           name="premium"
-//                         />
-//                       </div>
-//                     </div>
-//                     <div className="w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] bg-[white] flex justify-between items-center px-[16px] py-[10px]">
-//                       <div className="font-[400]  text-[14px] leading-[140%] text-[#007B82] flex justify-between items-center ">
-//                         Silver
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82] w-[308px]"
-//                           name="premium"
-//                         />
-//                       </div>
-//                     </div>
-//                     <div className="w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] bg-[white] flex justify-between items-center px-[16px] py-[10px]">
-//                       <div className="font-[400] text-[14px] leading-[140%] text-[#007B82] flex justify-between items-center ">
-//                         Gold
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82] w-[308px]"
-//                           name="premium"
-//                         />
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   <div className="w-[472px] h-[42px] flex justify-between items-center gap-[16px]">
-//                     <div className="w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] bg-[white] flex justify-between items-center px-[16px] py-[10px]">
-//                       <div className="font-[400] text-[14px] leading-[140%] text-[#007B82] flex justify-between items-center ">
-//                         Monthly
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82]  w-[278px]"
-//                           name="Durations"
-//                         />
-//                       </div>
-//                     </div>
-
-//                     <div className="w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] bg-[white] flex justify-between items-center px-[16px] py-[10px]">
-//                       <div className="font-[400] text-[14px] leading-[140%] text-[#007B82] flex justify-between items-center">
-//                         Yearly
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82] w-[278px] "
-//                           name="Durations"
-//                         />
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   {/* <div className="w-[716px] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] flex justify-start items-center text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] bg-white"> */}
-//                   <input
-//                     type="name"
-//                     className="w-[716px] h-[52px] placeholder:text-[#2A2A2A] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] flex justify-start items-center text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] bg-white"
-//                     placeholder="Full Name"
-//                   />
-
-//                   <input
-//                     type="name"
-//                     className="w-[716px] h-[52px] placeholder:text-[#2A2A2A] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] flex justify-start items-center text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] bg-white"
-//                     placeholder="Email"
-//                   />
-
-//                   <div className="w-[716px] h-[52px]  flex justify-between items-start gap-[16px]">
-//                     <input
-//                       type="text"
-//                       className="w-[228px] placeholder:text-[#2A2A2A] bg-white h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px]"
-//                       placeholder="Address"
-//                     />
-//                     <input
-//                       type="number"
-//                       className="w-[228px] placeholder:text-[#2A2A2A] bg-white h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px]"
-//                       placeholder="Phone Number"
-//                     />
-//                     <input
-//                       type="text"
-//                       className="w-[228px] placeholder:text-[#2A2A2A] bg-white h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px]"
-//                       placeholder="City"
-//                     />
-//                   </div>
-
-//                   <div className="w-[716px] h-[52px] flex justify-between items-start gap-[16px]">
-//                     <input
-//                       type="text"
-//                       className="w-[228px] placeholder:text-[#2A2A2A] bg-white h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px]"
-//                       placeholder="State/Province"
-//                     />
-//                     <input
-//                       type="number"
-//                       className="w-[228px] placeholder:text-[#2A2A2A] bg-white h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px]"
-//                       placeholder="Zip/Postal Code"
-//                     />
-//                     <div className="w-[228px] bg-white h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] flex justify-between items-center  overflow-hidden px-[20px] cursor-pointer">
-//                       <select
-//                         name=""
-//                         id=""
-//                         className="w-[208px] cursor-pointer"
-//                       >
-//                         <option value="">IND</option>
-//                         <option value="">USA</option>
-//                       </select>
-//                     </div>
-//                   </div>
-
-//                   <input
-//                     type="name"
-//                     className="w-[716px] placeholder:text-[#2A2A2A] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] flex justify-start items-center text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] bg-white"
-//                     placeholder="Enter Coupen Code"
-//                   />
-
-//                     <div
-//                     onClick={handleContinue}
-//                     className="w-[716px] h-[49px] rounded-[8px] bg-gradient-to-l from-[#00B0BA] via-[black] to-[#007B82] text-[white] text-[16px] text-bold leading-[35px] tracking-[0px] text-center flex justify-center items-center">
-//                       Continue
-//                     </div>
-
-//                 </div>
-//               </div>
-
-//               {/* right */}
-//               <div className="w-[426px] h-[504px] border-[1.5px] flex flex-col justify-center items-center gap-[px]">
-//                 <div className="w-[384.54px] h-[327.96px] rounded-[16px] bg-[#007B82B2] backdrop-blur-32 px-[20px] py-[50px] gap-[20px] flex flex-col justify-start">
-//                   <div className="font-semibold text-[24px] leading-[100%] text-[white]">
-//                     Plan Details
-//                   </div>
-
-//                   <div className="w-[334.79px] h-[192.92px] rounded-[16px] p-[16px] bg-[#007B82] flex flex-col justify-center items-center ">
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Plan Name
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         Silver
-//                       </div>
-//                     </div>
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Price
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         $29.00
-//                       </div>
-//                     </div>
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Duration
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         One Month
-//                       </div>
-//                     </div>
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Discount
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         (Use code)
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-
-//                 <div className="w-[384.54px] h-[176.04px] rounded-[16px] bg-[#007B82B2] flex items-end py-5 px-5">
-//                   <div className="w-[334.79px] h-[66.32px] flex justify-between items-center">
-//                     <div className="w-[84px] h-[55px] flex flex-col justify-center items-center">
-//                       <div className="w-[77px] h-[17px] font-[400] text-[14px] leading-[100%] text-white">
-//                         Grand Total
-//                       </div>
-//                       <div className="font-[600] text-[25px] leading-[100%] text-[white]">
-//                         $29.00
-//                       </div>
-//                     </div>
-
-//                     <div className="w-[38px] h-[51px]">
-//                       <img src={Paper} alt="page-icon" />
-//                     </div>
-//                   </div>
-//                 </div>
-//                 <div className="w-[50px] h-[50px] rounded-[50px] bg-white absolute top-[480px] right-[450px]"></div>
-//                 <div className="w-[50px] h-[50px] rounded-[50px] bg-white absolute  top-[480px] right-[70px]"></div>
-//                 <div className="w-[60%] border-[2px] border-dashed border-white absolute top-[505px]"></div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-//AfterBilling
-//AfterBilling
-// import React, { useState } from "react";
-// import SideArrow from "../../assets/pricing-pg/sideArrow.png";
-// import Tick from "../../assets/pricing-pg/tick.png";
-// import Tick1 from "../../assets/pricing-pg/tick1.png";
-// import Paper from "../../assets/pricing-pg/paper.png";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// export default function AfterBilling() {
-//   const navigate = useNavigate();
-//   const location = useLocation();
-//   const plan = location.state?.plan || {
-//     name: "Silver Plan",
-//     price: "29.00",
-//     duration: "One Month",
-//     discount: "10%",
-//     features: [
-//       "High-resolution image download",
-//       "Advanced AI layout suggestions",
-//       "Access to premium themes & colour palettes",
-//       "High-resolution image download",
-//     ],
-//   };
-
-//   // Form state
-//   const [formData, setFormData] = useState({
-//     plan: "Silver",
-//     duration: "Monthly",
-//     full_name: "",
-//     email: "",
-//     phone_number: "",
-//     street_address: "",
-//     city: "",
-//     state: "",
-//     country: "IND",
-//     pincode: "",
-//     coupon_code: "",
-//   });
-
-//   // Handle form input changes
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-//   // Handle plan selection
-//   const handlePlanSelect = (plan) => {
-//     setFormData((prev) => ({
-//       ...prev,
-//       plan,
-//     }));
-//   };
-
-//   // Handle duration selection
-//   const handleDurationSelect = (duration) => {
-//     setFormData((prev) => ({
-//       ...prev,
-//       duration,
-//     }));
-//   };
-
-//   // Handle form submission
-//   const handleContinue = async (e) => {
-//     e.preventDefault();
-
-//     const userId = localStorage.getItem("userId");
-//     if (!userId) {
-//       alert("User ID not found");
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:8000/pricing/create-checkout-session/",
-//         {
-//           userid: userId,
-//           plan: formData.plan.toLowerCase(),
-//           duration: formData.duration.toLowerCase(),
-//           email: formData.email,
-//           coupon_code: formData.coupon_code,
-//           payment_method: "card",
-//           payment_success: false,
-//           billing_info: {
-//             full_name: formData.full_name,
-//             email: formData.email,
-//             phone_number: formData.phone_number,
-//             street_address: formData.street_address,
-//             city: formData.city,
-//             state: formData.state,
-//             country: formData.country,
-//             pincode: formData.pincode,
-//           },
-//         }
-//       );
-
-//       if (response.data.checkout_url) {
-//         localStorage.setItem("billing_email", formData.email);
-//         localStorage.setItem("billing_name", formData.full_name);
-//         window.location.href = response.data.checkout_url;
-//       }
-//     } catch (error) {
-//       console.error("Error creating checkout session:", error);
-//       alert("Failed to create checkout session. Please try again.");
-//     }
-//   };
-
-//   // Handle back button click
-//   const handleGoBack = () => {
-//     navigate(-1); // Go back to previous page
-//   };
-
-//   return (
-//     <div>
-//       <div
-//         className="bg-[gray] w-full min-h-[800px] flex justify-center items-center bg-center bg-no-repeat bg-cover"
-//         style={{ backgroundImage: 'url("/PricingPg/billing.jpg")' }}
-//       >
-//         <div className="w-[1280px] min-h-[720px] rounded-[16px] border-[1px] border-solid border-[#E8EBF1] drop-shadow-[0_0_12px_0] shadow-[#E3EBFB80] bg-blur-[100px] blur-[100px] backdrop-blur-[20px] flex flex-col justify-start items-start px-[50px] py-[30px]">
-//           <div className="w-full min-h-[50px] flex justify-start">
-//             <div
-//               className="w-[70px] flex justify-center items-center cursor-pointer"
-//               onClick={handleGoBack}
-//             >
-//               <img src={SideArrow} alt="Arrow" className="w-[24px] h-[24px]" />
-//               <div className="font-medium text-[20px] leading-[156%] text-[#2A2A2A]">
-//                 Back
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="w-[1160px] h-[636px] flex flex-col justify-start items-start gap-[16px]">
-//             <div className="w-full min-h-[76px] flex justify-center items-center">
-//               <div className="w-[822px] h-[76px] flex justify-start items-center">
-//                 <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-//                   <img src={Tick} alt="tick" className="w-[40px] h-[40px]" />
-//                   <div className="font-semibold text-[16px] leading-[56%] text-[#007B82]">
-//                     Billing Info
-//                   </div>
-//                 </div>
-
-//                 <div className="w-[226px] h-[4px] rounded-[5px] bg-[#007B8233]"></div>
-
-//                 <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-//                   <img src={Tick1} alt="tick" className="w-[40px] h-[40px]" />
-//                   <div className="w-[156px] ml-[30px] font-semibold text-[16px] leading-[200%] text-[#B0B0B0]">
-//                     Payment Method
-//                   </div>
-//                 </div>
-
-//                 <div className="w-[226px] h-[4px] rounded-[5px] bg-[#007B8233]"></div>
-
-//                 <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-//                   <img src={Tick1} alt="tick" className="w-[40px] h-[40px]" />
-//                   <div className="font-semibold text-[16px] leading-[56%] text-[#B0B0B0]">
-//                     Success
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-
-//             <div className="w-[1160px] h-[544px] flex justify-between items-start gap-[18px]">
-//               <div className="w-[716px] h-[544px] flex justify-start items-start flex-col gap-[30px]">
-//                 <div className="w-[716px] h-[37px] font-semibold text-[24px] leading-[156%] text-[#007B82]">
-//                   Billing Information
-//                 </div>
-
-//                 <form
-//                   onSubmit={handleContinue}
-//                   className="w-[716px] h-[477px] flex flex-col justify-start items-start gap-[12px]"
-//                 >
-//                   {/* Plan Selection */}
-//                   <div className="w-[716px] h-[42px] flex justify-between items-center gap-[16px]">
-//                     {["Basic", "Silver", "Gold"].map((plan) => (
-//                       <div
-//                         key={plan}
-//                         className={`w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] flex justify-between items-center px-[16px] py-[10px] cursor-pointer ${
-//                           formData.plan === plan ? "bg-[#E8F0FE]" : "bg-white"
-//                         }`}
-//                         required
-//                         onClick={() => handlePlanSelect(plan)}
-//                       >
-//                         <div className="font-[400] text-[14px] leading-[140%] text-[#007B82]">
-//                           {plan}
-//                         </div>
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82]"
-//                           required
-//                           name="premium"
-//                           checked={formData.plan === plan}
-//                           onChange={() => {}}
-//                         />
-//                       </div>
-//                     ))}
-//                   </div>
-
-//                   {/* Duration Selection */}
-//                   <div className="w-[472px] h-[42px] flex justify-between items-center gap-[16px]">
-//                     {["Monthly", "Yearly"].map((duration) => (
-//                       <div
-//                         key={duration}
-//                         className={`w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#007B82] flex justify-between items-center px-[16px] py-[10px] cursor-pointer ${
-//                           formData.duration === duration
-//                             ? "bg-[#E8F0FE]"
-//                             : "bg-white"
-//                         }`}
-//                         onClick={() => handleDurationSelect(duration)}
-//                       >
-//                         <div className="font-[400] text-[14px] leading-[140%] text-[#007B82]">
-//                           {duration}
-//                         </div>
-//                         <input
-//                           type="radio"
-//                           className="accent-[#007B82]"
-//                           name="Durations"
-//                           checked={formData.duration === duration}
-//                           onChange={() => {}}
-//                         />
-//                       </div>
-//                     ))}
-//                   </div>
-//                   {/* Form Fields */}
-//                   <input
-//                     type="text"
-//                     name="full_name"
-//                     value={formData.full_name}
-//                     onChange={(e) => {
-//                       if (/^[A-Za-z\s]*$/.test(e.target.value)) {
-//                         handleChange(e);
-//                       }
-//                     }}
-//                     className={`w-[716px] h-[52px] placeholder:text-[#2A2A2A] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] ${
-//                       formData.full_name ? "bg-[#E8F0FE]" : "bg-white"
-//                     }`}
-//                     placeholder="Full Name"
-//                     required
-//                   />
-
-//                   <input
-//                     type="email"
-//                     name="email"
-//                     value={formData.email}
-//                     onChange={handleChange}
-//                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-//                     className={`w-[716px] h-[52px] placeholder:text-[#2A2A2A] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] ${
-//                       formData.email ? "bg-[#E8F0FE]" : "bg-white"
-//                     }`}
-//                     placeholder="Email"
-//                     required
-//                     title="Please enter a valid email address (e.g., user@example.com)"
-//                   />
-
-//                   <div className="w-[716px] h-[52px] flex justify-between items-start gap-[16px]">
-//                     <input
-//                       type="text"
-//                       name="street_address"
-//                       value={formData.street_address}
-//                       onChange={handleChange}
-//                       className={`w-[228px] placeholder:text-[#2A2A2A] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] ${
-//                         formData.street_address ? "bg-[#E8F0FE]" : "bg-white"
-//                       }`}
-//                       placeholder="Address"
-//                       required
-//                     />
-//                     <input
-//                       type="tel"
-//                       name="phone_number"
-//                       value={formData.phone_number}
-//                       onChange={(e) => {
-//                         if (/^[0-9+()-]*$/.test(e.target.value)) {
-//                           handleChange(e);
-//                         }
-//                       }}
-//                       pattern="[0-9+()-]{10,15}"
-//                       className={`w-[228px] placeholder:text-[#2A2A2A] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] ${
-//                         formData.phone_number ? "bg-[#E8F0FE]" : "bg-white"
-//                       }`}
-//                       placeholder="Phone Number"
-//                       required
-//                     />
-//                     <input
-//                       type="text"
-//                       name="city"
-//                       value={formData.city}
-//                       onChange={handleChange}
-//                       className={`w-[228px] placeholder:text-[#2A2A2A] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] ${
-//                         formData.city ? "bg-[#E8F0FE]" : "bg-white"
-//                       }`}
-//                       placeholder="City"
-//                       required
-//                     />
-//                   </div>
-
-//                   <div className="w-[716px] h-[52px] flex justify-between items-start gap-[16px]">
-//                     <input
-//                       type="text"
-//                       name="state"
-//                       value={formData.state}
-//                       onChange={handleChange}
-//                       className={`w-[228px] placeholder:text-[#2A2A2A] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] ${
-//                         formData.state ? "bg-[#E8F0FE]" : "bg-white"
-//                       }`}
-//                       placeholder="State/Province"
-//                       required
-//                     />
-//                     <input
-//                       type="text"
-//                       name="pincode"
-//                       value={formData.pincode}
-//                       onChange={(e) => {
-//                         if (/^[0-9]*$/.test(e.target.value)) {
-//                           handleChange(e);
-//                         }
-//                       }}
-//                       className={`w-[228px] placeholder:text-[#2A2A2A] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] ${
-//                         formData.pincode ? "bg-[#E8F0FE]" : "bg-white"
-//                       }`}
-//                       placeholder="Zip/Postal Code"
-//                       required
-//                     />
-//                     <div
-//                       className={`w-[228px] h-[52px] rounded-[12px] border-[1px] border-solid border-[#007B82] flex justify-between items-center px-[20px] cursor-pointer ${
-//                         formData.country ? "bg-[#E8F0FE]" : "bg-white"
-//                       }`}
-//                     >
-//                       <select
-//                         name="country"
-//                         value={formData.country}
-//                         onChange={handleChange}
-//                         className="w-[208px] cursor-pointer bg-transparent"
-//                         required
-//                       >
-//                         <option value="">Select Country</option>
-//                         <option value="IND">India</option>
-//                         <option value="USA">United States</option>
-//                       </select>
-//                     </div>
-//                   </div>
-
-//                   <input
-//                     type="text"
-//                     name="coupon_code"
-//                     value={formData.coupon_code}
-//                     onChange={handleChange}
-//                     className={`w-[716px] h-[52px] placeholder:text-[#2A2A2A] rounded-[12px] border-[1px] border-solid border-[#007B82] px-[20px] py-[14px] text-[14px] leading-[24px] tracking-[0.3px] font-[400] text-[#2A2A2A] ${
-//                       formData.coupon_code ? "bg-[#E8F0FE]" : "bg-white"
-//                     }`}
-//                     placeholder="Enter Coupon Code (optional)"
-//                   />
-
-//                   <button
-//                     type="submit"
-//                     className="w-[716px] h-[49px] rounded-[8px] text-white text-[16px] font-bold leading-[35px] tracking-[0px] text-center flex justify-center items-center"
-//                     style={{
-//                       background: `linear-gradient(to right, #007c82 0%, rgb(4, 68, 75), rgb(3, 89, 94) 100%)`,
-//                     }}
-//                   >
-//                     Continue
-//                   </button>
-//                 </form>
-//               </div>
-
-//               {/* Right side - Plan Details */}
-
-//               <div className="w-[426px] h-[504px] border-[1.5px] flex flex-col justify-center items-center gap-[px]">
-//                 <div className="w-[384.54px] h-[327.96px] rounded-[16px] bg-[#007B82B2] backdrop-blur-32 px-[20px] py-[50px] gap-[20px] flex flex-col justify-start">
-//                   <div className="font-semibold text-[24px] leading-[100%] text-[white]">
-//                     Plan Details
-//                   </div>
-
-//                   <div className="w-[334.79px] h-[192.92px] rounded-[16px] p-[16px] bg-[#007B82] flex flex-col justify-center items-center ">
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Plan Name
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         {plan.name}
-//                       </div>
-//                     </div>
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Price
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         ${plan.price}
-//                       </div>
-//                     </div>
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Duration
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         {plan.validity_days}
-//                       </div>
-//                     </div>
-//                     <div className="w-[303px] h-[128px] flex">
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-[white] font-medium">
-//                         Discount
-//                       </div>
-//                       <div className="w-[50%] h-[32px] flex justify-start items-center text-white font-semibold">
-//                         {plan.offerCode}
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-
-//                 <div className="w-[384.54px] h-[176.04px] rounded-[16px] bg-[#007B82B2] flex items-end py-5 px-5">
-//                   <div className="w-[334.79px] h-[66.32px] flex justify-between items-center">
-//                     <div className="w-[84px] h-[55px] flex flex-col justify-center items-center">
-//                       <div className="w-[77px] h-[17px] font-[400] text-[14px] leading-[100%] text-white">
-//                         Grand Total
-//                       </div>
-//                       <div className="font-[600] text-[25px] leading-[100%] text-[white]">
-//                         ${plan.price}
-//                       </div>
-//                     </div>
-
-//                     <div className="w-[38px] h-[51px]">
-//                       <img src={Paper} alt="page-icon" />
-//                     </div>
-//                   </div>
-//                 </div>
-//                 <div className="w-[50px] h-[50px] rounded-[50px] bg-white absolute top-[480px] right-[450px]"></div>
-//                 <div className="w-[50px] h-[50px] rounded-[50px] bg-white absolute  top-[480px] right-[70px]"></div>
-//                 {/* <div className="w-[20%] border-[2px] border-dashed border-white absolute top-[505px]"></div> */}
-//                 <div className="w-[360px] border-[2px] border-dashed border-white absolute top-[505px]"></div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-// AfterBilling.js - Modified to only show the selected plan
 import React, { useState, useEffect } from "react";
-import SideArrow from "../../assets/pricing-pg/sideArrow.png";
-import Tick from "../../assets/pricing-pg/tick.png";
-import Tick1 from "../../assets/pricing-pg/tick1.png";
-import Paper from "../../assets/pricing-pg/paper.png";
+import Bg from "../../assets/afterHome/BillingBg.png";
+import Arrow from "../../assets/forgetPg/arrow1.png";
+import Pimage from "../../assets/profile/pimage.png"; // Fallback image
+import Paypal from "../../assets/afterHome/Paypal.png";
+import Stripe from "../../assets/afterHome/Stripe.png";
+import GreenTic from "../../assets/afterHome/GreenTic.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -756,21 +16,37 @@ export default function AfterBilling() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedPlanFromState, setSelectedPlanFromState] = useState(null);
+  const [selected, setSelected] = useState(2); // Default to Stripe
+  const [zip, setZip] = useState("");
+  const [countryCode, setCountryCode] = useState("in");
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [nameInvalid, setNameInvalid] = useState(false);
+  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [phoneInvalid, setPhoneInvalid] = useState(false);
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [planError, setPlanError] = useState("");
+  const [profilePic, setProfilePic] = useState(Pimage); // State for dynamic profile image
 
-  // Static descriptions
+  const countries = [
+    { code: "ad", name: "Andorra" },
+    // ... (rest of the countries array remains unchanged)
+  ];
+
+  const paymentOptions = [
+    // { id: 1, img: Paypal, title: "Paypal" },
+    { id: 2, img: Stripe, title: "Stripe" },
+  ];
+  const selectedOption = paymentOptions.find((opt) => opt.id === selected);
+
   const staticDescriptions = {
-    basic:
-      "Perfect for personal or casual users who want a simple idea of interior design.",
-    silver:
-      "Ideal for homeowners or renters looking for more creative control and polished designs.",
+    basic: "Perfect for personal or casual users who want a simple idea of interior design.",
+    silver: "Ideal for homeowners or renters looking for more creative control and polished designs.",
     gold: "Best for professionals, renovators, or anyone seeking top-tier results and personalization.",
   };
 
-  // Show more/less for features
-  const [showMore, setShowMore] = useState(false);
-  const toggleShowMore = () => setShowMore((prev) => !prev);
-
-  // Form state
   const [formData, setFormData] = useState({
     plan: "",
     duration: "Monthly",
@@ -780,15 +56,57 @@ export default function AfterBilling() {
     street_address: "",
     city: "",
     state: "",
-    country: "IND",
+    country: "India",
     pincode: "",
     coupon_code: "",
   });
 
+  // Fetch user profile data (including profile image)
+  useEffect(() => {
+    const fetchUserData = async () => {
+      let userId = localStorage.getItem("userId");
+      if (!userId) {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        userId = userInfo?.userId;
+      }
+
+      if (!userId) {
+        console.warn("User ID not found. Using default profile image.");
+        setProfilePic(Pimage);
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("Token not found. Using default profile image.");
+        setProfilePic(Pimage);
+        return;
+      }
+
+      try {
+        const profileResponse = await axios.get("http://localhost:8000/profile", {
+          params: { userid: userId },
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const profilePicUrl = profileResponse.data.profile_pic
+          ? `http://localhost:8000${profileResponse.data.profile_pic}?t=${Date.now()}`
+          : Pimage;
+
+        setProfilePic(profilePicUrl);
+      } catch (err) {
+        console.error("Error fetching profile data:", err);
+        setProfilePic(Pimage); // Fallback to default image on error
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Existing useEffect for fetching plans
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        // Get selected plan from location state first
         const selectedPlanFromLocation = location.state?.selectedPlan;
         if (selectedPlanFromLocation) {
           setSelectedPlanFromState(selectedPlanFromLocation);
@@ -799,18 +117,16 @@ export default function AfterBilling() {
             coupon_code: selectedPlanFromLocation.offerCode || "",
           }));
           setLoading(false);
-          return; // Exit early if we have the selected plan from state
+          return;
         }
 
-        // Fallback to API if no plan in state
         const response = await fetch("http://127.0.0.1:8001/api/plans/");
         if (!response.ok) throw new Error("Failed to fetch plans.");
         const data = await response.json();
 
         const mappedPlans = data.plans.map((plan) => ({
           ...plan,
-          description:
-            staticDescriptions[plan.name.toLowerCase()] || plan.description,
+          description: staticDescriptions[plan.name.toLowerCase()] || plan.description,
         }));
 
         setPlans(mappedPlans);
@@ -818,10 +134,8 @@ export default function AfterBilling() {
         const planData = location.state?.plan;
         if (planData) {
           const mappedPlan = {
-            ...planData,
-            description:
-              staticDescriptions[planData.name.toLowerCase()] ||
-              planData.description,
+            ...plan,
+            description: staticDescriptions[planData.name.toLowerCase()] || planData.description,
           };
           setPlan(mappedPlan);
           setFormData((prev) => ({
@@ -831,8 +145,7 @@ export default function AfterBilling() {
           }));
         } else {
           const defaultPlan =
-            mappedPlans.find((p) => p.name.toLowerCase() === "silver") ||
-            mappedPlans[0];
+            mappedPlans.find((p) => p.name.toLowerCase() === "silver") || mappedPlans[0];
           if (defaultPlan) {
             setPlan(defaultPlan);
             setFormData((prev) => ({
@@ -840,6 +153,8 @@ export default function AfterBilling() {
               plan: defaultPlan.name,
               coupon_code: defaultPlan.offerCode || "",
             }));
+          } else {
+            setPlanError("No plans available. Please try again later.");
           }
         }
       } catch (err) {
@@ -852,26 +167,73 @@ export default function AfterBilling() {
     fetchPlans();
   }, [location.state]);
 
-  // Handle input
+  const handleZipChange = (e) => {
+    const value = e.target.value;
+    setZip(value);
+    setFormData((prev) => ({ ...prev, pincode: value }));
+  };
+
+  const handleCountryChange = (e) => {
+    const code = e.target.value;
+    setCountryCode(code);
+    const selectedCountry = countries.find((c) => c.code === code)?.name || "";
+    setCountry(selectedCountry);
+    setFormData((prev) => ({ ...prev, country: selectedCountry }));
+    setZip("");
+    setState("");
+    setCity("");
+    setFormData((prev) => ({ ...prev, pincode: "", state: "", city: "" }));
+  };
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, full_name: value }));
+    setNameInvalid(value && !/^[a-zA-Z\s]*$/.test(value));
+    setNameError(value ? "" : "Name is required.");
+  };
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, email: value }));
+    setEmailInvalid(value && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value));
+    setEmailError(value ? "" : "Email is required.");
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, phone_number: value }));
+    setPhoneInvalid(value && !/^\+?\d[\d\s-]*$/.test(value));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle plan selection - disabled when only one plan is shown
-  const handlePlanSelect = (planName) => {
-    // Do nothing - plan selection is fixed when coming from confirmation page
-  };
-
-  // Handle duration selection
   const handleDurationSelect = (duration) => {
     setFormData((prev) => ({ ...prev, duration }));
   };
 
-  // Submit form
+  const isFormValid = () => {
+    return (
+      formData.plan &&
+      formData.email &&
+      formData.full_name &&
+      !nameInvalid &&
+      !emailInvalid &&
+      !phoneInvalid
+    );
+  };
+
   const handleContinue = async (e) => {
     e.preventDefault();
-    const userId = localStorage.getItem("userId");
+
+    let userId = localStorage.getItem("userId");
+    if (!userId) {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      userId = userInfo?.userId;
+    }
+
     if (!userId) {
       alert("User ID not found. Please log in.");
       return;
@@ -920,407 +282,406 @@ export default function AfterBilling() {
   if (error || !plan)
     return <div className="text-white text-center py-12">Error: {error}</div>;
 
-  // Features + total
-  const features = Array.isArray(plan.features) ? plan.features : [];
-  const visibleFeatures = showMore ? features : features.slice(0, 4);
   const discountPercentage = plan.discountPercentage || 0;
   const discount = `${discountPercentage}%`;
   const grandTotal = (
     plan.price -
     (plan.price * discountPercentage) / 100
   ).toFixed(2);
-
-  // Determine which plans to show - only the selected one if coming from confirmation
   const plansToShow = selectedPlanFromState ? [selectedPlanFromState] : plans;
 
   return (
-    <div>
+    <div className="relative w-full min-h-screen flex flex-col items-center">
+      <style>{`
+        @keyframes invalidBlink {
+          0% { 
+            background-color: #151515; 
+            border-color: transparent;
+          }
+          50% { 
+            background-color: rgba(255, 0, 0, 0.3);
+            border-color: #ff4444;
+          }
+          100% { 
+            background-color: #151515; 
+            border-color: transparent;
+          }
+        }
+        .invalid-blink {
+          animation: invalidBlink 0.8s infinite;
+        }
+        .poppins-font {
+          font-family: 'Poppins', sans-serif;
+        }
+        @media (max-width: 768px) {
+          .text-5xl { font-size: 2rem; }
+          .text-2xl { font-size: 1.5rem; }
+          .text-xl { font-size: 1.25rem; }
+          .text-base { font-size: 0.875rem; }
+          .text-sm { font-size: 0.75rem; }
+        }
+        @media (max-width: 640px) {
+          .text-5xl { font-size: 1.5rem; }
+          .text-2xl { font-size: 1.25rem; }
+          .text-xl { font-size: 1rem; }
+          .text-base { font-size: 0.75rem; }
+          .text-sm { font-size: 0.675rem; }
+        }
+      `}</style>
+
+      {/* Background */}
       <div
-        className="bg-[black] w-full min-h-[800px] flex justify-center items-center bg-center bg-no-repeat bg-cover -mt-[82px] pt-[82px] overflow-hidden"
+        className="absolute inset-0 w-full h-full"
+        style={{
+          backgroundImage: `url(${Bg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
       >
-        <div className="w-[1280px] min-h-[720px] rounded-[16px] border-[1px] border-solid border-[#FFFFFF33] drop-shadow-[0_0_12px_0] shadow-[#E3EBFB80] bg-blur-[100px] blur-[100px] backdrop-blur-[20px] flex flex-col justify-start items-start px-[50px] py-[30px] mt-8 mb-4"
-          style={{
-            background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.2) 15.32%, rgba(194, 44, 162, 0.2) 99.87%)"
-          }}
-        > 
-          {/* Back */}
-          <div className="w-full min-h-[50px] flex justify-start">
-            <div
-              className="w-[70px] flex justify-center items-center cursor-pointer"
-              onClick={handleGoBack}
-            >
-              <img src={SideArrow} alt="Arrow" className="w-[24px] h-[24px]" />
-              <div className="font-medium text-[20px] text-white">Back</div>
+        <div className="absolute inset-0 bg-black/80"></div>
+      </div>
+
+      {/* Back button */}
+      <div
+        className="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8 flex items-center gap-2 cursor-pointer z-20"
+        onClick={handleGoBack}
+      >
+        <div className="w-8 h-8 sm:w-10 sm:h-10 border border-[#FFFFFF33] rounded-full bg-[#FFFFFF1F] flex justify-center items-center p-2">
+          <img src={Arrow} alt="back" className="w-3 h-3 sm:w-4 sm:h-4" />
+        </div>
+        <span className="text-white font-medium text-sm sm:text-base">
+          Back
+        </span>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 flex flex-col md:flex-row gap-8 md:gap-16">
+        {/* Left Div */}
+        <div className="w-full md:w-1/2 flex flex-col gap-6">
+          {/* Profile */}
+          <div className="flex justify-center md:justify-start">
+            <div className="w-20 h-20 rounded-full border-2 border-[#9747FF] bg-white overflow-hidden">
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-full"
+                onError={() => setProfilePic(Pimage)} // Fallback to default image if dynamic image fails to load
+              />
             </div>
           </div>
 
-          <div className="w-[1160px] flex flex-col gap-[16px]">
-            {/* Steps */}
-            <div className="w-full min-h-[76px] flex justify-center  ml-[40px]">
-              <div className="w-[822px] h-[76px] flex justify-start items-center">
-                <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px] ">
-                  {/* Circle with transparent fill and no border */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 border-[1px] border-solid border-[#8A38F5] rounded-full"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="none"
+          {/* Payment Method */}
+          <div className="flex flex-col gap-6">
+            <h2 className="text-white poppins-font font-normal text-xl sm:text-2xl">
+              Select Payment Method
+            </h2>
+            <div className="flex flex-col gap-4">
+              {paymentOptions.map((option) => {
+                const isSelected = selected === option.id;
+                return (
+                  <div
+                    key={option.id}
+                    onClick={() => setSelected(option.id)}
+                    className={`flex justify-between items-center rounded-lg p-4 cursor-pointer ${
+                      isSelected
+                        ? "bg-[#8A38F533] border border-[#8A38F5]"
+                        : "bg-[#151515] border border-transparent"
+                    } backdrop-blur-md`}
                   >
-                    <circle cx="12" cy="12" r="12" fill="transparent" />
-                    <path
-                      d="M8 12l3 3 5-5"
-                      stroke="#C22CA2"  // tick color
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-
-                  <div className="font-semibold text-[16px] leading-[56%] text-[#8A38F5]">
-                    Billing Info
-                  </div>
-                </div>
-                <div
-                  className="w-[226px] h-[4px] rounded-[5px]"
-                  style={{
-                    background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)"
-                  }}
-                ></div>
-                <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-                  {/* Circle with Tick SVG */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 border-[1px] border-solid border-[#FFFFFF33] rounded-full"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="none"
-                  >
-                    <circle cx="12" cy="12" r="12" fill="transparent" />
-                    <path
-                      d="M8 12l3 3 5-5"
-                      stroke="#C22CA2"  // tick color
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-
-                  <div className="w-[156px] ml-[30px] font-semibold text-[16px] leading-[200%] text-white">
-                    Payment Processing
-                  </div>
-                </div>
-
-                <div
-                  className="w-[226px] h-[4px] rounded-[5px]"
-                  style={{
-                    background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)"
-                  }}
-                ></div>
-
-                <div className="w-[94px] h-[76px] flex flex-col justify-center items-center px-[7px] gap-[9px]">
-                  {/* Circle with Tick SVG */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 border-[1px] border-solid border-[#FFFFFF33] rounded-full"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="none"
-                  >
-                    <circle cx="12" cy="12" r="12" fill="transparent" />
-                    <path
-                      d="M8 12l3 3 5-5"
-                      stroke="#C22CA2"  // tick color
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      fill="none"
-                    />
-                  </svg>
-                  <div className="font-semibold text-[16px] leading-[56%] text-white">
-                    Success
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full flex justify-between gap-[18px]">
-              {/* Left Form */}
-              <div className="w-[716px] flex flex-col gap-[30px]">
-                <div className="text-[24px] font-semibold text-white">
-                  Billing Information
-                </div>
-                <form
-                  onSubmit={handleContinue}
-                  className="flex flex-col gap-[12px]"
-                >
-                  {/* Plan selection - only show if multiple plans available */}
-                  {plansToShow.length > 1 ? (
-                    <div className="flex gap-[16px]">
-                      {plansToShow.map((p) => (
-                        <div
-                          key={p.id}
-                          className={`w-[228px] h-[40px] rounded-[12px] border-[1px] border-solid border-[#FFFFFF66]  flex justify-between items-center px-[16px] cursor-pointer ${
-                            formData.plan === p.name ? "bg-[#FFFFFF1F]" : "bg-[#FFFFFF1F]"
-                          }`}
-                          onClick={() => handlePlanSelect(p.name)}
-                        >
-                          <div className="text-[14px] text-white">
-                            {p.name}
-                          </div>
-                          <input
-                            type="radio"
-                            checked={formData.plan === p.name}
-                            readOnly
-                          />
-                        </div>
-                      ))}
+                    <div className="w-24 sm:w-28 h-12 flex-shrink-0">
+                      <img
+                        src={option.img}
+                        alt={option.title}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
-                  ) : (
-                    // Show only the selected plan with no option to change
-                    <div className="w-full h-[40px] rounded-[12px] border-[1px] border-solid border-[#FFFFFF66] flex items-center px-[16px] bg-[#FFFFFF1F]">
-                      <div className="text-[14px] text-white">
-                        Selected Plan: {formData.plan}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Duration */}
-                  <div className="flex gap-[16px]">
-                    {["Monthly", "Yearly"].map((duration) => (
-                      <div
-                        key={duration}
-                        className={`w-[228px] h-[40px] rounded-[8px] border-[1px] border-solid border-[#FFFFFF66]  flex justify-between items-center px-[16px] cursor-pointer ${
-                          formData.duration === duration
-                            ? "bg-[#FFFFFF1F]"
-                            : "bg-[#FFFFFF1F]"
-                        }`}
-                        onClick={() => handleDurationSelect(duration)}
-                      >
-                        <div className="text-[14px] text-white">
-                          {duration}
-                        </div>
-                        <input
-                          type="radio"
-                          checked={formData.duration === duration}
-                          readOnly
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Inputs */}
-                  <input
-                    type="text"
-                    name="full_name"
-                    value={formData.full_name}
-                    onChange={(e) =>
-                      /^[A-Za-z\s]*$/.test(e.target.value) && handleChange(e)
-                    }
-                    className="w-full h-[52px] border-[1px] border-solid border-[#FFFFFF66]  rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                    placeholder="Full Name"
-                    required
-                  />
-
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                    placeholder="Email"
-                    required
-                  />
-
-                  <div className="flex gap-[16px]">
-                    <input
-                      type="text"
-                      name="street_address"
-                      value={formData.street_address}
-                      onChange={handleChange}
-                      className="w-[228px] h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                      placeholder="Address"
-                      required
-                    />
-                    <input
-                      type="tel"
-                      name="phone_number"
-                      value={formData.phone_number}
-                      onChange={(e) =>
-                        /^[0-9+()\-\s]*$/.test(e.target.value) &&
-                        handleChange(e)
-                      }
-                      className="w-[228px] h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                      placeholder="Phone"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-[228px] h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                      placeholder="City"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex gap-[16px]">
-                    <input
-                      type="text"
-                      name="state"
-                      value={formData.state}
-                      onChange={handleChange}
-                      className="w-[228px] h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                      placeholder="State"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="pincode"
-                      value={formData.pincode}
-                      onChange={(e) =>
-                        /^[0-9]*$/.test(e.target.value) && handleChange(e)
-                      }
-                      className="w-[228px] h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                      placeholder="Pincode"
-                      required
-                    />
-                    <select
-                      name="country"
-                      value={formData.country}
-                      onChange={handleChange}
-                      className="w-[228px] h-[52px] border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F]"
-                      required
+                    <div
+                      className={`w-5 h-5 rounded-full border-[1px] border-solid ${
+                        isSelected
+                          ? "border-[#8A38F5] bg-[#8A38F5]"
+                          : "border-white/60"
+                      } flex items-center justify-center`}
                     >
-                      <option value="IND" className="text-black font-bold">India</option>
-                      <option value="USA" className="text-black font-bold">United States</option>
-                    </select>
+                      {isSelected && (
+                        <div className="w-2.5 h-2.5 bg-white rounded-full" />
+                      )}
+                    </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
 
-                  <input
-                    type="text"
-                    name="coupon_code"
-                    value={formData.coupon_code}
-                    onChange={handleChange}
-                    className="w-full h-[52px]  border-[1px] border-solid border-[#FFFFFF66] rounded-[12px] px-[20px] bg-[#FFFFFF1F] text-white"
-                    placeholder="Coupon Code (optional)"
-                  />
-
-                  <button
-                    type="submit"
-                    className="w-full h-[49px] rounded-[8px] text-white font-bold flex justify-center items-center border-[1px] border-solid border-[#FFFFFF66]"
-                    style={{
-                      background: "linear-gradient(95.92deg, rgba(138, 56, 245, 0.5) 15.32%, rgba(194, 44, 162, 0.5) 99.87%)",
-                    }}
-                  >
-                    Continue
-                  </button>
-                </form>
+          {/* Payment Summary */}
+          <div className="mt-6 w-full flex flex-col gap-6 rounded-lg p-6 bg-[#15151566] backdrop-blur-md">
+            <h2 className="text-white poppins-font font-normal text-xl sm:text-2xl">
+              You have to pay
+            </h2>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <span className="text-white poppins-font font-semibold text-3xl sm:text-5xl">
+                  ${grandTotal}
+                </span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-white poppins-font font-normal text-lg sm:text-xl">
+                    {plan.name} Plan
+                  </span>
+                  <span className="text-white poppins-font font-normal text-sm sm:text-base">
+                    Get ready to unlock {plan.name} Subscription benefits
+                  </span>
+                </div>
               </div>
-
-              {/* Right side - Plan + Features */}
-              <div className="w-[426px] flex flex-col gap-[20px]">
-                <div className="rounded-[16px] p-[20px] flex flex-col gap-[20px] border-[2px] border-solid border-[#FFFFFF33] "
-                 style={{
-                backgroundColor: "rgba(255, 255, 255, 0.02)",
-                borderColor: "rgba(255, 255, 255, 0.08)",
-                backdropFilter: "blur(14.18px)",
-                boxShadow: "0px 0px 23.63px 0px #00000040",
-              }}>
-                  <div className="text-[24px] font-semibold text-white">
-                    Plan Details
-                  </div>
-                  <div className="rounded-[16px] p-[16px] bg-[#89898933] border-[1px] border-solid border-[#FFFFFF33] flex flex-col gap-2 text-white">
-
-                    <div className="flex justify-between">
-                      <span>Plan Name</span>
-                      <span className="font-semibold">{plan.name}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Price</span>
-                      <span className="font-semibold">
-                        ${plan.price.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Duration</span>
-                      <span className="font-semibold">{plan.validity_days} days</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Discount</span>
-                      <span className="font-semibold">
-                        {discount}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Features */}
-                  <div className="flex flex-col gap-3">
-                    <div className="text-lg font-semibold text-white">
-                      Features
-                    </div>
-                    {visibleFeatures.map((feature, idx) => (
-                      <div key={idx} className="flex gap-2 items-center">
-                        <div className="w-4 h-4 flex-shrink-0 bg-[#8A38F5] rounded flex items-center justify-center">
-                          <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                          >
-                            <path
-                              d="M5 13L9 17L19 7"
-                              stroke="#000000"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </div>
-                        <div className="text-white text-sm">
-                          {typeof feature === "object"
-                            ? feature.text || feature.name
-                            : feature}
-                        </div>
-                      </div>
-                    ))}
-                    {features.length > 4 && (
-                      <button
-                        onClick={toggleShowMore}
-                        className="flex items-center gap-2 text-white text-sm mt-2"
-                      >
-                        {showMore
-                          ? "See less"
-                          : `See ${features.length - 4} more`}
-                      </button>
-                    )}
-                  </div>
+              <div className="flex justify-center items-center gap-2 rounded-lg border border-[#8A38F580] bg-[#8A38F51A] p-4">
+                <span className="text-white poppins-font font-medium text-sm sm:text-base text-center">
+                  {discount} Discount Applied
+                </span>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <img src={GreenTic} alt="Green Tick" className="w-5 h-5" />
+                  <span className="text-white poppins-font font-normal text-base sm:text-lg">
+                    Payment and invoice
+                  </span>
                 </div>
-
-                <div
-                  className="rounded-[16px] p-5 flex justify-between items-center text-white border-[1px] border-solid border-[#FFFFFF66]"
-                  style={{
-                    background:
-                      "linear-gradient(95.92deg, rgba(138, 56, 245, 0.2) 15.32%, rgba(194, 44, 162, 0.2) 99.87%)",
-                  }}
-                >
-                  <div>
-                    <div>Grand Total</div>
-                    <div className="text-[25px] font-semibold">
-                      ${grandTotal}
-                    </div>
-                  </div>
-                  <img
-                    src={Paper}
-                    alt="page-icon"
-                    className="w-[38px] h-[51px]"
-                  />
-                </div>
+                <span className="text-[#B5B5B5] poppins-font font-normal text-sm sm:text-base">
+                  Once the payment is completed, an invoice will be sent to your
+                  registered email.
+                </span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Right Div */}
+        <div className="w-full md:w-1/2 flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-white poppins-font font-normal text-xl sm:text-2xl">
+              Payment Details
+            </h2>
+            <span className="text-[#B5B5B5] poppins-font font-normal text-sm sm:text-base">
+              Please provide your payment details below to securely complete
+              your purchase.
+            </span>
+          </div>
+
+          {/* Form */}
+          <div className="flex flex-col gap-4">
+            {/* Plan Selection */}
+            {plansToShow.length > 1 ? (
+              <div className="flex flex-col">
+                <label className="text-white text-sm mb-1">Plan *</label>
+                <div className="flex gap-4">
+                  {plansToShow.map((p) => (
+                    <div
+                      key={p.id}
+                      className={`flex-1 h-12 sm:h-14 rounded-lg border border-[#FFFFFF66] flex items-center px-4 cursor-pointer ${
+                        formData.plan === p.name
+                          ? "bg-[#8A38F533]"
+                          : "bg-[#151515]"
+                      } ${planError ? "invalid-blink" : ""}`}
+                      onClick={() => {
+                        setFormData((prev) => ({ ...prev, plan: p.name }));
+                        setPlanError("");
+                      }}
+                    >
+                      <div className="text-white text-sm">{p.name}</div>
+                      <input
+                        type="radio"
+                        checked={formData.plan === p.name}
+                        readOnly
+                        className="ml-auto"
+                      />
+                    </div>
+                  ))}
+                </div>
+                {planError && (
+                  <span className="text-red-400 text-sm mt-1">{planError}</span>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                <label className="text-white text-sm mb-1">
+                  Selected Plan *
+                </label>
+                <div className="w-full h-12 sm:h-14 rounded-lg border border-[#FFFFFF66] flex items-center px-4 bg-[#8A38F533]">
+                  <div className="text-white text-sm">
+                    Selected Plan: {formData.plan}
+                  </div>
+                </div>
+                {planError && (
+                  <span className="text-red-400 text-sm mt-1">{planError}</span>
+                )}
+              </div>
+            )}
+
+            {/* Duration Selection */}
+            <div className="flex flex-col">
+              <label className="text-white text-sm mb-1">Billing Cycle</label>
+              <div className="flex gap-4">
+                {["Monthly", "Yearly"].map((duration) => (
+                  <div
+                    key={duration}
+                    className={`flex-1 h-12 sm:h-14 rounded-lg border border-[#FFFFFF66] flex items-center px-4 cursor-pointer ${
+                      formData.duration === duration
+                        ? "bg-[#8A38F533]"
+                        : "bg-[#151515]"
+                    }`}
+                    onClick={() => handleDurationSelect(duration)}
+                  >
+                    <div className="text-white text-sm">{duration}</div>
+                    <input
+                      type="radio"
+                      checked={formData.duration === duration}
+                      readOnly
+                      className="ml-auto"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-white text-sm mb-1">Name *</label>
+              <input
+                type="text"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleNameChange}
+                placeholder="Name"
+                className={`w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none ${
+                  nameInvalid || nameError ? "invalid-blink" : ""
+                }`}
+              />
+              {(nameInvalid || nameError) && (
+                <span className="text-red-400 text-sm mt-1">{nameError}</span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <label className="text-white text-sm mb-1">Phone number</label>
+              <input
+                type="tel"
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handlePhoneChange}
+                placeholder="e.g., +123 7356 8524"
+                className={`w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none ${
+                  phoneInvalid ? "invalid-blink" : ""
+                }`}
+              />
+              {phoneInvalid && (
+                <span className="text-red-400 text-sm mt-1">
+                  Phone number can only contain digits, +, spaces, or hyphens.
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <label className="text-white text-sm mb-1">Mail ID *</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleEmailChange}
+                placeholder="Enter mail ID"
+                className={`w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none ${
+                  emailInvalid || emailError ? "invalid-blink" : ""
+                }`}
+              />
+              {(emailInvalid || emailError) && (
+                <span className="text-red-400 text-sm mt-1">{emailError}</span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <label className="text-white text-sm mb-1">Street Address</label>
+              <input
+                type="text"
+                name="street_address"
+                value={formData.street_address}
+                onChange={handleChange}
+                placeholder="Enter address"
+                className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none"
+              />
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1 flex flex-col">
+                <label className="text-white text-sm mb-1">Country</label>
+                <select
+                  value={countryCode}
+                  onChange={handleCountryChange}
+                  className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white border border-transparent focus:border-[#8A38F5] outline-none"
+                >
+                  {countries.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-1 flex flex-col">
+                <label className="text-white text-sm mb-1">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="City"
+                  className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1 flex flex-col">
+                <label className="text-white text-sm mb-1">State</label>
+                <input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  placeholder="State"
+                  className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none"
+                />
+              </div>
+              <div className="flex-1 flex flex-col">
+                <label className="text-white text-sm mb-1">Postal Code</label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={zip}
+                  onChange={handleZipChange}
+                  placeholder="Enter postal code"
+                  className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <label className="text-white text-sm mb-1">
+                Coupon Code (optional)
+              </label>
+              <input
+                type="text"
+                name="coupon_code"
+                value={formData.coupon_code}
+                onChange={handleChange}
+                placeholder="Enter coupon code"
+                className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none"
+              />
+            </div>
+            <button
+              onClick={handleContinue}
+              disabled={!isFormValid()}
+              className={`w-full h-12 sm:h-14 flex items-center justify-center gap-2 rounded-full border border-[#C22CA299] bg-gradient-to-r from-[#8A38F580] to-[#C22CA280] backdrop-blur-md shadow-lg text-white poppins-font text-sm sm:text-base font-normal transition-transform duration-300 ${
+                isFormValid()
+                  ? "hover:scale-105"
+                  : "opacity-50 cursor-not-allowed"
+              }`}
+            >
+              <span>Pay with</span>
+              <img
+                src={selectedOption ? selectedOption.img : Stripe}
+                alt="payment"
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+              />
+            </button>
           </div>
         </div>
       </div>

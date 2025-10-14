@@ -25,7 +25,6 @@ export default function HeroAfterProducts() {
   const [popupImage, setPopupImage] = useState(null);
   const [popupOriginalImage, setPopupOriginalImage] = useState(null);
   const downloadPopupRef = useRef(null);
-
   const draggableRef = useRef(null);
   const fullscreenRef = useRef(null);
 
@@ -268,35 +267,33 @@ export default function HeroAfterProducts() {
     return (
       <div
         ref={cardRef}
-        className="max-w-[522px] m-auto w-full h-auto flex flex-col gap-2"
+        className="w-full max-w-[522px] mx-auto flex flex-col gap-2 sm:gap-3"
       >
-        <div className="max-w-[520px] min-h-[35px] flex flex-col gap-2">
-          <div className="flex justify-between items-center max-w-[520px] min-h-[35px]">
-            <div className="w-auto text-white text-[14px] font-poppins font-normal leading-[140%]">
-              {roomName}
-            </div>
-            <div className="flex items-center gap-3">
-              <div
-                className="w-[24px] h-[24px] flex items-center justify-center rounded-[30px] border border-[#FFFFFF33] cursor-pointer"
-                onClick={handleFavoriteToggleLocal}
-              >
-                <img
-                  src={isStarred ? colorStar : star}
-                  alt="star"
-                  className="w-[12px] h-[11px]"
-                />
-              </div>
-              <div
-                className="w-[24px] h-[24px] cursor-pointer hover:opacity-80"
-                onClick={() => handleFullscreen(transformedImage)}
-              >
-                <img src={DragSize} alt="Fullscreen" title="View fullscreen" />
-              </div>
-            </div>
+        <div className="flex justify-between items-center w-full min-h-[35px] px-2 sm:px-0">
+          <div className="text-white text-[12px] sm:text-[14px] font-poppins font-normal leading-[140%]">
+            {roomName}
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              className="w-6 h-6 flex items-center justify-center rounded-full border border-[#FFFFFF33] cursor-pointer hover:opacity-80"
+              onClick={handleFavoriteToggleLocal}
+            >
+              <img
+                src={isStarred ? colorStar : star}
+                alt="star"
+                className="w-3 h-[11px] sm:w-[12px] sm:h-[11px]"
+              />
+            </button>
+            <button
+              className="w-6 h-6 cursor-pointer hover:opacity-80"
+              onClick={() => handleFullscreen(transformedImage)}
+            >
+              <img src={DragSize} alt="Fullscreen" title="View fullscreen" />
+            </button>
           </div>
         </div>
         <div
-          className="max-w-[522px] w-full h-auto rounded-[16px] overflow-hidden cursor-pointer"
+          className="w-full h-auto rounded-2xl overflow-hidden cursor-pointer"
           onClick={() =>
             scrollAndThen(() => handleFullscreen(transformedImage))
           }
@@ -306,71 +303,71 @@ export default function HeroAfterProducts() {
             imageRight={originalImage}
           />
         </div>
-        <div className="max-w-[520px] min-h-[57px] flex justify-end items-center relative">
-          {showOptions && (
-            <div
-              className="absolute flex justify-between items-center gap-4 rounded-lg px-4 py-2 right-8 top-0"
-              style={{ width: "calc(100% - 32px)" }}
-            >
-              <div
-                className="max-w-[40px] flex flex-col justify-center items-center cursor-pointer hover:opacity-80"
-                onClick={() =>
-                  scrollAndThen(() =>
-                    handleShow(transformedImage, originalImage)
-                  )
-                }
-              >
-                <img src={Search} alt="Show" />
-                <div className="text-[12px] text-[#ffffff]">Show</div>
-              </div>
-              <div className="max-w-[40px] flex flex-col justify-center items-center cursor-pointer hover:opacity-80">
-                <img src={Input} alt="Input" />
-                <div className="text-[12px] text-[#ffffff]">Input</div>
-              </div>
-              <div
-                className="max-w-[40px] flex flex-col justify-center items-center cursor-pointer hover:opacity-80"
-                onClick={() => {
-                  setPopupImage(transformedImage);
-                  setPopupOriginalImage(originalImage);
-                  setIsDownloadPopupOpen(true);
-                }}
-              >
-                <img src={Download} alt="Download" />
-                <div className="text-[12px] text-[#ffffff]">Download</div>
-              </div>
-            </div>
-          )}
-          <div
-            className="w-[28px] h-[28px] cursor-pointer flex items-center justify-center hover:opacity-80 z-10"
-            onClick={() => setShowOptions((prev) => !prev)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              className="w-6 h-6 text-white"
-            >
-              <circle cx="5" cy="12" r="2" />
-              <circle cx="12" cy="12" r="2" />
-              <circle cx="19" cy="12" r="2" />
-            </svg>
-          </div>
-        </div>
+<div className="w-full min-h-[57px] flex justify-end items-center relative gap-12 max-[640px]:gap-4 ">
+  {showOptions && (
+    <div
+      className="absolute flex justify-between items-center gap-3 sm:gap-4 rounded-lg px-3 sm:px-4 py-2 right-8 max-[640px]:right-4 top-0 w-[280px] sm:w-[calc(100%-2rem)] max-[640px]:w-[230px] max-[640px]:right-[60px] bg-[#1A1A1A] bg-opacity-80"
+    >
+      <button
+        className="flex flex-col justify-center items-center cursor-pointer hover:opacity-80"
+        onClick={() =>
+          scrollAndThen(() => handleShow(transformedImage, originalImage))
+        }
+      >
+        <img src={Search} alt="Show" className="w-5 h-5 sm:w-6 sm:h-6" />
+        <span className="text-[10px] sm:text-[12px] text-white">Show</span>
+      </button>
+
+      <button className="flex flex-col justify-center items-center cursor-pointer hover:opacity-80">
+        <img src={Input} alt="Input" className="w-5 h-5 sm:w-6 sm:h-6" />
+        <span className="text-[10px] sm:text-[12px] text-white">Input</span>
+      </button>
+
+      <button
+        className="flex flex-col justify-center items-center cursor-pointer hover:opacity-80"
+        onClick={() => {
+          setPopupImage(transformedImage);
+          setPopupOriginalImage(originalImage);
+          setIsDownloadPopupOpen(true);
+        }}
+      >
+        <img src={Download} alt="Download" className="w-5 h-5 sm:w-6 sm:h-6" />
+        <span className="text-[10px] sm:text-[12px] text-white">Download</span>
+      </button>
+    </div>
+  )}
+
+  <button
+    className="w-7 h-7 flex items-center justify-center hover:opacity-80 z-10"
+    onClick={() => setShowOptions((prev) => !prev)}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+    >
+      <circle cx="5" cy="12" r="2" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="19" cy="12" r="2" />
+    </svg>
+  </button>
+</div>
+
       </div>
     );
   };
 
   return (
     <section
-      className="relative w-full min-h-[800px] max-h-[2911px] bg-black opacity-100 -mt-[82px] pt-[82px] overflow-hidden"
-      style={{ transform: "rotate(0deg)" }}
+      className="relative w-full min-h-[600px] bg-black pt-20 pb-10 overflow-auto mt-[-82px]"
     >
-      <div className="absolute top-[159px] left-[58px] flex gap-[46px] z-10">
+      <div className="absolute top-12 sm:top-16 left-4 sm:left-8 flex flex-wrap gap-4 sm:gap-6 z-10 mt-[70px]">
         {["Interiors", "Exteriors", "Outdoors"].map((item) => (
           <a
             key={item}
             href="#"
-            className={`relative text-white font-poppins cursor-pointer hover:text-[#BD8AFF] z-10
+            className={`relative text-white text-[12px] sm:text-[14px] font-poppins cursor-pointer hover:text-[#BD8AFF] transition-colors
                        ${
                          filter.category === item.toLowerCase()
                            ? "text-[#BD8AFF] after:w-full"
@@ -388,97 +385,88 @@ export default function HeroAfterProducts() {
           </a>
         ))}
       </div>
-      <div className="absolute w-[1255px] h-[1px] top-[196px] left-1/2 transform -translate-x-1/2 bg-[#FFFFFF80] opacity-100"></div>
-      <div className="absolute w-[238px] h-[24px] top-[212px] left-[1060px] flex gap-[24px] opacity-100">
-        <div className="w-[81px] h-[24px] flex items-center gap-[8px] opacity-100">
-          <div className="w-[24px] h-[24px] flex items-center justify-center rounded-[30px] border border-[#FFFFFF33]">
-            <img src={recent} alt="icon" className="w-[24px] h-[24px]" />
+      <div className="absolute w-full sm:w-[90%] max-w-[1255px] h-[1px] top-20 sm:top-24 left-1/2 transform -translate-x-1/2 bg-[#FFFFFF80] mt-[72px]"></div>
+      <div className="absolute top-24 sm:top-28 right-4 sm:right-8 flex flex-wrap gap-4 sm:gap-6 mt-[70px]">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-6 h-6 flex items-center justify-center rounded-full border border-[#FFFFFF33]">
+            <img src={recent} alt="icon" className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div className="w-[49px] h-[21px] flex items-center">
-            <span
-              className={`font-poppins font-normal text-[14px] leading-[100%] cursor-pointer ${
-                filter.isFavorite === null && !filter.category
-                  ? "text-[#BD8AFF]"
-                  : "text-white"
-              }`}
-              onClick={() => handleFilter(null, null)}
-            >
-              Recent
-            </span>
-          </div>
+          <span
+            className={`font-poppins text-[12px] sm:text-[14px] leading-[100%] cursor-pointer ${
+              filter.isFavorite === null && !filter.category
+                ? "text-[#BD8AFF]"
+                : "text-white"
+            }`}
+            onClick={() => handleFilter(null, null)}
+          >
+            Recent
+          </span>
         </div>
-        <div className="w-[133px] h-[24px] flex items-center gap-[8px] opacity-100">
-          <div className="w-[24px] h-[24px] flex items-center justify-center rounded-[30px] border-[1px] border-solid border-[#FFFFFF33]">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-6 h-6 flex items-center justify-center rounded-full border border-[#FFFFFF33]">
             <img
               src={filter.isFavorite ? colorStar : star}
               alt="icon"
-              className="w-[16px] h-[16px]"
+              className="w-4 h-4 sm:w-5 sm:h-5"
             />
           </div>
-          <div className="flex-1 flex items-center">
-            <span
-              className={`text-white font-poppins text-[14px] leading-[100%] cursor-pointer ${
-                filter.isFavorite ? "text-[#BD8AFF]" : ""
-              }`}
-              onClick={() =>
-                handleFilter(filter.category, filter.isFavorite ? null : true)
-              }
-            >
-              Starred Image
-            </span>
-          </div>
+          <span
+            className={`font-poppins text-[12px] sm:text-[14px] leading-[100%] cursor-pointer ${
+              filter.isFavorite ? "text-[#BD8AFF]" : "text-white"
+            }`}
+            onClick={() =>
+              handleFilter(filter.category, filter.isFavorite ? null : true)
+            }
+          >
+            Starred Image
+          </span>
         </div>
       </div>
 
       {loading ? (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <p className="text-white">Loading...</p>
+        <div className="relative flex items-center justify-center bg-black/50 min-h-[400px] mt-28 sm:mt-32">
+          <p className="text-white text-[14px] sm:text-[16px]">Loading...</p>
         </div>
       ) : error ? (
-        <div className="fixed mt-[120px] inset-0 flex items-center justify-center bg-black/50">
-          <p className="text-white">{error}</p>
+        <div className="relative flex items-center justify-center bg-black/50 min-h-[400px] mt-28 sm:mt-32">
+          <p className="text-white text-[14px] sm:text-[16px]">{error}</p>
         </div>
       ) : designs.length === 0 ? (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="w-[90%] max-w-[496px] h-auto flex flex-col items-center justify-center gap-[24px] opacity-100 rounded-lg shadow-lg bg-[rgba(0,0,0,0.7)] p-6 mt-[180px]">
-            <div className="w-[318px] h-[318px]">
+        <div className="relative flex items-center justify-center bg-black/50 min-h-[400px] mt-28 sm:mt-32">
+          <div className="w-[90%] max-w-[496px] flex flex-col items-center justify-center gap-4 sm:gap-6 rounded-lg bg-[rgba(0,0,0,0.7)] p-4 sm:p-6">
+            <div className="w-[200px] sm:w-[318px] h-[200px] sm:h-[318px]">
               <img
                 src={center}
                 alt="Preview"
                 className="w-full h-full object-cover rounded-lg"
               />
             </div>
-            <div className="w-full text-center flex flex-col gap-[6px]">
-              <p className="text-[16px] font-poppins font-medium text-white leading-[100%]">
+            <div className="w-full text-center flex flex-col gap-2">
+              <p className="text-[14px] sm:text-[16px] font-poppins font-medium text-white leading-[100%]">
                 This space is still empty
               </p>
-              <p className="text-[14px] font-poppins font-normal text-[#E0E0E0] leading-[120%]">
-                Start creating with AI to design a home that reflects your
-                style.
+              <p className="text-[12px] sm:text-[14px] font-poppins font-normal text-[#E0E0E0] leading-[120%]">
+                Start creating with AI to design a home that reflects your style.
               </p>
             </div>
             <Link to={"/"}>
               <button
-                className="w-[236px] h-[44px] flex items-center justify-between gap-[10px] 
-                         rounded-[30px] px-[30px] py-[10px] 
-                         border border-[#C22CA299] 
-                         bg-[linear-gradient(95.92deg,rgba(138,56,245,0.5)_15.32%,rgba(194,44,162,0.5)_99.87%)]
-                         backdrop-blur-[6px] 
-                         shadow-[0px_2px_12px_0px_#C22CA240]
-                         cursor-pointer"
+                className="w-[200px] sm:w-[236px] h-10 sm:h-11 flex items-center justify-between gap-2 rounded-full px-4 sm:px-6 py-2
+                         border border-[#C22CA299] bg-[linear-gradient(95.92deg,rgba(138,56,245,0.5)_15.32%,rgba(194,44,162,0.5)_99.87%)]
+                         backdrop-blur-md shadow-[0px_2px_12px_0px_#C22CA240]"
               >
-                <span className="text-white font-inter font-medium text-[16px] leading-[100%]">
+                <span className="text-white font-inter font-medium text-[14px] sm:text-[16px] leading-[100%]">
                   Start creating now
                 </span>
-                <img src={colorStar} alt="icon" className="w-[24px] h-[24px]" />
+                <img src={colorStar} alt="icon" className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </Link>
           </div>
         </div>
       ) : (
-        <div className="w-[1214px] mx-auto p-5 sm:p-10 flex flex-col gap-10 mt-52">
+        <div className="w-full max-w-[1214px] mx-auto p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col gap-6 sm:gap-8 mt-28 sm:mt-32">
           <div>
-            <div className="w-full h-[27px] text-[#E0E0E0EE] text-[18px] font-poppins font-normal leading-[100%] text-center mb-12">
+            <div className="w-full text-[#E0E0E0EE] text-[14px] sm:text-[16px] md:text-[18px] font-poppins font-normal leading-[100%] text-center mb-6 sm:mb-8 md:mb-12">
               {filter.isFavorite
                 ? "Starred Designs"
                 : filter.category
@@ -488,7 +476,7 @@ export default function HeroAfterProducts() {
                   } Designs`
                 : "Recent Designs"}
             </div>
-            <div className="grid grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
               {designs.map((design) => (
                 <RoomCard
                   key={design.id}
@@ -517,18 +505,18 @@ export default function HeroAfterProducts() {
 
       {fullscreenImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 overflow-y-auto"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto"
           onClick={() => setFullscreenImage(null)}
         >
           <div
             ref={fullscreenRef}
-            className="relative max-w-full max-h-full"
+            className="relative w-full max-w-[90vw] sm:max-w-[860px] max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={fullscreenImage}
               alt="Fullscreen preview"
-              className="max-w-[860px] max-h-[90vh] object-contain rounded-xl"
+              className="w-full max-h-[90vh] object-contain rounded-xl"
             />
           </div>
         </div>
@@ -536,13 +524,13 @@ export default function HeroAfterProducts() {
 
       {showDraggable && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center p-2 sm:p-4"
           onClick={() => setShowDraggable(false)}
         >
           <div
             ref={draggableRef}
             onClick={(e) => e.stopPropagation()}
-            className="w-[95%] max-w-[860px] max-h-[90vh] overflow-hidden bg-white rounded-xl shadow-xl"
+            className="w-[95%] max-w-[90vw] sm:max-w-[860px] max-h-[90vh] overflow-hidden bg-white rounded-xl shadow-xl"
           >
             <DraggableImages
               imageRight={dragData.right}
@@ -554,12 +542,12 @@ export default function HeroAfterProducts() {
 
       {isDownloadPopupOpen && popupImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={() => setIsDownloadPopupOpen(false)}
         >
           <div
             ref={downloadPopupRef}
-            className="w-[600px] h-auto flex flex-col gap-[16px] rounded-[12px] p-[24px] px-[32px] border border-[#8A38F580] shadow-[0px_0px_12px_0px_#FFFFFF1F]"
+            className="w-[95%] max-w-[600px] flex flex-col gap-4 rounded-xl p-4 sm:p-6 border border-[#8A38F580] shadow-[0px_0px_12px_0px_#FFFFFF1F]"
             style={{
               background:
                 "linear-gradient(112.5deg, rgba(138, 56, 245, 0.15) 6.68%, rgba(194, 44, 162, 0.15) 92.82%)",
@@ -568,16 +556,16 @@ export default function HeroAfterProducts() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-white text-[20px] lora-text text-center">
+            <h2 className="text-white text-[18px] sm:text-[20px] lora-text text-center">
               Download Preferences
             </h2>
-            <p className="text-gray-200 text-center poppins-font text-[12px]">
+            <p className="text-gray-200 text-center poppins-font text-[10px] sm:text-[12px]">
               Choose how you'd like to download your design.
             </p>
 
-            <div className="w-[536px] flex gap-[16px] mt-4 justify-center">
-              <div className="flex flex-col gap-3">
-                <h3 className="text-white font-medium poppins-font text-[14px]">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 justify-center">
+              <div className="flex flex-col gap-3 w-full sm:w-1/2">
+                <h3 className="text-white font-medium poppins-font text-[12px] sm:text-[14px]">
                   View Mode
                 </h3>
                 <div className="flex flex-col gap-2">
@@ -586,12 +574,12 @@ export default function HeroAfterProducts() {
                       <button
                         key={mode}
                         onClick={() => setSelectedView(mode)}
-                        className={`w-[260px] h-[36px] flex items-center gap-2 rounded-full border px-3 transition-all duration-200
+                        className={`w-full h-9 flex items-center gap-2 rounded-full border px-3 transition-all duration-200
                         ${
                           selectedView === mode
                             ? "border-purple-500 bg-[linear-gradient(90.94deg,#47138C_-1.44%,#1A013A_94.86%)]"
                             : "border-gray-400 bg-[#F9F9F91A] hover:bg-[linear-gradient(90.94deg,#47138C_-1.44%,#1A013A_94.86%)]"
-                        } text-white text-[12px]`}
+                        } text-white text-[10px] sm:text-[12px]`}
                       >
                         <span
                           className={`w-4 h-4 border-[1.5px] border-solid rounded-full flex items-center justify-center ${
@@ -611,8 +599,8 @@ export default function HeroAfterProducts() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3">
-                <h3 className="text-white font-medium poppins-font text-[14px]">
+              <div className="flex flex-col gap-3 w-full sm:w-1/2">
+                <h3 className="text-white font-medium poppins-font text-[12px] sm:text-[14px]">
                   Resolution
                 </h3>
                 <div className="flex flex-col gap-2">
@@ -620,35 +608,36 @@ export default function HeroAfterProducts() {
                     <button
                       key={res}
                       onClick={() => setSelectedRes(res)}
-                      className={`w-[260px] h-[36px] flex items-center gap-2 rounded-full border px-3 transition-all duration-200
+                      className={`w-full h-9 flex items-center gap-2 rounded-full border px-3 transition-all duration-200
                         ${
                           selectedRes === res
                             ? "border-purple-500 bg-[linear-gradient(90.94deg,#47138C_-1.44%,#1A013A_94.86%)]"
                             : "border-gray-400 bg-[#F9F9F91A] hover:bg-[linear-gradient(90.94deg,#47138C_-1.44%,#1A013A_94.86%)]"
-                        } text-white text-[12px]`}
-                    >
-                      <span
-                        className={`w-4 h-4 border-[1.5px] border-solid rounded-full flex items-center justify-center ${
-                          selectedRes === res
-                            ? "border-purple-500"
-                            : "border-white"
-                        }`}
+                        } text-white text-[10px] sm:text-[12px]`}
                       >
-                        {selectedRes === res && (
-                          <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        )}
-                      </span>
-                      {res}
-                    </button>
-                  ))}
+                        <span
+                          className={`w-4 h-4 border-[1.5px] border-solid rounded-full flex items-center justify-center ${
+                            selectedRes === res
+                              ? "border-purple-500"
+                              : "border-white"
+                          }`}
+                        >
+                          {selectedRes === res && (
+                            <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                          )}
+                        </span>
+                        {res}
+                      </button>
+                    ))
+                  }
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-center gap-6 mt-auto">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mt-4">
               <button
                 onClick={() => setIsDownloadPopupOpen(false)}
-                className="w-[250px] h-[36px] flex items-center justify-center gap-2 rounded-full border border-gray-400 bg-[#F9F9F91A] text-white text-[12px]"
+                className="w-full sm:w-[250px] h-9 flex items-center justify-center gap-2 rounded-full border border-gray-400 bg-[#F9F9F91A] text-white text-[10px] sm:text-[12px]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -687,12 +676,12 @@ export default function HeroAfterProducts() {
               </button>
               <button
                 onClick={() => handleDownload(popupImage, popupOriginalImage)}
-                className="w-[250px] h-[36px] flex items-center justify-center gap-2 rounded-full text-white bg-gradient-to-r from-purple-500 to-pink-500 text-[12px]"
+                className="w-full sm:w-[250px] h-9 flex items-center justify-center gap-2 rounded-full text-white bg-gradient-to-r from-purple-500 to-pink-500 text-[10px] sm:text-[12px]"
               >
                 Download
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-[20px] h-[20px]"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -710,7 +699,7 @@ export default function HeroAfterProducts() {
               </button>
             </div>
 
-            <p className="text-center text-[10px] text-gray-300 mt-2">
+            <p className="text-center text-[10px] sm:text-[12px] text-gray-300 mt-2">
               🔒 Unlock 4K and watermark-free downloads with a premium plan.{" "}
               <span className="text-purple-400 font-semibold cursor-pointer">
                 Upgrade Now

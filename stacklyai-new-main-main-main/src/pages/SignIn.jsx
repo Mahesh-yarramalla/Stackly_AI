@@ -1,4 +1,4 @@
-//signin.jsx
+// signin.jsx
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
@@ -87,26 +87,27 @@ export default function SignIn() {
 //   const handleSubmit = (e) => {
 //   e.preventDefault();
 
-//   if (!formData.email || !formData.password) {
-//     toast.error("Please fill both email and password!");
-//     return;
-//   }
+// if (!formData.email || !formData.password) {
+//   toast.error("Please fill both email and password!", { autoClose: 2000 });
+//   return;
+// }
 
-//   if (formData.email === "sample@gmail.com") {
-//     if (formData.password === "12345") {
-//       setUserInfo({
-//         userName: "Sample User",
-//         userId: "id2332451",
-//         email: "sample@gmail.com",
-//       });
-//       toast.success("Login successful! 🎉");
-//       navigate("/");
-//     } else {
-//       toast.error("Invalid password!");
-//     }
+// if (formData.email === "sample@gmail.com") {
+//   if (formData.password === "12345") {
+//     setUserInfo({
+//       userName: "Sample User",
+//       userId: "id2332451",
+//       email: "sample@gmail.com",
+//     });
+//     toast.success("Login successful! 🎉", { autoClose: 2000 });
+//     navigate("/");
 //   } else {
-//     toast.error("User not found!");
+//     toast.error("Invalid password!", { autoClose: 2000 });
 //   }
+// } else {
+//   toast.error("User not found!", { autoClose: 2000 });
+// }
+
 // };
 
 
@@ -459,12 +460,15 @@ export default function SignIn() {
                 <span className="text-[#B0B0B0] text-[16px] max-[1280px]:text-[14px] font-['Poppins']">
                   Don’t have an account?
                 </span>
-                <a
-                  href="/sign-up"
-                  className="text-[#C22CA2] text-[16px] max-[1280px]:text-[14px] underline font-['Poppins']"
+
+                 <Link
+                  to="/sign-up"
+              
+                className="text-[#C22CA2] text-[16px] max-[1280px]:text-[14px] underline font-['Poppins']"
                 >
                   Sign Up
-                </a>
+                
+                </Link>
               </div>
             </div>
           </div>

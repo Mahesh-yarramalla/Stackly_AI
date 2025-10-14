@@ -742,7 +742,7 @@ async def apple_signup(userid: str):
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 auth_scheme = HTTPBearer()
-ACCESS_TOKEN_EXPIRE_MINUTES = 120
+ACCESS_TOKEN_EXPIRE_MINUTES = 8640 # 6 days
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 def create_access_token(data: dict):
@@ -767,7 +767,7 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
             raise HTTPException(status_code=401, detail="Invalid token payload")
         return payload
     except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+        raise HTTPException(status_code=401, detail="Your token expired, Kindly login again")
 
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme)):
@@ -811,28 +811,6 @@ async def get_me(user=Depends(get_current_user)):
         "userId": user.id,
         "email": user.email,
     }
-# async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme)):
-#     token = credentials.credentials
-#     try:
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         user_id = payload.get("user_id")
-#         if user_id is None:
-#             raise HTTPException(status_code=401, detail="Invalid token")
-        
-#         user = await sync_to_async(UserData.objects.get)(id=user_id)
-#         return user
-
-#     except (JWTError, UserData.DoesNotExist):
-#         raise HTTPException(status_code=401, detail="Invalid or expired token")
-    
-# @router.get("/me")
-# def get_me(user=Depends(get_current_user)):
-#     return {
-#         "userId": user.id,
-#         "email": user.email,
-       
-#     }
-
 
 
 class DesignResponse(BaseModel):

@@ -58,10 +58,10 @@ a.active{
 
 
 /* 🔽 Apply for screen widths less than 441px */
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 640px) {
   .marquee-container {
     width: 440px;
-    height: 46px;
+    height: 26px;
   }
 }
 
@@ -84,12 +84,12 @@ a.active{
 
 
 /* 🔽 Styles for screen widths less than 441px */
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 640px) {
   .marquee-content {
     width: 1279px;
     height: 24px;
     position: absolute;
-    top: 11px;
+    top: 4px;
     left: -419px;
   }
 }
@@ -114,17 +114,17 @@ a.active{
 }
 
 /* 🔽 Styles for screen widths less than 441px */
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 640px) {
   .marquee-text {
     width: 785px;
     height: 15px;
     position: relative;
-    top: -1px;
+    top: -4px;
     left: 274px;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    font-size: 12px;
-    line-height: 12px; /* 100% of 12px */
+    font-size: 10px;
+    line-height: 10px; /* 100% of 12px */
     letter-spacing: 0;
     text-align: center;
   }

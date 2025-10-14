@@ -37,7 +37,7 @@ import AfterContact from "./pages/AfterContactPage/AfterContact";
 import AfterBilling from "./pages/AfterPricing/AfterBilling";
 import AfterPayment from "./pages/AfterPricing/AfterPayment";
 import AfterPaymentProcessing from "./pages/AfterPricing/AfterPaymentProcessing";
-import AfterUiPlans from "./pages/AfterPricing/AfterUiPlans";
+import AfterUiPlan from "./pages/AfterApi/AfterUiPlan";
 import AfterPay from "./pages/AfterPricing/AfterPay";
 import AfterConformationPage from "./pages/AfterPricing/AfterConformationPage";
 import AfterConformationPage1 from "./pages/AfterPricing/AfterConformationPage1";
@@ -83,6 +83,8 @@ export default function App() {
         <Route path="/pricing" element={userInfo.userId ? <AfterPricing /> : <Pricing />} />
         <Route path="/api" element={userInfo.userId ? <AfterApi /> : <Api />} />
         <Route path="/contact" element={userInfo.userId ? <AfterContact /> : <Contact />} />
+        <Route path="/afteruiplan" element={<AfterUiPlan />} />
+
 
         {/* Auth Pages */}
         <Route path="/sign-in" element={<SignIn />} />
@@ -99,7 +101,7 @@ export default function App() {
 
         {/* After Payment Pages */}
         <Route path="/afterbilling" element={<AfterBilling />} />
-        <Route path="/afteruiplans" element={<AfterUiPlans />} />
+      
         <Route path="/afterpay" element={<AfterPay />} />
         <Route path="/afterpayment" element={<AfterPayment />} />
         <Route path="/cancel" element={<Cancel />} />
