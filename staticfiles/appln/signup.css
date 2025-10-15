@@ -1,0 +1,321 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "inter";
+  src: url(./assets/fonts/Inter-Italic-VariableFont_opsz\wght.ttf);
+}
+@font-face {
+  font-family: "inters";
+  src: url(./assets/fonts/static/Inter_18pt-Light.ttf);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 5%;
+}
+
+.title > img {
+  width: 172px;
+  height: 50px;
+}
+
+.title > .btn-grp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.title > .btn-grp > a > button {
+  font-family: inters;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.title > .btn-grp > a > .log {
+  color: #007b82;
+  border: 1px solid #007b82;
+  background-color: white;
+}
+
+.title > .btn-grp > a > .sign {
+  color: white;
+  border: 1px solid #007b82;
+  background-color: #007b82;
+}
+
+.sign-up {
+  /*Changed By SP*/
+  background-image: url("/static/appln/images/signUp/bg-img.jpeg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.sign-up > .black-bg {
+  min-height: 100vh;
+  background-color: #000000b2;
+  padding: 25px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sign-up > .black-bg > * {
+  flex: 1;
+}
+
+.sign-up > .black-bg > .text-cont {
+  font-family: inters;
+  text-align: center;
+}
+
+.sign-up > .black-bg > .text-cont > h3 {
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.sign-up > .black-bg > .text-cont > h1 {
+  font-weight: 500;
+  font-size: 100px;
+  margin-bottom: 50px;
+  color: #ffd56b;
+}
+
+.sign-up > .black-bg > .text-cont > p {
+  font-weight: 500;
+  font-size: 20px;
+  margin: 50px auto;
+  color: #ffffff;
+  max-width: 522px;
+}
+
+.sign-up > .black-bg > .text-cont > button {
+  border: 1px solid white;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  color: #ffffff;
+  margin-top: 50px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  background-color: #0000004d;
+}
+
+.sign-up > .black-bg > .text-cont > button > span {
+  font-weight: 700;
+}
+
+.sign-up > .black-bg > .inp-cont {
+  font-family: inters;
+  max-width: 522px;
+  border-radius: 10px;
+  border: 1px solid white;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #0000004d;
+}
+
+.sign-up > .black-bg > .inp-cont > h3 {
+  font-weight: 600;
+  font-size: 26px;
+  color: #ffffff;
+}
+
+.sign-up > .black-bg > .inp-cont > .para1 {
+  font-weight: 500;
+  font-size: 16px;
+  color: #b0b0b0;
+}
+
+.sign-up > .black-bg > .inp-cont > .social {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+  width: 100%;
+}
+
+.sign-up > .black-bg > .inp-cont > .social > a > button {
+  width: 80px;
+  height: 44px;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px #00000014;
+}
+
+.sign-up > .black-bg > .inp-cont > .para2 {
+  font-weight: 500;
+  font-size: 16px;
+  color: #b0b0b0;
+}
+
+.sign-up > .black-bg > .inp-cont > form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sign-up > .black-bg > .inp-cont > form > input {
+  max-width: 406px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: white;
+  padding: 15px;
+}
+
+.sign-up > .black-bg > .inp-cont > form input::placeholder {
+  font-size: 16px;
+  font-weight: 400;
+  color: #2a2a2a;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .password {
+  max-width: 406px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .password > input {
+  flex: 1;
+  background-color: white;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .password > span {
+  cursor: pointer;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .coupon {
+  max-width: 406px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .coupon > input {
+  flex: 1;
+  background-color: white;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .coupon > span {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  color: #007b82;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .submit-btn {
+  background-color: #007b82;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .signUp {
+  font-size: 16px;
+  color: #b0b0b0;
+  font-weight: 400;
+}
+
+.sign-up > .black-bg > .inp-cont > form > .signUp > a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Media Queries */
+
+@media (max-width: 1000px) {
+  .title {
+    padding: 20px;
+  }
+  .sign-up > .black-bg {
+    padding: 20px;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .sign-up > .black-bg > .text-cont > h3 {
+    margin-bottom: 20px;
+  }
+
+  .sign-up > .black-bg > .text-cont > h1 {
+    margin-bottom: 20px;
+  }
+
+  .sign-up > .black-bg > .text-cont > p {
+    margin-bottom: 20px;
+  }
+
+  .sign-up > .black-bg > .inp-cont {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .title > img {
+    width: 130px;
+    height: auto;
+  }
+
+  .title > .btn-grp{
+    gap: 15px;
+  }
+  .title > .btn-grp > a > button {
+    font-family: inters;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .sign-up > .black-bg > .text-cont > h1{
+    font-size: 60px;
+  }
+  .sign-up > .black-bg > .text-cont > h3 {
+    margin-bottom: 10px;
+  }
+
+  .sign-up > .black-bg > .text-cont > h1 {
+    margin-bottom: 10px;
+  }
+
+  .sign-up > .black-bg > .text-cont > p {
+    margin-bottom: 10px;
+  }
+}

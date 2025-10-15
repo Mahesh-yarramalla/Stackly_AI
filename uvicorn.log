@@ -1,0 +1,26 @@
+nohup: ignoring input
+INFO:     Started server process [9568]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     110.235.224.205:57277 - "GET / HTTP/1.1" 200 OK
+INFO:     110.235.224.205:57277 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     110.235.224.205:58119 - "GET / HTTP/1.1" 200 OK
+INFO:     110.235.224.205:58119 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     110.235.224.205:60995 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     110.235.224.56:58348 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     178.128.210.178:34908 - "GET / HTTP/1.1" 200 OK
+INFO:     178.128.210.178:34922 - "GET /login HTTP/1.1" 200 OK
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.18:39516 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.18:60714 - "GET /bins/ HTTP/1.1" 404 Not Found
+INFO:     204.76.203.18:52648 - "GET /bin/ HTTP/1.1" 404 Not Found
+INFO:     204.76.203.18:53896 - "GET /backup/ HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9568]

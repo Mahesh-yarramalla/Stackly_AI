@@ -1,0 +1,10 @@
+nohup: ignoring input
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'admin' isn't unique. You may not be able to reverse all URLs in this namespace
+?: (urls.W005) URL namespace 'social' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 2 issues (0 silenced).
+Error: That port is already in use.
