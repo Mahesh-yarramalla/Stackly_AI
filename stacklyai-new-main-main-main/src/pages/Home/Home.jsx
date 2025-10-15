@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
-// Components
+// Components of 
 import Form from "./Form";
 import GalleryHover from "../../components/GalleryHover";
 import { useAnimation } from "../../components/AnimatedDesignSection";
