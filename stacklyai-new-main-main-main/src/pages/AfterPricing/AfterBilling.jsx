@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Listbox } from '@headlessui/react';
 import Bg from "../../assets/afterHome/BillingBg.png";
 import Arrow from "../../assets/forgetPg/arrow1.png";
 import Pimage from "../../assets/profile/pimage.png"; // Fallback image
@@ -32,7 +33,79 @@ export default function AfterBilling() {
 
   const countries = [
     { code: "ad", name: "Andorra" },
-    // ... (rest of the countries array remains unchanged)
+    { code: "ar", name: "Argentina" },
+    { code: "as", name: "American Samoa" },
+    { code: "at", name: "Austria" },
+    { code: "au", name: "Australia" },
+    { code: "bd", name: "Bangladesh" },
+    { code: "be", name: "Belgium" },
+    { code: "bg", name: "Bulgaria" },
+    { code: "br", name: "Brazil" },
+    { code: "ca", name: "Canada" },
+    { code: "ch", name: "Switzerland" },
+    { code: "cz", name: "Czech Republic" },
+    { code: "de", name: "Germany" },
+    { code: "dk", name: "Denmark" },
+    { code: "do", name: "Dominican Republic" },
+    { code: "es", name: "Spain" },
+    { code: "fi", name: "Finland" },
+    { code: "fo", name: "Faroe Islands" },
+    { code: "fr", name: "France" },
+    { code: "gb", name: "Great Britain" },
+    { code: "gf", name: "French Guyana" },
+    { code: "gg", name: "Guernsey" },
+    { code: "gl", name: "Greenland" },
+    { code: "gp", name: "Guadeloupe" },
+    { code: "gt", name: "Guatemala" },
+    { code: "gu", name: "Guam" },
+    { code: "gy", name: "Guyana" },
+    { code: "hr", name: "Croatia" },
+    { code: "hu", name: "Hungary" },
+    { code: "im", name: "Isle of Man" },
+    { code: "in", name: "India" },
+    { code: "is", name: "Iceland" },
+    { code: "it", name: "Italy" },
+    { code: "je", name: "Jersey" },
+    { code: "jp", name: "Japan" },
+    { code: "li", name: "Liechtenstein" },
+    { code: "lk", name: "Sri Lanka" },
+    { code: "lt", name: "Lithuania" },
+    { code: "lu", name: "Luxembourg" },
+    { code: "lv", name: "Latvia" },
+    { code: "mc", name: "Monaco" },
+    { code: "md", name: "Moldavia" },
+    { code: "mh", name: "Marshall Islands" },
+    { code: "mk", name: "Macedonia" },
+    { code: "mp", name: "Northern Mariana Islands" },
+    { code: "mq", name: "Martinique" },
+    { code: "mt", name: "Malta" },
+    { code: "mx", name: "Mexico" },
+    { code: "my", name: "Malaysia" },
+    { code: "nl", name: "Netherlands" },
+    { code: "no", name: "Norway" },
+    { code: "nz", name: "New Zealand" },
+    { code: "ph", name: "Philippines" },
+    { code: "pk", name: "Pakistan" },
+    { code: "pl", name: "Poland" },
+    { code: "pm", name: "Saint Pierre and Miquelon" },
+    { code: "pr", name: "Puerto Rico" },
+    { code: "pt", name: "Portugal" },
+    { code: "re", name: "Reunion" },
+    { code: "ro", name: "Romania" },
+    { code: "ru", name: "Russia" },
+    { code: "se", name: "Sweden" },
+    { code: "si", name: "Slovenia" },
+    { code: "sj", name: "Svalbard & Jan Mayen Islands" },
+    { code: "sk", name: "Slovak Republic" },
+    { code: "sm", name: "San Marino" },
+    { code: "th", name: "Thailand" },
+    { code: "tr", name: "Turkey" },
+    { code: "ua", name: "Ukraine" },
+    { code: "us", name: "United States" },
+    { code: "va", name: "Vatican" },
+    { code: "vi", name: "Virgin Islands U.S." },
+    { code: "yt", name: "Mayotte" },
+    { code: "za", name: "South Africa" },
   ];
 
   const paymentOptions = [
@@ -173,8 +246,7 @@ export default function AfterBilling() {
     setFormData((prev) => ({ ...prev, pincode: value }));
   };
 
-  const handleCountryChange = (e) => {
-    const code = e.target.value;
+  const handleCountryChange = (code) => {
     setCountryCode(code);
     const selectedCountry = countries.find((c) => c.code === code)?.name || "";
     setCountry(selectedCountry);
@@ -602,20 +674,51 @@ export default function AfterBilling() {
                 className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white placeholder-[#B5B5B5] border border-transparent focus:border-[#8A38F5] outline-none"
               />
             </div>
+            
+            {/* UPDATED COUNTRY + CITY ROW WITH LISTBOX */}
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 flex flex-col">
                 <label className="text-white text-sm mb-1">Country</label>
-                <select
-                  value={countryCode}
-                  onChange={handleCountryChange}
-                  className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white border border-transparent focus:border-[#8A38F5] outline-none"
-                >
-                  {countries.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
+                <Listbox value={countryCode} onChange={handleCountryChange}>
+                  {({ open }) => (
+                    <>
+                      <div className="relative">
+                        <Listbox.Button className="w-full h-12 sm:h-14 px-4 rounded-lg bg-[#151515] backdrop-blur-md text-white border border-transparent focus:border-[#8A38F5] outline-none flex items-center justify-between">
+                          <span className="text-white text-sm">
+                            {countries.find(c => c.code === countryCode)?.name || 'Select Country'}
+                          </span>
+                          <svg 
+                            className={`w-4 h-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </Listbox.Button>
+                        
+                        <Listbox.Options 
+                          
+                          className="absolute top-full left-0 right-0 mt-1 max-h-48 overflow-auto bg-[#151515] backdrop-blur-md rounded-lg border border-[#FFFFFF66] z-50"
+                        >
+                          {countries.map((country) => (
+                            <Listbox.Option
+                              key={country.code}
+                              className={({ active, selected }) =>
+                                `relative cursor-pointer select-none py-2 px-4 text-sm text-white ${
+                                  active ? 'bg-[#8A38F533]' : ''
+                                } ${selected ? 'font-medium' : ''}`
+                              }
+                              value={country.code}
+                            >
+                              {country.name}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </div>
+                    </>
+                  )}
+                </Listbox>
               </div>
               <div className="flex-1 flex flex-col">
                 <label className="text-white text-sm mb-1">City</label>
@@ -629,6 +732,7 @@ export default function AfterBilling() {
                 />
               </div>
             </div>
+
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 flex flex-col">
                 <label className="text-white text-sm mb-1">State</label>

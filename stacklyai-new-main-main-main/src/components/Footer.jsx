@@ -52,6 +52,7 @@ export default function Footer() {
     "/afterbilling",
     "/afterpaymentprocessing",
     "/afterpayment",
+    "/cancel",
   ];
 
   if (hiddenRoutes.includes(location.pathname.toLowerCase())) {

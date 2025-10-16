@@ -74,7 +74,7 @@ useEffect(() => {
     "/sign-up", "/sign-in", "/otp", "/forgetpg", "/signupotp",
     "/resetpassword", "/resetpopup", "/signuppopup", "/heroforgetpg",
     "/afterconformationpage", "/afterconformationpage1" , "/afterbilling" ,
-    "/afterpaymentprocessing" , "/afterpayment"
+    "/afterpaymentprocessing" , "/afterpayment" ,"/cancel"
   ];
   const isHiddenPage = hiddenPages.includes(location.pathname.toLowerCase());
   if (isHiddenPage) return null;
