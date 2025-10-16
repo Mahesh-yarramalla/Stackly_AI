@@ -1,992 +1,5 @@
 #correct working file
-"""from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
-from appln.models import UserData, UserSubscription, BillingHistory  # Import BillingHistory
-from asgiref.sync import sync_to_async
-from jose import JWTError, jwt
-import os
-from uuid import uuid4
-from fastapi_app.invoice_generator import generate_invoice_pdf
-from django.db import transaction
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-
-router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# Pricing and credits mappings as before
-def get_price_for_plan(plan: str, duration: str) -> float:
-    pricing = {
-        "silver": {"monthly": 10.00, "yearly": 100.00},
-        "gold": {"monthly": 20.00, "yearly": 200.00},
-        "platinum": {"monthly": 30.00, "yearly": 300.00},
-        "basic": {"monthly": 0.00, "yearly": 0.00},
-    }
-    if plan not in pricing or duration not in pricing[plan]:
-        raise ValueError(f"Invalid plan or duration: {plan}, {duration}")
-    return pricing[plan][duration]
-
-def get_total_members(plan: str) -> int:
-    return {
-        "basic": 1,
-        "silver": 1,
-        "gold": 5,
-        "platinum": 7
-    }.get(plan, 1)
-
-def get_credits_for_plan(plan: str) -> int:
-    plan = plan.lower()
-    return {
-        "basic": 10,
-        "silver": 20,
-        "gold": 50,
-        "platinum": 100
-    }.get(plan, 0)
-
-# Update subscription and create a billing record
-@sync_to_async
-def create_subscription_and_billing(user, new_plan: str, new_duration: str):
-    try:
-        with transaction.atomic():
-            # Update subscription details
-            subscription = UserSubscription.objects.get(user=user)  # Fetch from UserSubscription
-            subscription.current_plan = new_plan
-            subscription.duration = new_duration
-            subscription.start_date = timezone.now().date()
-            subscription.total_members = get_total_members(new_plan)
-            subscription.original_price = get_price_for_plan(new_plan, new_duration)
-            subscription.total_credits = get_credits_for_plan(new_plan)
-
-            # Set renew and expiry dates
-            if new_duration == 'monthly':
-                subscription.renews_on = timezone.now().date() + relativedelta(months=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(months=1)
-            elif new_duration == 'yearly':
-                subscription.renews_on = timezone.now().date() + relativedelta(years=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(years=1)
-            else:
-                subscription.renews_on = None
-                subscription.plan_expiring_date = None
-
-            subscription.save()
-
-            # Create a billing history entry
-            billing = BillingHistory(
-                user=user,
-                plan_name=new_plan,
-                amount=subscription.pricing,
-                payment_method="credit_card",  # Static for now
-                status="paid",  # Static for now
-                invoice_id=str(uuid4()),
-                paid_on=timezone.now().date()
-            )
-            billing.save()
-
-            # Generate invoice PDF
-            invoice_path = generate_invoice_pdf({
-                "customer_name": subscription.name or "User",  # Now using 'name' from UserSubscription
-                "email": subscription.email,  # Now using 'email' from UserSubscription
-                "invoice_id": billing.invoice_id,
-                "paid_on": billing.paid_on.strftime("%d-%m-%Y"),
-                "renews_on": subscription.renews_on.strftime("%d-%m-%Y") if subscription.renews_on else "N/A",
-                "plan": billing.plan_name,
-                "duration": subscription.duration,  # Now using 'duration' from UserSubscription
-                "start_date": subscription.start_date.strftime("%d-%m-%Y"),
-                "expire_date": subscription.plan_expiring_date.strftime("%d-%m-%Y") if subscription.plan_expiring_date else "N/A",
-                "amount": billing.amount,
-                "payment_method": billing.payment_method,
-                "logo_path": None,
-            })
-
-            billing.invoice = invoice_path
-            billing.save()
-
-            return subscription, billing
-
-    except Exception as e:
-        raise RuntimeError(f"Transaction failed: {str(e)}")
-
-
-            
-    """    """    billing.invoice = invoice_path
-            billing.save()
-
-            invoice_path = generate_invoice_pdf({
-                "invoice_id": billing.invoice_id,
-                "plan_name": billing.plan_name,
-                "amount": billing.amount,
-                "payment_method": billing.payment_method,
-                "status": billing.status,
-                "paid_on": billing.paid_on.strftime("%Y-%m-%d"),
-            })
-
-            
-            billing.invoice = invoice_path
-            billing.save()
-
-            return subscription, billing
-
-    except Exception as e:
-        raise RuntimeError(f"Transaction failed: {str(e)}") """"""
-
-# Extract the current user from the OAuth2 token
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email = payload.get("email")
-        userid = payload.get("userid")
-        return email, userid
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
-#comment it     
-@router.post("/update-subscription/")
-async def update_subscription(
-    new_plan: str,
-    new_duration: str,
-    user_info: tuple = Depends(get_current_user)  # <-- this gets user from JWT token
-):
-#comment it   
-
-@router.post("/update-subscription/")
-async def update_subscription(new_plan: str, new_duration: str, email: str = None, userid: str = None):
-    if not (email or userid):
-        raise HTTPException(status_code=400, detail="Email or UserID required for testing")
-
-    try:
-        user = await sync_to_async(UserData.objects.get)(email=email) if email else await sync_to_async(UserData.objects.get)(userid=userid)
-    except UserData.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    # Update the user's subscription and create billing history
-    subscription, billing = await create_subscription_and_billing(user, new_plan, new_duration)
-
-    return {
-        "message": "Subscription and billing record updated successfully",
-        "subscription": {
-            "plan": subscription.current_plan,
-            "duration": subscription.duration,
-            "original_price": subscription.original_price,
-            "discount_price": subscription.discount_price,
-            "renews_on": subscription.renews_on,
-            "plan_expiring_date": subscription.plan_expiring_date
-        },
-        "billing": {
-            "amount": billing.amount,
-            "payment_method": billing.payment_method,
-            "paid_on": billing.paid_on,
-            "status": billing.status,
-            "invoice_id": billing.invoice_id,
-            "invoice_path": billing.invoice  # This stores the path to the invoice PDF
-        }
-    }
-"""
-
-"""from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
-from appln.models import UserData, UserSubscription, BillingHistory
-from asgiref.sync import sync_to_async
-from jose import JWTError, jwt
-import os
-from uuid import uuid4
-from fastapi_app.invoice_generator import generate_invoice_pdf
-from django.db import transaction
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-
-router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-# Pricing and credits mappings
-def get_price_for_plan(plan: str, duration: str) -> float:
-    pricing = {
-        "silver": {"monthly": 10.00, "yearly": 100.00},
-        "gold": {"monthly": 20.00, "yearly": 200.00},
-        "platinum": {"monthly": 30.00, "yearly": 300.00},
-        "basic": {"monthly": 0.00, "yearly": 0.00},
-    }
-    if plan not in pricing or duration not in pricing[plan]:
-        raise ValueError(f"Invalid plan or duration: {plan}, {duration}")
-    return pricing[plan][duration]
-
-def get_total_members(plan: str) -> int:
-    return {
-        "basic": 1,
-        "silver": 1,
-        "gold": 5,
-        "platinum": 7
-    }.get(plan, 1)
-
-def get_credits_for_plan(plan: str) -> int:
-    plan = plan.lower()
-    return {
-        "basic": 10,
-        "silver": 20,
-        "gold": 50,
-        "platinum": 100
-    }.get(plan, 0)
-
-
-# Update subscription and create billing record
-@sync_to_async
-def create_subscription_and_billing(user, new_plan: str, new_duration: str):
-    try:
-        with transaction.atomic():
-            subscription = UserSubscription.objects.get(user=user)
-            subscription.current_plan = new_plan
-            subscription.duration = new_duration
-            subscription.start_date = timezone.now().date()
-            subscription.total_members = get_total_members(new_plan)
-            subscription.original_price = get_price_for_plan(new_plan, new_duration)
-            subscription.total_credits = get_credits_for_plan(new_plan)
-
-            # Set discount price (no coupon applied yet)
-            if new_plan == "basic":
-                subscription.discount_price = 0
-            else:
-                subscription.discount_price = subscription.original_price
-
-            # Set renew and expiry dates
-            if new_duration == 'monthly':
-                subscription.renews_on = timezone.now().date() + relativedelta(months=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(months=1)
-            elif new_duration == 'yearly':
-                subscription.renews_on = timezone.now().date() + relativedelta(years=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(years=1)
-            else:
-                subscription.renews_on = None
-                subscription.plan_expiring_date = None
-
-            subscription.save()
-
-            # Create billing history
-            billing = BillingHistory(
-                user=user,
-                plan_name=new_plan,
-                amount=subscription.discount_price,
-                payment_method="credit_card",
-                status="paid",
-                invoice_id=str(uuid4()),
-                paid_on=timezone.now().date()
-            )
-            billing.save()
-
-            # Generate invoice PDF
-            invoice_path = generate_invoice_pdf({
-                "customer_name": user.first_name or "User",
-                "email": user.email,
-                "invoice_id": billing.invoice_id,
-                "paid_on": billing.paid_on.strftime("%d-%m-%Y"),
-                "renews_on": subscription.renews_on.strftime("%d-%m-%Y") if subscription.renews_on else "N/A",
-                "plan": billing.plan_name,
-                "duration": subscription.duration,
-                "start_date": subscription.start_date.strftime("%d-%m-%Y"),
-                "expire_date": subscription.plan_expiring_date.strftime("%d-%m-%Y") if subscription.plan_expiring_date else "N/A",
-                "amount": billing.amount,
-                "payment_method": billing.payment_method,
-                "logo_path": None,
-            })
-
-            billing.invoice = invoice_path
-            billing.save()
-
-            return subscription, billing
-
-    except Exception as e:
-        raise RuntimeError(f"Transaction failed: {str(e)}")
-
-
-# Extract user from JWT token (disabled below, testing version used instead)
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email = payload.get("email")
-        userid = payload.get("userid")
-        return email, userid
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
-
-#  Disabled this during testing mode
-# @router.post("/update-subscription/")
-# async def update_subscription(
-#     new_plan: str,
-#     new_duration: str,
-#     user_info: tuple = Depends(get_current_user)
-# ):
-
-# ✅ Testing-compatible version with manual email/userid input
-@router.post("/update-subscription/")
-async def update_subscription(new_plan: str, new_duration: str, email: str = None, userid: str = None):
-    if not (email or userid):
-        raise HTTPException(status_code=400, detail="Email or UserID required for testing")
-
-    try:
-        user = await sync_to_async(UserData.objects.get)(email=email) if email else await sync_to_async(UserData.objects.get)(userid=userid)
-    except UserData.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    subscription, billing = await create_subscription_and_billing(user, new_plan, new_duration)
-
-    return {
-        "message": "Subscription and billing record updated successfully",
-        "subscription": {
-            "plan": subscription.current_plan,
-            "duration": subscription.duration,
-            "original_price": subscription.original_price,
-            "discount_price": subscription.discount_price,
-            "renews_on": subscription.renews_on,
-            "plan_expiring_date": subscription.plan_expiring_date
-        },
-        "billing": {
-            "amount": billing.amount,
-            "payment_method": billing.payment_method,
-            "paid_on": billing.paid_on,
-            "status": billing.status,
-            "invoice_id": billing.invoice_id,
-            "invoice_path": billing.invoice
-        }
-    }"""
-
-
-#well working 
-"""from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
-from appln.models import UserData, UserSubscription, BillingHistory, BillingInfo
-from asgiref.sync import sync_to_async
-from jose import JWTError, jwt
-import os
-from uuid import uuid4
-from pydantic import BaseModel
-from fastapi_app.invoice_generator import generate_invoice_pdf
-
-from django.db import transaction
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-
-router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-def get_price_for_plan(plan: str, duration: str) -> float:
-    pricing = {
-        "silver": {"monthly": 10.00, "yearly": 100.00},
-        "gold": {"monthly": 20.00, "yearly": 200.00},
-        "platinum": {"monthly": 30.00, "yearly": 300.00},
-        "basic": {"monthly": 0.00, "yearly": 0.00},
-    }
-    if plan not in pricing or duration not in pricing[plan]:
-        raise ValueError(f"Invalid plan or duration: {plan}, {duration}")
-    return pricing[plan][duration]
-
-def get_total_members(plan: str) -> int:
-    return {
-        "basic": 1,
-        "silver": 1,
-        "gold": 5,
-        "platinum": 7
-    }.get(plan, 1)
-
-def get_credits_for_plan(plan: str) -> int:
-    return {
-        "basic": 10,
-        "silver": 20,
-        "gold": 50,
-        "platinum": 100
-    }.get(plan.lower(), 0)
-
-class BillingInfoModel(BaseModel):
-    full_name: str
-    phone_number: str
-    street_address: str
-    city: str
-    state: str
-    country: str
-    pincode: str
-
-class SubscriptionData(BaseModel):
-    email: str = None
-    userid: str = None
-    plan: str
-    duration: str
-    coupon_code: str = None
-    payment_method: str
-    billing_info: BillingInfoModel
-    payment_success: bool = True
-
-@router.post("/update-subscription/")
-async def update_subscription(subscription_data: SubscriptionData):
-    if not (subscription_data.email or subscription_data.userid):
-        raise HTTPException(status_code=400, detail="Email or UserID required")
-
-    try:
-        # Fetch the user
-        if subscription_data.email:
-            user = await sync_to_async(UserData.objects.get)(email=subscription_data.email)
-        else:
-            user = await sync_to_async(UserData.objects.get)(userid=subscription_data.userid)
-    except UserData.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    try:
-        # Run DB operations inside a transaction
-        @sync_to_async
-        @transaction.atomic
-        def perform_db_operations():
-            # Original price logic
-            original_price = get_price_for_plan(subscription_data.plan, subscription_data.duration)
-            discount_price = original_price  # apply discount if needed
-
-            # Create or update subscription
-            subscription, _ = UserSubscription.objects.get_or_create(user=user)
-            subscription.current_plan = subscription_data.plan
-            subscription.duration = subscription_data.duration
-            subscription.start_date = timezone.now().date()
-            subscription.original_price = original_price
-            subscription.discount_price = discount_price
-            subscription.total_members = get_total_members(subscription_data.plan)
-            subscription.total_credits = get_credits_for_plan(subscription_data.plan)
-
-            if subscription_data.duration == 'monthly':
-                subscription.renews_on = timezone.now().date() + relativedelta(months=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(months=1)
-            elif subscription_data.duration == 'yearly':
-                subscription.renews_on = timezone.now().date() + relativedelta(years=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(years=1)
-            else:
-                subscription.renews_on = None
-                subscription.plan_expiring_date = None
-
-            subscription.save()
-
-            # Save billing info
-            BillingInfo.objects.create(
-                user=user,
-                full_name=subscription_data.billing_info.full_name,
-                email=subscription_data.email,
-                phone_number=subscription_data.billing_info.phone_number,
-                street_address=subscription_data.billing_info.street_address,
-                city=subscription_data.billing_info.city,
-                state=subscription_data.billing_info.state,
-                zip_code=subscription_data.billing_info.pincode,
-                country=subscription_data.billing_info.country
-            )
-
-            # Create billing history
-            billing = BillingHistory.objects.create(
-                user=user,
-                plan_name=subscription_data.plan,
-                amount=discount_price,
-                payment_method=subscription_data.payment_method,
-                status="paid",
-                invoice_id=str(uuid4()),
-                paid_on=timezone.now().date()
-            )
-
-            # Generate invoice PDF
-            invoice_path = generate_invoice_pdf({
-                "customer_name": subscription_data.billing_info.full_name,
-                "email": subscription_data.email,
-                "invoice_id": billing.invoice_id,
-                "paid_on": billing.paid_on.strftime("%d-%m-%Y"),
-                "renews_on": subscription.renews_on.strftime("%d-%m-%Y") if subscription.renews_on else "N/A",
-                "plan": billing.plan_name,
-                "duration": subscription.duration,
-                "start_date": subscription.start_date.strftime("%d-%m-%Y"),
-                "expire_date": subscription.plan_expiring_date.strftime("%d-%m-%Y") if subscription.plan_expiring_date else "N/A",
-                "amount": billing.amount,
-                "payment_method": billing.payment_method,
-                "logo_path": None,
-            })
-
-            billing.invoice = invoice_path
-            billing.save()
-
-        # Await the wrapped transaction logic
-        await perform_db_operations()
-
-        return {
-            "message": "Subscription and billing completed successfully",
-            "subscription": subscription_data
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Transaction failed: {str(e)}")"""
-
-#add email logic with above well working file
-"""from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
-from appln.models import UserData, UserSubscription, BillingHistory, BillingInfo
-from asgiref.sync import sync_to_async
-from jose import JWTError, jwt
-import os
-import random
-from pydantic import BaseModel
-from fastapi_app.invoice_generator import generate_invoice_pdf
-
-from django.db import transaction
-from dotenv import load_dotenv
-import smtplib
-from email.message import EmailMessage
-
-# Load environment variables
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-
-router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-def get_price_for_plan(plan: str, duration: str) -> float:
-    pricing = {
-        "silver": {"monthly": 10.00, "yearly": 100.00},
-        "gold": {"monthly": 20.00, "yearly": 200.00},
-        "platinum": {"monthly": 30.00, "yearly": 300.00},
-        "basic": {"monthly": 0.00, "yearly": 0.00},
-    }
-    if plan not in pricing or duration not in pricing[plan]:
-        raise ValueError(f"Invalid plan or duration: {plan}, {duration}")
-    return pricing[plan][duration]
-
-def get_total_members(plan: str) -> int:
-    return {
-        "basic": 1,
-        "silver": 1,
-        "gold": 5,
-        "platinum": 7
-    }.get(plan, 1)
-
-def get_credits_for_plan(plan: str) -> int:
-    return {
-        "basic": 10,
-        "silver": 20,
-        "gold": 50,
-        "platinum": 100
-    }.get(plan.lower(), 0)
-
-class BillingInfoModel(BaseModel):
-    full_name: str
-    phone_number: str
-    street_address: str
-    city: str
-    state: str
-    country: str
-    pincode: str
-
-class SubscriptionData(BaseModel):
-    email: str = None
-    userid: str = None
-    plan: str
-    duration: str
-    coupon_code: str = None
-    payment_method: str
-    billing_info: BillingInfoModel
-    payment_success: bool = True
-
-def send_invoice_email(to_email, customer_name, invoice_path):
-    try:
-        msg = EmailMessage()
-        msg["Subject"] = "Thank You for Upgrading Your Plan!"
-        msg["From"] = os.getenv("SMTP_SENDER_EMAIL")
-        msg["To"] = to_email
-        msg.set_content(f
-Hi {customer_name},
-
-Thank you for upgrading your plan with us. Please find the invoice for your recent purchase attached.
-
-If you have any questions, feel free to reach out.
-
-Best regards,
-Your Team
-        )
-
-        # Attach invoice PDF
-        with open(invoice_path, 'rb') as f:
-            file_data = f.read()
-            file_name = os.path.basename(invoice_path)
-            msg.add_attachment(file_data, maintype="application", subtype="pdf", filename=file_name)
-
-        # Send email
-        with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT"))) as server:
-            server.starttls()
-            server.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
-            server.send_message(msg)
-
-    except Exception as e:
-        print(f"Failed to send email: {e}")
-
-@router.post("/update-subscription/")
-async def update_subscription(subscription_data: SubscriptionData):
-    if not (subscription_data.email or subscription_data.userid):
-        raise HTTPException(status_code=400, detail="Email or UserID required")
-
-    try:
-        # Fetch the user
-        if subscription_data.email:
-            user = await sync_to_async(UserData.objects.get)(email=subscription_data.email)
-        else:
-            user = await sync_to_async(UserData.objects.get)(userid=subscription_data.userid)
-    except UserData.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    try:
-        @sync_to_async
-        @transaction.atomic
-        def perform_db_operations():
-            original_price = get_price_for_plan(subscription_data.plan, subscription_data.duration)
-            discount_price = original_price
-
-            subscription, _ = UserSubscription.objects.get_or_create(user=user)
-            subscription.current_plan = subscription_data.plan
-            subscription.duration = subscription_data.duration
-            subscription.start_date = timezone.now().date()
-            subscription.original_price = original_price
-            subscription.discount_price = discount_price
-            subscription.total_members = get_total_members(subscription_data.plan)
-            subscription.total_credits = get_credits_for_plan(subscription_data.plan)
-
-            if subscription_data.duration == 'monthly':
-                subscription.renews_on = timezone.now().date() + relativedelta(months=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(months=1)
-            elif subscription_data.duration == 'yearly':
-                subscription.renews_on = timezone.now().date() + relativedelta(years=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(years=1)
-            else:
-                subscription.renews_on = None
-                subscription.plan_expiring_date = None
-
-            subscription.save()
-
-            BillingInfo.objects.create(
-                user=user,
-                full_name=subscription_data.billing_info.full_name,
-                email=subscription_data.email,
-                phone_number=subscription_data.billing_info.phone_number,
-                street_address=subscription_data.billing_info.street_address,
-                city=subscription_data.billing_info.city,
-                state=subscription_data.billing_info.state,
-                zip_code=subscription_data.billing_info.pincode,
-                country=subscription_data.billing_info.country
-            )
-
-            billing = BillingHistory.objects.create(
-                user=user,
-                plan_name=subscription_data.plan,
-                amount=discount_price,
-                payment_method=subscription_data.payment_method,
-                status="paid",
-                invoice_id = f"INV-{timezone.now().strftime('%Y%m%d')}-{random.randint(1000, 9999)}",
-                paid_on=timezone.now().date()
-            )
-
-            invoice_path = generate_invoice_pdf({
-                "customer_name": subscription_data.billing_info.full_name,
-                "email": subscription_data.email,
-                "invoice_id": billing.invoice_id,
-                "paid_on": billing.paid_on.strftime("%d-%m-%Y"),
-                "renews_on": subscription.renews_on.strftime("%d-%m-%Y") if subscription.renews_on else "N/A",
-                "plan": billing.plan_name,
-                "duration": subscription.duration,
-                "start_date": subscription.start_date.strftime("%d-%m-%Y"),
-                "expire_date": subscription.plan_expiring_date.strftime("%d-%m-%Y") if subscription.plan_expiring_date else "N/A",
-                "amount": billing.amount,
-                "payment_method": billing.payment_method,
-                "logo_path": None,
-            })
-
-            billing.invoice = invoice_path
-            billing.save()
-
-            # Send thank you email with invoice
-            send_invoice_email(
-                to_email=subscription_data.email,
-                customer_name=subscription_data.billing_info.full_name,
-                invoice_path=invoice_path
-            )
-
-        await perform_db_operations()
-
-        return {
-            "message": "Subscription, billing and invoice email sent successfully.",
-            "subscription": subscription_data
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Transaction failed: {str(e)}")"""
-
-
-#need stripe login
-"""from fastapi import APIRouter, Depends, HTTPException, status, Request
-from fastapi.security import OAuth2PasswordBearer
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
-from appln.models import UserData, UserSubscription, BillingHistory, BillingInfo
-from asgiref.sync import sync_to_async
-from jose import JWTError, jwt
-import os
-from uuid import uuid4
-from pydantic import BaseModel
-from fastapi_app.invoice_generator import generate_invoice_pdf
-import smtplib
-from email.message import EmailMessage
-
-from django.db import transaction
-from dotenv import load_dotenv
-import stripe
-
-# Load environment variables
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
-FRONTEND_SUCCESS_URL = os.getenv("FRONTEND_SUCCESS_URL")  # URL after payment success
-FRONTEND_CANCEL_URL = os.getenv("FRONTEND_CANCEL_URL")    # URL after payment cancel
-
-stripe.api_key = STRIPE_SECRET_KEY
-
-router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-def get_price_for_plan(plan: str, duration: str) -> float:
-    pricing = {
-        "silver": {"monthly": 10.00, "yearly": 100.00},
-        "gold": {"monthly": 20.00, "yearly": 200.00},
-        "platinum": {"monthly": 30.00, "yearly": 300.00},
-        "basic": {"monthly": 0.00, "yearly": 0.00},
-    }
-    if plan not in pricing or duration not in pricing[plan]:
-        raise ValueError(f"Invalid plan or duration: {plan}, {duration}")
-    return pricing[plan][duration]
-
-def get_total_members(plan: str) -> int:
-    return {
-        "basic": 1,
-        "silver": 1,
-        "gold": 5,
-        "platinum": 7
-    }.get(plan, 1)
-
-def get_credits_for_plan(plan: str) -> int:
-    return {
-        "basic": 10,
-        "silver": 20,
-        "gold": 50,
-        "platinum": 100
-    }.get(plan.lower(), 0)
-
-class BillingInfoModel(BaseModel):
-    full_name: str
-    phone_number: str
-    street_address: str
-    city: str
-    state: str
-    country: str
-    pincode: str
-
-class SubscriptionData(BaseModel):
-    email: str = None
-    userid: str = None
-    plan: str
-    duration: str
-    coupon_code: str = None
-    payment_method: str
-    billing_info: BillingInfoModel
-    payment_success: bool = True
-
-def send_invoice_email(to_email, customer_name, invoice_path):
-    try:
-        msg = EmailMessage()
-        msg["Subject"] = "Thank You for Upgrading Your Plan!"
-        msg["From"] = os.getenv("SMTP_SENDER_EMAIL")
-        msg["To"] = to_email
-      msg.set_content(f
-#Hi {customer_name},
-
-#Thank you for upgrading your plan with us. Please find the invoice for your recent purchase attached.
-
-#If you have any questions, feel free to reach out.
-
-#Best regards,
-#Your Team)
-
-        # Attach invoice PDF
-        with open(invoice_path, 'rb') as f:
-            file_data = f.read()
-            file_name = os.path.basename(invoice_path)
-            msg.add_attachment(file_data, maintype="application", subtype="pdf", filename=file_name)
-
-        # Send email
-        with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT"))) as server:
-            server.starttls()
-            server.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
-            server.send_message(msg)
-
-    except Exception as e:
-        print(f"Failed to send email: {e}")
-
-@router.post("/create-checkout-session/")
-async def create_checkout_session(subscription_data: SubscriptionData):
-    try:
-        price = get_price_for_plan(subscription_data.plan, subscription_data.duration)
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price_data': {
-                    'currency': 'inr',
-                    'product_data': {
-                        'name': f"{subscription_data.plan.capitalize()} Plan - {subscription_data.duration.capitalize()}"
-                    },
-                    'unit_amount': int(price * 100),
-                },
-                'quantity': 1
-            }],
-            mode='payment',
-            success_url=FRONTEND_SUCCESS_URL + "?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url=FRONTEND_CANCEL_URL,
-            metadata={
-                "email": subscription_data.email or subscription_data.userid,
-                "plan": subscription_data.plan,
-                "duration": subscription_data.duration,
-                "payment_method": subscription_data.payment_method,
-                "full_name": subscription_data.billing_info.full_name
-            }
-        )
-        return {"checkout_url": checkout_session.url}
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.post("/update-subscription/")
-async def update_subscription(subscription_data: SubscriptionData):
-    if not (subscription_data.email or subscription_data.userid):
-        raise HTTPException(status_code=400, detail="Email or UserID required")
-
-    try:
-        # Fetch the user
-        if subscription_data.email:
-            user = await sync_to_async(UserData.objects.get)(email=subscription_data.email)
-        else:
-            user = await sync_to_async(UserData.objects.get)(userid=subscription_data.userid)
-    except UserData.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    try:
-        # Run DB operations inside a transaction
-        @sync_to_async
-        @transaction.atomic
-        def perform_db_operations():
-            # Original price logic
-            original_price = get_price_for_plan(subscription_data.plan, subscription_data.duration)
-            discount_price = original_price  # apply discount if needed
-
-            # Create or update subscription
-            subscription, _ = UserSubscription.objects.get_or_create(user=user)
-            subscription.current_plan = subscription_data.plan
-            subscription.duration = subscription_data.duration
-            subscription.start_date = timezone.now().date()
-            subscription.original_price = original_price
-            subscription.discount_price = discount_price
-            subscription.total_members = get_total_members(subscription_data.plan)
-            subscription.total_credits = get_credits_for_plan(subscription_data.plan)
-
-            if subscription_data.duration == 'monthly':
-                subscription.renews_on = timezone.now().date() + relativedelta(months=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(months=1)
-            elif subscription_data.duration == 'yearly':
-                subscription.renews_on = timezone.now().date() + relativedelta(years=1)
-                subscription.plan_expiring_date = timezone.now() + relativedelta(years=1)
-            else:
-                subscription.renews_on = None
-                subscription.plan_expiring_date = None
-
-            subscription.save()
-
-            # Save billing info
-            BillingInfo.objects.create(
-                user=user,
-                full_name=subscription_data.billing_info.full_name,
-                email=subscription_data.email,
-                phone_number=subscription_data.billing_info.phone_number,
-                street_address=subscription_data.billing_info.street_address,
-                city=subscription_data.billing_info.city,
-                state=subscription_data.billing_info.state,
-                zip_code=subscription_data.billing_info.pincode,
-                country=subscription_data.billing_info.country
-            )
-
-            # Create billing history
-            billing = BillingHistory.objects.create(
-                user=user,
-                plan_name=subscription_data.plan,
-                amount=discount_price,
-                payment_method=subscription_data.payment_method,
-                status="paid",
-                invoice_id=str(uuid4()),
-                paid_on=timezone.now().date()
-            )
-
-            # Generate invoice PDF
-            invoice_path = generate_invoice_pdf({
-                "customer_name": subscription_data.billing_info.full_name,
-                "email": subscription_data.email,
-                "invoice_id": billing.invoice_id,
-                "paid_on": billing.paid_on.strftime("%d-%m-%Y"),
-                "renews_on": subscription.renews_on.strftime("%d-%m-%Y") if subscription.renews_on else "N/A",
-                "plan": billing.plan_name,
-                "duration": subscription.duration,
-                "start_date": subscription.start_date.strftime("%d-%m-%Y"),
-                "expire_date": subscription.plan_expiring_date.strftime("%d-%m-%Y") if subscription.plan_expiring_date else "N/A",
-                "amount": billing.amount,
-                "payment_method": billing.payment_method,
-                "logo_path": None,
-            })
-
-            billing.invoice = invoice_path
-            billing.save()
-
-            # Send thank you email with invoice
-            send_invoice_email(
-                to_email=subscription_data.email,
-                customer_name=subscription_data.billing_info.full_name,
-                invoice_path=invoice_path
-            )
-
-        await perform_db_operations()
-
-        return {
-            "message": "Subscription and billing completed successfully",
-            "subscription": subscription_data
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Transaction failed: {str(e)}")"""
-
-
+from typing import Optional
 import stripe
 import json
 from fastapi import APIRouter, HTTPException, Query, Request
@@ -1005,6 +18,13 @@ import logging
 from email.message import EmailMessage
 from django.db import transaction
 from dotenv import load_dotenv
+import stripe
+import json
+import aiohttp
+from datetime import datetime, timedelta
+from fastapi import APIRouter, HTTPException, Request
+from asgiref.sync import sync_to_async
+from django.utils import timezone
 
 # Load environment variables
 load_dotenv()
@@ -1091,6 +111,7 @@ class SubscriptionData(BaseModel):
     payment_method: str
     billing_info: BillingInfoModel
     payment_success: bool = True
+    amount: Optional[float] = None
     
 class FailedPaymentEmailModel(BaseModel):
     email: EmailStr
@@ -1127,24 +148,83 @@ Your Team
 
 def safe_str(value):
     return str(value) if value is not None else ""
+exchange_cache = {"data": {}, "last_update": None}
+
+
+async def get_user_country_from_ip(ip_address: str):
+    """Fetch user country from IP using ipapi.co"""
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://ipapi.co/{ip_address}/json/") as resp:
+                data = await resp.json()
+                return data.get("country", "US")  # Default to US
+    except:
+        return "US"
+
+
+async def get_currency_from_country(country_code: str):
+    """Map country code to common currency"""
+    mapping = {
+        "US": "USD", "IN": "INR", "GB": "GBP", "EU": "EUR", "CA": "CAD",
+        "AU": "AUD", "SG": "SGD", "JP": "JPY", "AE": "AED"
+    }
+    return mapping.get(country_code, "USD")
+
+
+async def get_conversion_rate(from_currency: str, to_currency: str):
+    """Fetch conversion rate using Frankfurter API (with caching)"""
+    now = datetime.utcnow()
+    if (
+        exchange_cache["last_update"]
+        and exchange_cache["data"]
+        and (now - exchange_cache["last_update"]) < timedelta(hours=24)
+    ):
+        # Return cached rate if exists
+        if to_currency in exchange_cache["data"]:
+            return exchange_cache["data"][to_currency]
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            url = f"https://api.frankfurter.app/latest?from={from_currency}&to={to_currency}"
+            async with session.get(url) as resp:
+                data = await resp.json()
+                rate = data.get("rates", {}).get(to_currency, 1.0)
+
+                # Update cache
+                exchange_cache["data"][to_currency] = rate
+                exchange_cache["last_update"] = now
+
+                return rate
+    except:
+        return 1.0  # fallback
+
 
 @router.post("/create-checkout-session/")
-async def create_checkout_session(subscription_data: SubscriptionData):
+async def create_checkout_session(subscription_data: SubscriptionData, request: Request):
     try:
+        # Get user IP for location-based currency
+        client_ip = request.client.host
+        country_code = await get_user_country_from_ip(client_ip)
+        currency = await get_currency_from_country(country_code)
+
+        # Fetch user
         user = await sync_to_async(UserData.objects.filter(id=subscription_data.userid).first)()
         if not user:
-            raise HTTPException(status_code=404, detail="User not found with this ID")
+            raise HTTPException(status_code=404, detail="User not found")
 
+        # Fetch plan
         plan_obj = await sync_to_async(
             Plan.objects.filter(name__iexact=subscription_data.plan, is_active=True).first
         )()
         if not plan_obj:
-            raise HTTPException(status_code=404, detail=f"Plan '{subscription_data.plan}' not found or inactive")
+            raise HTTPException(status_code=404, detail="Plan not found or inactive")
 
-        price = float(subscription_data.amount) if getattr(subscription_data, 'amount', None) else float(plan_obj.price)
+        # Price logic
+        price_usd = float(subscription_data.amount or plan_obj.price)
         discount = 0.0
         used_credits = 0
 
+        # Coupon logic
         if subscription_data.coupon_code:
             coupon = await sync_to_async(
                 CouponCode.objects.filter(
@@ -1155,83 +235,77 @@ async def create_checkout_session(subscription_data: SubscriptionData):
                 ).first
             )()
             if coupon:
-                discount = (price * coupon.discount_percentage) / 100
+                discount = (price_usd * coupon.discount_percentage) / 100
             else:
                 raise HTTPException(status_code=400, detail="Invalid or expired coupon code")
 
-        final_price = max(price - discount, 0.01)  # minimum 1 cent
+        # Final USD price
+        final_usd_price = max(price_usd - discount, 0.01)
 
-        billing_info_str = json.dumps({
-            "full_name": safe_str(subscription_data.billing_info.full_name),
-            "email": safe_str(subscription_data.billing_info.email),
-            "phone_number": safe_str(subscription_data.billing_info.phone_number),
-            "street_address": safe_str(subscription_data.billing_info.street_address),
-            "city": safe_str(subscription_data.billing_info.city),
-            "state": safe_str(subscription_data.billing_info.state),
-            "country": safe_str(subscription_data.billing_info.country),
-            "pincode": safe_str(subscription_data.billing_info.pincode)
-        })
+        # Convert USD → Local Currency
+        conversion_rate = await get_conversion_rate("USD", currency)
+        final_price_local = round(final_usd_price * conversion_rate, 2)
+        unit_amount = int(final_price_local * 100)  # smallest currency unit
 
-        # 🔹 Use USD since frontend shows dollars
-        currency = "usd"
-        unit_amount = int(final_price * 100)  # $10 → 1000 cents
+        # Billing Info JSON
+        billing_info_str = json.dumps(subscription_data.billing_info.dict())
 
+        # Stripe session
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
                 'price_data': {
-                    'currency': currency,
+                    'currency': currency.lower(),
                     'product_data': {
-                        'name': f"{plan_obj.name.capitalize()} Plan - {subscription_data.duration.capitalize()}"
+                        'name': f"{plan_obj.name.capitalize()} Plan - {subscription_data.duration.capitalize()}",
                     },
                     'unit_amount': unit_amount,
                 },
-                'quantity': 1
+                'quantity': 1,
             }],
             mode='payment',
             success_url=FRONTEND_SUCCESS_URL + "?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=FRONTEND_CANCEL_URL,
             metadata={
-                "user_id": safe_str(subscription_data.userid),
-                "email": safe_str(subscription_data.email),
-                "plan": safe_str(plan_obj.name),
-                "duration": safe_str(subscription_data.duration),
-                "coupon_code": safe_str(subscription_data.coupon_code),
-                "payment_method": safe_str(subscription_data.payment_method),
+                "user_id": str(subscription_data.userid),
+                "email": str(subscription_data.email),
+                "plan": str(plan_obj.name),
+                "currency": currency,
+                "usd_price": str(final_usd_price),
+                "local_price": str(final_price_local),
+                "exchange_rate": str(conversion_rate),
+                "coupon_code": str(subscription_data.coupon_code or ""),
                 "billing_info": billing_info_str,
-                "payment_success": safe_str(subscription_data.payment_success),
-                "max_api_calls": safe_str(plan_obj.max_api_calls),
-                "original_price": str(price),
+                "duration": str(subscription_data.duration),
+                "payment_method": str(subscription_data.payment_method),
+                "used_credits": str(used_credits),
+                "original_price": str(price_usd),
                 "discount_amount": str(discount),
-                "used_credits": str(used_credits)
+
             }
         )
 
-        return {"checkout_url": checkout_session.url}
+        return {"checkout_url": checkout_session.url, "currency": currency, "converted_price": final_price_local}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 # @router.post("/create-checkout-session/")
 # async def create_checkout_session(subscription_data: SubscriptionData):
 #     try:
-#         # Fetch user
 #         user = await sync_to_async(UserData.objects.filter(id=subscription_data.userid).first)()
 #         if not user:
 #             raise HTTPException(status_code=404, detail="User not found with this ID")
-        
-#         # Fetch plan object dynamically from DB
+
 #         plan_obj = await sync_to_async(
 #             Plan.objects.filter(name__iexact=subscription_data.plan, is_active=True).first
 #         )()
 #         if not plan_obj:
 #             raise HTTPException(status_code=404, detail=f"Plan '{subscription_data.plan}' not found or inactive")
-        
-#         # Take price from frontend if provided, else plan price
+
 #         price = float(subscription_data.amount) if getattr(subscription_data, 'amount', None) else float(plan_obj.price)
 #         discount = 0.0
-#         used_credits = 0  
+#         used_credits = 0
 
-#         # Apply coupon discount if valid
 #         if subscription_data.coupon_code:
 #             coupon = await sync_to_async(
 #                 CouponCode.objects.filter(
@@ -1241,20 +315,13 @@ async def create_checkout_session(subscription_data: SubscriptionData):
 #                     valid_to__gte=timezone.now()
 #                 ).first
 #             )()
-            
 #             if coupon:
 #                 discount = (price * coupon.discount_percentage) / 100
 #             else:
 #                 raise HTTPException(status_code=400, detail="Invalid or expired coupon code")
 
-#         # Apply discount
-#         final_price = max(price - discount, 0.0)
+#         final_price = max(price - discount, 0.01)  # minimum 1 cent
 
-#         # Minimum amount for Stripe (1 cent)
-#         if final_price < 0.01:
-#             final_price = 0.01
-
-#         # Prepare billing info JSON
 #         billing_info_str = json.dumps({
 #             "full_name": safe_str(subscription_data.billing_info.full_name),
 #             "email": safe_str(subscription_data.billing_info.email),
@@ -1266,9 +333,9 @@ async def create_checkout_session(subscription_data: SubscriptionData):
 #             "pincode": safe_str(subscription_data.billing_info.pincode)
 #         })
 
-#         # ✅ Stripe expects smallest currency unit (cents for USD)
-#         currency = "inr"
-#         unit_amount = int(final_price * 100)  # $70 → 7000 cents
+#         # 🔹 Use USD since frontend shows dollars
+#         currency = "usd"
+#         unit_amount = int(final_price * 100)  # $10 → 1000 cents
 
 #         checkout_session = stripe.checkout.Session.create(
 #             payment_method_types=['card'],
@@ -1302,9 +369,10 @@ async def create_checkout_session(subscription_data: SubscriptionData):
 #         )
 
 #         return {"checkout_url": checkout_session.url}
-    
+
 #     except Exception as e:
 #         raise HTTPException(status_code=500, detail=str(e))
+
 
 def generate_api_key():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=32))
