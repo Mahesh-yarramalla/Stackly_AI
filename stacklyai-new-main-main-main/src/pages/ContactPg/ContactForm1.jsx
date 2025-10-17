@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 import ellipse from "../../assets/contactus/Ellipse.png";
 import ellipse1 from "../../assets/contactus/Ellipse2.png";
 import handShake from "../../assets/contactus/handShake.png";
 import Bg from "../../assets/contactus/CnBg.png";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const ContactForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -19,63 +22,135 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [isFormFilled, setIsFormFilled] = useState(false);
+  const [toastShown, setToastShown] = useState(false);
 
-  // handle input changes
+  // 👈 1ST TOAST: INSTANT ON ANY KEYSTROKE
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value.trim(),
     }));
-  };
 
-  // handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitError(null);
+    // 👈 CHECK IF ALL FIELDS FILLED
+    const updatedFormData = {
+      ...formData,
+      [name]: value.trim()
+    };
+    
+    const isFilled = 
+      updatedFormData.first_name &&
+      updatedFormData.last_name &&
+      updatedFormData.email &&
+      updatedFormData.contact_number &&
+      updatedFormData.message;
 
-    try {
-      await axios.post("http://localhost:8000/contact", {
-        ...formData,
-        source: "contact_us",
-      });
+    setIsFormFilled(isFilled);
 
-      setIsSubmitted(true);
-      toast.success("✅ Message sent successfully!");
-
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        contact_number: "",
-        message: "",
-      });
-
-      // Reset success message after 3 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 3000);
-    } catch (error) {
-      console.error("Submission error:", error);
-      setSubmitError("Failed to send message. Please try again.");
-      toast.error("❌ Failed to send message. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+    // 👈 1ST TOAST: SHOW ON ANY INPUT (ONLY ONCE)
+    if (value.trim() && !toastShown) {
+      setToastShown(true);
+      showLoginToast();
     }
   };
 
+  // 👈 1ST TOAST: ON ANY KEYSTROKE
+  const showLoginToast = () => {
+    toast.error(
+      <div className="flex flex-col items-center gap-3 p-3">
+      <p className="text-base text-center mb-2 poppins-font text-black">
+  🔐 You need to login first!
+</p>
+
+        <button
+          onClick={() => {
+            toast.dismiss();
+            navigate("/sign-in");
+          }}
+          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-full font-semibold transition-all duration-200 transform hover:scale-105 poppins-font"
+        >
+          Sign In Now
+        </button>
+      </div>,
+      {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        toastId: "login-toast",
+        style: {
+          minWidth: "280px",
+          background: "rgba(0, 0, 0, 0.9)",
+          border: "1px solid rgba(9, 112, 153, 0.3)",
+        },
+      }
+    );
+  };
+
+// 👈 2ND TOAST: AUTO REDIRECT AFTER 2 SEC
+const handleButtonClick = (e) => {
+  e.preventDefault(); // 👈 STOP LINK
+  
+  // 👈 2ND TOAST: "YOU HAVE TO LOGIN FIRST"
+  toast.error(
+    <div className="flex flex-col items-center gap-3 p-3">
+      <p className="text-sm text-center mb-2 poppins-font">
+        🚪 You have to login first!
+      </p>
+   
+      <button
+        onClick={() => {
+          toast.dismiss();
+          toast.dismiss("login-toast"); // 👈 CLOSE BOTH
+          navigate("/sign-in");
+        }}
+        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-full font-semibold transition-all duration-200 transform hover:scale-105 poppins-font"
+      >
+        Go to Sign In
+      </button>
+    </div>,
+    {
+      position: "top-right",
+      autoClose: 5000, // 👈 AUTO CLOSE AFTER 2 SEC
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      toastId: "button-toast",
+      style: {
+        minWidth: "280px",
+        background: "rgba(0, 0, 0, 0.9)",
+        border: "1px solid rgba(138, 56, 245, 0.3)",
+      },
+      onClose: () => {
+        // 👈 AUTO REDIRECT AFTER 2 SEC
+        toast.dismiss("login-toast"); // CLOSE 1ST TOAST
+        navigate("/sign-in");
+      },
+    }
+  );
+};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
-   <div
-  className="relative w-full flex justify-center items-center py-16 md:py-28 px-4 min-h-screen mt-[-70px] overflow-hidden bg-black"
-  style={{
-    backgroundImage: `url(${Bg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-  <style>{`
+    <div
+      className="relative w-full flex justify-center items-center py-16 md:py-28 px-4 min-h-screen mt-[-70px] overflow-hidden bg-black"
+      style={{
+        backgroundImage: `url(${Bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <style>{`
         input:-webkit-autofill,
         textarea:-webkit-autofill {
           -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.1) inset !important;
@@ -85,7 +160,7 @@ const ContactForm = () => {
         }
       `}</style>
 
-      {/* Form section */}
+      {/* 👈 NO PURPLE BORDER - CLEAN FORM */}
       <div className="
         relative z-10
         w-full
@@ -95,61 +170,54 @@ const ContactForm = () => {
         xl:max-w-[500px]
         2xl:max-w-[668px]
         flex flex-col items-center gap-6 md:gap-[28px] text-white
+        transition-all duration-300
       ">
-   <div className="text-center font-[Poppins] max-[639px]:mt-8">
-  <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 md:mt-8">
-    <h2 className="text-xl sm:text-2xl md:text-[32px] font-semibold">
-      Let's Have a Chat
-    </h2>
-  <img
-  src={handShake}
-  alt="Handshake"
-  className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 object-contain"
-  style={{
-    animation: 'rotateSwing 2s ease-in-out infinite',
-    display: 'inline-block',
-  }}
-/>
+        <div className="text-center font-[Poppins] max-[639px]:mt-8">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 md:mt-8">
+            <h2 className="text-xl sm:text-2xl md:text-[32px] font-semibold">
+              Let's Have a Chat
+            </h2>
+            <img
+              src={handShake}
+              alt="Handshake"
+              className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 object-contain"
+              style={{
+                animation: 'rotateSwing 2s ease-in-out infinite',
+                display: 'inline-block',
+              }}
+            />
+          </div>
 
-{/* Add keyframes somewhere in the component */}
-<style>
-{`
-  @keyframes rotateSwing {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(10deg); }
-    50% { transform: rotate(-10deg); }
-    75% { transform: rotate(5deg); }
-  }
-`}
-</style>
+          <style>{`
+            @keyframes rotateSwing {
+              0%, 100% { transform: rotate(0deg); }
+              25% { transform: rotate(10deg); }
+              50% { transform: rotate(-10deg); }
+              75% { transform: rotate(5deg); }
+            }
+          `}</style>
 
-  </div>
-  <p className="mt-2 max-[639px]:mt-4 text-base max-[639px]:text-sm sm:text-lg md:text-[20px] text-white/80">
-    Curious how AI can style your space? <br /> Let's talk.
-  </p>
-</div>
+          <p className="mt-2 max-[639px]:mt-4 text-base max-[639px]:text-sm sm:text-lg md:text-[20px] text-white/80">
+            Curious how AI can style your space? <br /> Let's talk.
+          </p>
+        </div>
 
-
-
-       <form 
-  onSubmit={handleSubmit} 
-  className="w-full flex flex-col gap-4 max-[639px]:mt-4"
->
-
+        <form 
+          className="w-full flex flex-col gap-4 max-[639px]:mt-4"
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <label className="block text-sm mb-1">First Name</label>
-            <input
-  type="text"
-  name="first_name"
-  value={formData.first_name}
-  onChange={handleChange}
-  placeholder="John"
-  required
-  className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
-/>
-
-
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                placeholder="John"
+                required
+                className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
+              />
             </div>
             <div className="flex-1">
               <label className="block text-sm mb-1">Last Name</label>
@@ -204,21 +272,24 @@ const ContactForm = () => {
               className="w-full p-3 rounded-[12px] border border-white/40 bg-white/10 text-white placeholder-white/50 focus:outline-none"
             />
           </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full mt-2 py-3 md:py-2 rounded-full text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:opacity-90"
-            style={{
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              background: "rgba(138, 56, 245, 0.2)",
-            }}
-          >
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </button>
+          
+          {/* 👈 BUTTON WITH 2ND TOAST */}
+          <Link to="/sign-in">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              onClick={handleButtonClick}
+              className="w-full mt-2 py-3 md:py-2 rounded-full text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:opacity-90"
+              style={{
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                background: "rgba(138, 56, 245, 0.2)",
+              }}
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
+          </Link>
         </form>
 
-        {/* Success / Error messages */}
         {isSubmitted && (
           <p className="text-green-400 text-center mt-4">
             ✅ Message sent successfully!
