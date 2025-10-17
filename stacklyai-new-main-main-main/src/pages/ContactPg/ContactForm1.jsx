@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +7,7 @@ import ellipse from "../../assets/contactus/Ellipse.png";
 import ellipse1 from "../../assets/contactus/Ellipse2.png";
 import handShake from "../../assets/contactus/handShake.png";
 import Bg from "../../assets/contactus/CnBg.png";
+
 
 const ContactForm = () => {
   const navigate = useNavigate();
@@ -23,9 +24,11 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [isFormFilled, setIsFormFilled] = useState(false);
-  const [toastShown, setToastShown] = useState(false);
+  
+  // 👈 DEBOUNCE TIMER
+  const debounceTimer = useRef(null);
 
-  // 👈 1ST TOAST: INSTANT ON ANY KEYSTROKE
+  // 👈 FIXED: 1ST TOAST - Show ONCE per keystroke burst, AUTO-CLOSE 2s
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -48,93 +51,64 @@ const ContactForm = () => {
 
     setIsFormFilled(isFilled);
 
-    // 👈 1ST TOAST: SHOW ON ANY INPUT (ONLY ONCE)
-    if (value.trim() && !toastShown) {
-      setToastShown(true);
-      showLoginToast();
+    // 👈 CLEAR PREVIOUS TIMER
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
-  };
 
-  // 👈 1ST TOAST: ON ANY KEYSTROKE
-  const showLoginToast = () => {
-    toast.error(
-      <div className="flex flex-col items-center gap-3 p-3">
-      <p className="text-base text-center mb-2 poppins-font text-black">
-  🔐 You need to login first!
-</p>
-
-        <button
-          onClick={() => {
-            toast.dismiss();
-            navigate("/sign-in");
-          }}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-full font-semibold transition-all duration-200 transform hover:scale-105 poppins-font"
-        >
-          Sign In Now
-        </button>
-      </div>,
-      {
-        position: "top-right",
-        autoClose: false,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-        toastId: "login-toast",
-        style: {
-          minWidth: "280px",
-          background: "rgba(0, 0, 0, 0.9)",
-          border: "1px solid rgba(9, 112, 153, 0.3)",
-        },
+    // 👈 DEBOUNCE: Show toast AFTER user stops typing for 300ms
+    debounceTimer.current = setTimeout(() => {
+      if (value.trim()) {
+        // 👈 DISMISS ANY EXISTING TOAST FIRST
+        toast.dismiss("typing-toast");
+        
+        toast.error("🔐 You need to login first!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "dark",
+          toastId: "typing-toast",
+        });
       }
-    );
+    }, 300); // 👈 300ms delay
   };
 
-// 👈 2ND TOAST: AUTO REDIRECT AFTER 2 SEC
-const handleButtonClick = (e) => {
-  e.preventDefault(); // 👈 STOP LINK
-  
-  // 👈 2ND TOAST: "YOU HAVE TO LOGIN FIRST"
-  toast.error(
-    <div className="flex flex-col items-center gap-3 p-3">
-      <p className="text-sm text-center mb-2 poppins-font">
-        🚪 You have to login first!
-      </p>
-   
-      <button
-        onClick={() => {
-          toast.dismiss();
-          toast.dismiss("login-toast"); // 👈 CLOSE BOTH
-          navigate("/sign-in");
-        }}
-        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-full font-semibold transition-all duration-200 transform hover:scale-105 poppins-font"
-      >
-        Go to Sign In
-      </button>
-    </div>,
-    {
+  // 👈 FIXED: 2ND TOAST - Button click (FORCE AUTO-CLOSE)
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Clear ALL toasts
+    toast.dismiss();
+
+    toast.error("🚪 You have to login first!", {
       position: "top-right",
-      autoClose: 5000, // 👈 AUTO CLOSE AFTER 2 SEC
+      autoClose: 2000,
       hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: true,
+      closeOnClick: true,
+      pauseOnHover: false,
       draggable: true,
       theme: "dark",
       toastId: "button-toast",
-      style: {
-        minWidth: "280px",
-        background: "rgba(0, 0, 0, 0.9)",
-        border: "1px solid rgba(138, 56, 245, 0.3)",
-      },
-      onClose: () => {
-        // 👈 AUTO REDIRECT AFTER 2 SEC
-        toast.dismiss("login-toast"); // CLOSE 1ST TOAST
-        navigate("/sign-in");
-      },
-    }
-  );
-};
+    });
+
+    // 👈 FORCE NAVIGATE AFTER 2s (even if toast stuck)
+    setTimeout(() => {
+      navigate("/sign-in");
+    }, 2000);
+  };
+
+  // 👈 CLEANUP DEBOUNCE ON UNMOUNT
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -160,7 +134,6 @@ const handleButtonClick = (e) => {
         }
       `}</style>
 
-      {/* 👈 NO PURPLE BORDER - CLEAN FORM */}
       <div className="
         relative z-10
         w-full
@@ -273,10 +246,9 @@ const handleButtonClick = (e) => {
             />
           </div>
           
-          {/* 👈 BUTTON WITH 2ND TOAST */}
           <Link to="/sign-in">
             <button
-              type="submit"
+              type="button"
               disabled={isSubmitting}
               onClick={handleButtonClick}
               className="w-full mt-2 py-3 md:py-2 rounded-full text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all hover:opacity-90"

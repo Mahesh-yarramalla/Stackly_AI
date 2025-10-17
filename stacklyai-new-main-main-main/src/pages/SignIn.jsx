@@ -37,7 +37,7 @@ export default function SignIn() {
       const userData = { userId, email, token };
       setUserInfo(userData);
       localStorage.setItem("userInfo", JSON.stringify(userData));
-      toast.success("Login successful 🎉", { duration: 3000 }); // ✅ Toast for social login
+      toast.success("Login successful 🎉", { duration: 2000 }); // ✅ Toast for social login
       navigate("/", { replace: true });
     }
   }, [location.search]);
@@ -70,7 +70,7 @@ export default function SignIn() {
       localStorage.setItem("userId", userId);
       localStorage.setItem("userEmail", email);
 
-      toast.success("Login successful 🎉", { duration: 3000 }); // ✅ Success toast
+      toast.success("Login successful 🎉", { duration: 2000 }); // ✅ Success toast
       navigate("/");
     } catch (err) {
       console.error(err);

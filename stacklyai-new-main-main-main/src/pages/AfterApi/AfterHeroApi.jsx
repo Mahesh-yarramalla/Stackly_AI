@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";  
+import "react-toastify/dist/ReactToastify.css";  
 import apiBackground from "../../assets/api/back.png";
 import AfterKeys from "./AfterKeys";
 import AfterApiIntegrate from "./AfterApiIntegrate";
@@ -22,6 +24,8 @@ import Group from "../../assets/afterHome/GroupApi.png";
 import card from "../../assets/afterHome/ApiCard.png";
 import Group2 from "../../assets/afterHome/Group2.png";
 import ApiVector from "../../assets/afterHome/ApiVector.png";
+
+
 
 export default function AfterHeroApi() {
   const faqs = [
@@ -56,6 +60,16 @@ export default function AfterHeroApi() {
         "You can reach out to Stackly AI through our support page, via email at support@stackly.ai, or use the chat feature on our website for instant assistance.",
     },
   ];
+  const [loading, setLoading] = useState(false);
+  const toastStyle = {
+  background: "linear-gradient(95.92deg, rgba(138,56,245,0.5) 15.32%, rgba(194,44,162,0.5) 99.87%)",
+  color: "#ffffff",
+  border: "1px solid rgba(194,44,162,0.6)",
+  borderRadius: "12px",
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 500,
+  fontSize: "15px",
+};
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -65,51 +79,71 @@ export default function AfterHeroApi() {
     message: "",
   });
 
-  const handleChange = (e) => {
+  
+   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const userId = localStorage.getItem("userId"); // FIXED: use the correct key
-    const token = localStorage.getItem("token");
+   const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!userId || !token) {
-      alert("Login required to submit the form.");
-      return;
-    }
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
-    try {
-      const res = await axios.post(
-        "http://localhost:8000/submit-api-access",
-        {
-          user_id: parseInt(userId),
-          ...formData,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // add token if backend requires auth
-          },
-        }
-      );
+  if (!userId || !token) {
+    toast.error("🔐 You need to login first!", { 
+      style: toastStyle,
+      autoClose: 2000,
+    });
+    return;
+  }
 
-      alert(res.data.message);
-      setFormData({
-        full_name: "",
-        email: "",
-        contact_number: "",
-        company_name: "",
-        address: "",
-        message: "",
-      });
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      alert("Submission failed. Please try again.");
-    }
+  if (!formData.full_name || !formData.email || !formData.company_name) {
+    toast.warning("Please fill all required fields.", { 
+      style: toastStyle,
+      autoClose: 2000,
+    });
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    await axios.post(
+      "http://localhost:8000/submit-api-access",
+      { user_id: parseInt(userId), ...formData },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    toast.success("✅ Thank you for your request! Our team will contact you.", {
+      style: toastStyle,
+      autoClose: 3000,
+    });
+
+    setFormData({
+      full_name: "",
+      email: "",
+      contact_number: "",
+      company_name: "",
+      address: "",
+      message: "",
+    });
+
+  } catch (err) {
+    console.error("Error submitting form:", err);
+    toast.error("❌ Submission failed. Please try again.", {
+      style: toastStyle,
+      autoClose: 2000,
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
     
-  };
+  
   useEffect(() => {
   if (!location.hash) return;
 
@@ -323,78 +357,126 @@ export default function AfterHeroApi() {
     </div>
 
     {/* Form */}
-    <form className="w-full flex flex-col gap-4">
+   <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+        {/* First row: Name & Email */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <label className="block text-sm mb-1 text-white">Full Name*</label>
+            <input
+              type="text"
+              name="full_name"
+              value={formData.full_name}
+              onChange={handleChange}
+              placeholder="John"
+              className="w-full p-3 rounded-xl border-[1px] border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm mb-1 text-white">Email ID*</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              className="w-full p-3 rounded-xl border-[1px] border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+            />
+          </div>
+        </div>
 
-      {/* First row: Name & Email */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1">
-          <label className="block text-sm mb-1 text-white">Full Name*</label>
-          <input
-            type="text"
-            placeholder="John"
-            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+        {/* Second row: Company & Phone */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <label className="block text-sm mb-1 text-white">Company Name*</label>
+            <input
+              type="text"
+              name="company_name"
+              value={formData.company_name}
+              onChange={handleChange}
+              placeholder="Paul"
+              className="w-full p-3 rounded-xl border-[1px] border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm mb-1 text-white">Phone Number</label>
+            <input
+              type="tel"
+              name="contact_number"
+              value={formData.contact_number}
+              onChange={handleChange}
+              placeholder="+91 99999 99999"
+              className="w-full p-3 rounded-xl border-[1px] border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Address */}
+        <div>
+          <label className="block text-sm mb-1 text-white">Address</label>
+          <textarea
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            placeholder="eg: St. Thomas lane.."
+            className="w-full p-3 rounded-xl border-[1px] border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
           />
         </div>
-        <div className="flex-1">
-          <label className="block text-sm mb-1 text-white">Email ID*</label>
-          <input
-            type="email"
-            placeholder="you@example.com"
-            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
+
+        {/* Message */}
+        <div>
+          <label className="block text-sm mb-1 text-white">Message</label>
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            rows={4}
+            placeholder="Type something..."
+            className="w-full p-3 rounded-xl border-[1px] border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
           />
         </div>
-      </div>
 
-      {/* Second row: Company & Phone */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1">
-          <label className="block text-sm mb-1 text-white">Company Name*</label>
-          <input
-            type="text"
-            placeholder="Paul"
-            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-sm mb-1 text-white">Phone Number</label>
-          <input
-            type="tel"
-            placeholder="+91 99999 99999"
-            className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
-          />
-        </div>
-      </div>
-
-      {/* Address */}
-      <div>
-        <label className="block text-sm mb-1 text-white">Address</label>
-        <textarea
-          placeholder="eg: St. Thomas lane.."
-          className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none "
-        />
-      </div>
-
-      {/* Message */}
-      <div>
-        <label className="block text-sm mb-1 text-white">Message</label>
-        <textarea
-          rows={4}
-          placeholder="Type something..."
-          className="w-full p-3 rounded-xl border-[1px] border-solid border-[#FFFFFF33] bg-white/10 text-white placeholder-white/50 focus:outline-none"
-        />
-      </div>
-
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className="w-full mt-2 py-3 rounded-full text-white font-semibold flex items-center justify-center gap-2 bg-[#8A38F520] border-[1px] border-solid border-[#FFFFFF33]"
+        {/* Submit Button */}
+        <button
+  type="submit"
+  disabled={loading}
+  className={`w-full mt-2 py-3 rounded-full text-white font-semibold flex items-center justify-center gap-2 border-[1px] border-solid border-[#FFFFFF33] 
+  ${loading ? "bg-[#8A38F540] cursor-not-allowed" : "bg-[#8A38F520]"}`}
+>
+  {loading ? (
+    <span className="flex items-center gap-2">
+      <svg
+        className="animate-spin h-5 w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
       >
-        <span>Let’s Connect</span>
-        <div className="w-6 h-6">
-          <img src={ApiVector} alt="icon" className="w-full h-full object-contain" />
-        </div>
-      </button>
-    </form>
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
+        ></path>
+      </svg>
+      Sending...
+    </span>
+  ) : (
+    <>
+      <span>Let’s Connect</span>
+      <div className="w-6 h-6">
+        <img src={ApiVector} alt="icon" className="w-full h-full object-contain" />
+      </div>
+    </>
+  )}
+</button>
+
+      </form>
 
     {/* Footer Note */}
     <p className="text-white text-center text-sm sm:text-base mt-6 max-w-[90%] sm:max-w-[400px]">
