@@ -416,7 +416,7 @@ export default function SignUp({ setUser }) {
              [@media(min-width:1281px)]:mt-[350px]"
 >
 
-              <a href="http://localhost:8000/login/google">
+              <a href="http://3.213.79.189:8000/login/google">
                 <button
                   className="w-[44px] max-[1280px]:w-[36px] h-[44px] max-[1280px]:h-[36px] bg-white rounded-[38px] opacity-100 shadow-[0px_2px_4px_0px_#00000014] p-[10px] max-[1280px]:p-[8px] flex items-center justify-center gap-[10px] cursor-pointer"
                 >
@@ -458,7 +458,7 @@ export default function SignUp({ setUser }) {
                   </svg>
                 </button>
               </a>
-              <a href="http://localhost:8000/login/apple">
+              <a href="http://3.213.79.189:8000/login/apple">
                 <button
                   className="w-[44px] max-[1280px]:w-[36px] h-[44px] max-[1280px]:h-[36px] bg-white rounded-[38px] opacity-100 shadow-[0px_2px_4px_0px_#00000014] p-[10px] max-[1280px]:p-[8px] flex items-center justify-center gap-[10px] cursor-pointer"
                 >
@@ -477,7 +477,7 @@ export default function SignUp({ setUser }) {
                   </svg>
                 </button>
               </a>
-              <a href="http://localhost:8000/login/facebook">
+              <a href="http://3.213.79.189:8000/login/facebook">
                 <button
                   className="w-[44px] max-[1280px]:w-[36px] h-[44px] max-[1280px]:h-[36px] bg-white rounded-[38px] opacity-100 shadow-[0px_2px_4px_0px_#00000014] p-[10px] max-[1280px]:p-[8px] flex items-center justify-center gap-[10px] cursor-pointer"
                 >
