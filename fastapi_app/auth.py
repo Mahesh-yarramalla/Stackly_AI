@@ -589,67 +589,74 @@ async def login(user_data: LoginUser):
 
 @router.get("/callback")
 async def auth_callback(request: Request):
+    """Handles the Auth0 redirect callback."""
     code = request.query_params.get("code")
     if not code:
-        logger.error("Authorization code not found")
         raise HTTPException(status_code=400, detail="Authorization code not found")
 
     token_url = f"https://{AUTH0_DOMAIN}/oauth/token"
     data = {
-        'grant_type': 'authorization_code',
-        'client_id': AUTH0_CLIENT_ID,
-        'client_secret': AUTH0_CLIENT_SECRET,
-        'code': code,
-        'redirect_uri': AUTH0_CALLBACK_URL,
+        "grant_type": "authorization_code",
+        "client_id": AUTH0_CLIENT_ID,
+        "client_secret": AUTH0_CLIENT_SECRET,
+        "code": code,
+        "redirect_uri": AUTH0_CALLBACK_URL,  # must exactly match Auth0's Allowed Callback URL
     }
 
-    response = requests.post(token_url, data=urlencode(data), headers={'Content-Type': 'application/x-www-form-urlencoded'})
-    token_info = response.json()
-    access_token = token_info.get('access_token')
-    if not access_token:
-        logger.error("Token exchange failed")
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+
+    try:
+        response = requests.post(token_url, data=data, headers=headers)
+        response.raise_for_status()
+    except Exception as e:
+        logger.error(f"Auth0 token exchange failed: {e}, Response: {response.text if 'response' in locals() else None}")
         raise HTTPException(status_code=400, detail="Token exchange failed")
 
+    token_info = response.json()
+    access_token = token_info.get("access_token")
+    if not access_token:
+        logger.error(f"No access token received from Auth0: {token_info}")
+        raise HTTPException(status_code=400, detail="Token exchange failed")
+
+    # Retrieve user info
     user_info_url = f"https://{AUTH0_DOMAIN}/userinfo"
-    user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
+    user_info_response = requests.get(user_info_url, headers={"Authorization": f"Bearer {access_token}"})
     user_info = user_info_response.json()
 
-    sub = user_info.get('sub')
+    sub = user_info.get("sub")
     if not sub:
         logger.error("Auth0 user info missing 'sub'")
-        raise HTTPException(status_code=400, detail="Auth0 user info missing 'sub'")
+        raise HTTPException(status_code=400, detail="Invalid user info from Auth0")
 
-    provider = sub.split('|')[0]
-    user_id = sub.split('|')[1] if '|' in sub else sub
-    email = user_info.get('email')
-    first_name = user_info.get('given_name') or user_info.get('name') or ""
-    last_name = user_info.get('family_name') or ""
+    # Extract provider and user ID
+    provider = sub.split("|")[0]
+    user_id = sub.split("|")[1] if "|" in sub else sub
+    email = user_info.get("email")
+    first_name = user_info.get("given_name") or user_info.get("name") or ""
+    last_name = user_info.get("family_name") or ""
 
-    logger.info(f"Auth0 callback: provider={provider}, user_id={user_id}, email={email}")
+    logger.info(f"Auth0 callback success: provider={provider}, user_id={user_id}, email={email}")
 
-    if provider == "google-oauth2":
-        if not email:
-            logger.error("Google login failed: email not provided")
-            raise HTTPException(status_code=400, detail="Google login failed: email not provided")
-        return await handle_provider_signup_login(email=email, first_name=first_name, last_name=last_name, provider="google", user_id=None)
-    elif provider == "facebook":
-        if not user_id or not first_name:
-            logger.error("Facebook login missing required info")
-            raise HTTPException(status_code=400, detail="Facebook login missing required info")
-        return await handle_provider_signup_login(email=None, first_name=first_name, last_name=last_name, provider="facebook", user_id=user_id)
-    elif provider == "apple":
-        if not user_id:
-            logger.error("Apple login missing user ID")
-            raise HTTPException(status_code=400, detail="Apple login missing user ID")
-        return await handle_provider_signup_login(email=None, first_name=None, last_name=None, provider="apple", user_id=user_id)
+    # Handle different providers
+    if provider in ["google-oauth2", "facebook", "apple"]:
+        return await handle_provider_signup_login(
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            provider=provider.replace("-oauth2", ""),
+            user_id=user_id
+        )
     else:
         logger.error(f"Unsupported provider: {provider}")
-        raise HTTPException(status_code=400, detail="Unsupported provider")
+        raise HTTPException(status_code=400, detail=f"Unsupported provider: {provider}")
+
+
 
 async def handle_provider_signup_login(email: str, first_name: str, last_name: str, provider: str, user_id: str = None):
+    """Create or log in a user after Auth0 authentication."""
     try:
-        logger.info(f"Processing {provider} login: email={email}, user_id={user_id}")
-        
+        logger.info(f"Processing {provider} login | email={email}, user_id={user_id}")
+
         @sync_to_async
         def process_user():
             with transaction.atomic():
@@ -662,9 +669,8 @@ async def handle_provider_signup_login(email: str, first_name: str, last_name: s
                             "first_name": first_name or "",
                             "last_name": last_name or "",
                             "password": hash_password(email),
-                            "userid": None,
                             "provider": provider,
-                        }
+                        },
                     )
                 else:
                     user, created = UserData.objects.get_or_create(
@@ -674,40 +680,39 @@ async def handle_provider_signup_login(email: str, first_name: str, last_name: s
                             "first_name": first_name or "",
                             "last_name": last_name or "",
                             "password": hash_password(user_id),
-                            "email": None,
-                        }
+                            "email": email or None,
+                        },
                     )
 
+                # If new user, create subscription and API key
                 if created:
                     UserSubscription.objects.create(
                         user=user,
                         email=user.email or "",
                         userid=user.userid,
                         name=" ".join(filter(None, [user.first_name, user.last_name])).strip(),
-                        current_plan='basic',
+                        current_plan="basic",
                         total_credits=10,
                         used_credits=0,
-                        total_credits_used_all_time=0
+                        total_credits_used_all_time=0,
                     )
                     unique_api_key = create_unique_api_key()
                     APIKeyManager.objects.create(
                         user=user,
-                        plan='basic',
+                        plan="basic",
                         active_keys=unique_api_key,
                         revoked_keys=[],
                         credits_remaining=10,
                         monthly_credits=10,
                         created_at=datetime.utcnow(),
-                        updated_at=None,
                         is_active=True,
-                        usage_count=0
+                        usage_count=0,
                     )
                 return user, created
 
         user, created = await process_user()
         token = create_access_token(data={"sub": user.email or user.userid, "user_id": user.id})
         refresh_token = create_refresh_token(data={"sub": user.email or user.userid, "user_id": user.id})
-        logger.info(f"User processed: id={user.id}, email={user.email}, token={token}")
 
         redirect_url = (
             f"{FRONTEND_HOME_URL}"
@@ -717,27 +722,12 @@ async def handle_provider_signup_login(email: str, first_name: str, last_name: s
             f"&token={quote(token)}"
             f"&refreshToken={quote(refresh_token)}"
         )
-        logger.info(f"Redirecting to: {redirect_url}")
+        logger.info(f"Redirecting user → {redirect_url}")
         return RedirectResponse(url=redirect_url, status_code=302)
 
     except Exception as e:
-        logger.error(f"{provider} login error: {str(e)}")
+        logger.exception(f"{provider} login error: {e}")
         raise HTTPException(status_code=500, detail=f"{provider} authentication failed")
-
-
-@router.post("/google_signup_login")
-async def google_signup(email: str, first_name: str, last_name: str):
-    return await handle_provider_signup_login(email, first_name, last_name, provider="google")
-
-
-@router.post("/facebook_signup_login")
-async def facebook_signup(userid: str, first_name: str, last_name: str):
-    return await handle_provider_signup_login(None, first_name, last_name, provider="facebook", user_id=userid)
-
-
-@router.post("/apple_signup_login")
-async def apple_signup(userid: str):
-    return await handle_provider_signup_login(None, None, None, provider="apple", user_id=userid)
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
