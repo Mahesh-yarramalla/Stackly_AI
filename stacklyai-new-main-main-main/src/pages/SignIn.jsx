@@ -54,7 +54,7 @@ export default function SignIn() {
       setLoading(true); // ✅ Start loading
 
       const res = await axios.post(
-        "http://localhost:8000/login",
+        "https://www.stacklycloud.com/api/login",
         {
           email: formData.email,
           password: formData.password,
@@ -351,7 +351,7 @@ export default function SignIn() {
 
               <div className="w-[554px] max-[1280px]:w-full h-[44px] max-[1280px]:h-[36px] flex items-center justify-center gap-4 mt-[160px] max-[1280px]:mt-[20px] opacity-100">
                 <div className="w-[202px] max-[1280px]:w-[150px] h-[44px] max-[1280px]:h-[36px] flex justify-between items-center">
-                  <a href="http://localhost:8000/login/google">
+                  <a href="https://www.stacklycloud.com/api/login/google">
                     <button
                       className="w-[44px] max-[1280px]:w-[36px] h-[44px] max-[1280px]:h-[36px] bg-white rounded-[38px] opacity-100 shadow-[0px_2px_4px_0px_#00000014] p-[10px] max-[1280px]:p-[8px] flex items-center justify-center gap-[10px] cursor-pointer"
                     >
@@ -393,7 +393,7 @@ export default function SignIn() {
                       </svg>
                     </button>
                   </a>
-                  <a href="http://localhost:8000/login/apple">
+                  <a href="https://www.stacklycloud.com/api/login/apple">
                     <button
                       className="w-[44px] max-[1280px]:w-[36px] h-[44px] max-[1280px]:h-[36px] bg-white rounded-[38px] opacity-100 shadow-[0px_2px_4px_0px_#00000014] p-[10px] max-[1280px]:p-[8px] flex items-center justify-center gap-[10px] cursor-pointer"
                     >
@@ -412,7 +412,7 @@ export default function SignIn() {
                       </svg>
                     </button>
                   </a>
-                  <a href="http://localhost:8000/login/facebook">
+                  <a href="https://www.stacklycloud.com/api/login/facebook">
                     <button
                       className="w-[44px] max-[1280px]:w-[36px] h-[44px] max-[1280px]:h-[36px] bg-white rounded-[38px] opacity-100 shadow-[0px_2px_4px_0px_#00000014] p-[10px] max-[1280px]:p-[8px] flex items-center justify-center gap-[10px] cursor-pointer"
                     >
